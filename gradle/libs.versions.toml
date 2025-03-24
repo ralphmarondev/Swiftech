@@ -35,6 +35,11 @@ workRuntimeVersion = "2.10.0"
 googleGmsGoogleServices = "4.4.2"
 firebaseDatabase = "21.0.0"
 
+cameraCamera2 = "1.4.1"
+textRecognition = "16.0.1"
+tesseractAndroid = "4.0.0"
+tessTwo = "9.1.0"
+
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -79,6 +84,13 @@ material = { group = "com.google.android.material", name = "material", version.r
 calculator-rhino = { module = "org.mozilla:rhino", version.ref = "rhino" }
 work-runtime = { module = "androidx.work:work-runtime", version.ref = "workRuntimeVersion" }
 firebase-database = { group = "com.google.firebase", name = "firebase-database", version.ref = "firebaseDatabase" }
+
+androidx-camera-camera2 = { module = "androidx.camera:camera-camera2", version.ref = "cameraCamera2" }
+androidx-camera-lifecycle = { module = "androidx.camera:camera-lifecycle", version.ref = "cameraCamera2" }
+androidx-camera-view = { module = "androidx.camera:camera-view", version.ref = "cameraCamera2" }
+text-recognition = { module = "com.google.mlkit:text-recognition", version.ref = "textRecognition" }
+tesseract-android = { module = "com.googlecode.tesseract.android:tesseract-android", version.ref = "tesseractAndroid" }
+tess-two = { module = "com.rmtheis:tess-two", version.ref = "tessTwo" }
 
 
 [plugins]

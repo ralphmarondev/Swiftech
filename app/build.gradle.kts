@@ -63,6 +63,11 @@ dependencies {
     implementation(libs.bundles.room)
     kapt(libs.androidx.room.compiler)
 
+    implementation(libs.text.recognition)
+    implementation(libs.androidx.camera.camera2)
+    implementation(libs.androidx.camera.lifecycle)
+    implementation(libs.androidx.camera.view)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
