@@ -10,8 +10,9 @@ class AppPreferences(
         private const val FIRST_LAUNCH = "first_launch"
         private const val DARK_THEME = "dark_theme"
         private const val REMEMBER_ME = "remember_me"
-        private const val CURRENT_USER_USERNAME = "current_user_username"
-        private const val CURRENT_USER_PASSWORD = "current_user_password"
+        private const val SAVED_USER_USERNAME = "saved_user_username"
+        private const val SAVED_USER_PASSWORD = "saved_user_password"
+        private const val CURRENT_USER = "current_user"
     }
 
     private val sharedPreferences = context.getSharedPreferences(
@@ -44,18 +45,26 @@ class AppPreferences(
     }
 
     fun setUsernameToRemember(value: String) {
-        sharedPreferences.edit().putString(CURRENT_USER_USERNAME, value).apply()
+        sharedPreferences.edit().putString(SAVED_USER_USERNAME, value).apply()
     }
 
     fun getRememberedUsername(): String? {
-        return sharedPreferences.getString(CURRENT_USER_USERNAME, null)
+        return sharedPreferences.getString(SAVED_USER_USERNAME, null)
     }
 
     fun setPasswordToRemember(value: String) {
-        sharedPreferences.edit().putString(CURRENT_USER_PASSWORD, value).apply()
+        sharedPreferences.edit().putString(SAVED_USER_PASSWORD, value).apply()
     }
 
     fun getRememberedPassword(): String? {
-        return sharedPreferences.getString(CURRENT_USER_PASSWORD, null)
+        return sharedPreferences.getString(SAVED_USER_PASSWORD, null)
+    }
+
+    fun setCurrentUser(value: String) {
+        sharedPreferences.edit().putString(CURRENT_USER, value).apply()
+    }
+
+    fun getCurrentUser(): String? {
+        return sharedPreferences.getString(CURRENT_USER, null)
     }
 }

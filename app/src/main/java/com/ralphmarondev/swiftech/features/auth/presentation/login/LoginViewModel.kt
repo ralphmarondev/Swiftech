@@ -68,7 +68,10 @@ class LoginViewModel(
                 return@launch
             }
 
-            if (username == "jami" && password == "jami") {
+            if ((username == "jam" && password == "jam") ||
+                (username == "jami" && password == "jami") ||
+                (username == "jamille" && password == "jamille")
+            ) {
                 _response.value = Result(
                     success = true,
                     message = "Login successful."
@@ -77,6 +80,7 @@ class LoginViewModel(
                     preferences.setUsernameToRemember(_username.value.trim())
                     preferences.setPasswordToRemember(_password.value.trim())
                 }
+                preferences.setCurrentUser(username)
             } else {
                 _response.value = Result(
                     success = false,
