@@ -55,6 +55,11 @@ fun HomeScreen() {
                     name = "Courses",
                     image = R.drawable.courses,
                     onClick = {}
+                ),
+                Options(
+                    name = "Evaluation",
+                    image = R.drawable.courses,
+                    onClick = {}
                 )
             )
 
