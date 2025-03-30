@@ -1,5 +1,6 @@
 package com.ralphmarondev.swiftech.features.auth.presentation.login
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -192,8 +193,20 @@ fun LoginScreen(
                             overflow = TextOverflow.Ellipsis
                         )
                     }
-                    Spacer(modifier = Modifier.height(8.dp))
-
+                    Spacer(modifier = Modifier.height(2.dp))
+                    AnimatedVisibility(response?.success == true) {
+                        if (response != null) {
+                            Text(
+                                text = response.message,
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight.W500,
+                                color = if (response.success) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.error,
+                                maxLines = 2,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(2.dp))
                     Button(
                         onClick = {
                             viewModel.login()

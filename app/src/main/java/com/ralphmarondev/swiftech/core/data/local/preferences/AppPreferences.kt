@@ -1,6 +1,7 @@
 package com.ralphmarondev.swiftech.core.data.local.preferences
 
 import android.content.Context
+import androidx.core.content.edit
 
 class AppPreferences(
     private val context: Context
@@ -25,7 +26,7 @@ class AppPreferences(
     }
 
     fun setIsFirstLaunchDone() {
-        sharedPreferences.edit().putBoolean(FIRST_LAUNCH, false).apply()
+        sharedPreferences.edit { putBoolean(FIRST_LAUNCH, false) }
     }
 
     fun isDarkTheme(): Boolean {
@@ -33,11 +34,11 @@ class AppPreferences(
     }
 
     fun setDarkTheme(value: Boolean = !isDarkTheme()) {
-        sharedPreferences.edit().putBoolean(DARK_THEME, value).apply()
+        sharedPreferences.edit { putBoolean(DARK_THEME, value) }
     }
 
     fun setRememberMe() {
-        sharedPreferences.edit().putBoolean(REMEMBER_ME, !isRememberMeChecked()).apply()
+        sharedPreferences.edit { putBoolean(REMEMBER_ME, !isRememberMeChecked()) }
     }
 
     fun isRememberMeChecked(): Boolean {
@@ -45,7 +46,7 @@ class AppPreferences(
     }
 
     fun setUsernameToRemember(value: String) {
-        sharedPreferences.edit().putString(SAVED_USER_USERNAME, value).apply()
+        sharedPreferences.edit { putString(SAVED_USER_USERNAME, value) }
     }
 
     fun getRememberedUsername(): String? {
@@ -53,7 +54,7 @@ class AppPreferences(
     }
 
     fun setPasswordToRemember(value: String) {
-        sharedPreferences.edit().putString(SAVED_USER_PASSWORD, value).apply()
+        sharedPreferences.edit { putString(SAVED_USER_PASSWORD, value) }
     }
 
     fun getRememberedPassword(): String? {
@@ -61,7 +62,7 @@ class AppPreferences(
     }
 
     fun setCurrentUser(value: String) {
-        sharedPreferences.edit().putString(CURRENT_USER, value).apply()
+        sharedPreferences.edit { putString(CURRENT_USER, value) }
     }
 
     fun getCurrentUser(): String? {

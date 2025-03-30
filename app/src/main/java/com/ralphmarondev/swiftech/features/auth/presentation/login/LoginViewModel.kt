@@ -3,13 +3,16 @@ package com.ralphmarondev.swiftech.features.auth.presentation.login
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ralphmarondev.swiftech.core.data.local.preferences.AppPreferences
+import com.ralphmarondev.swiftech.core.domain.model.User
+import com.ralphmarondev.swiftech.core.domain.usecases.CreateUserUseCase
 import com.ralphmarondev.swiftech.features.auth.domain.model.Result
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class LoginViewModel(
-    private val preferences: AppPreferences
+    private val preferences: AppPreferences,
+    private val createUserUseCase: CreateUserUseCase
 ) : ViewModel() {
 
     private val _username = MutableStateFlow("")
@@ -28,12 +31,41 @@ class LoginViewModel(
     val response: StateFlow<Result?> get() = _response
 
     init {
-        if (preferences.isRememberMeChecked()) {
-            val savedUsername = preferences.getRememberedUsername()
-            val savedPassword = preferences.getRememberedPassword()
+        viewModelScope.launch {
+            if (preferences.isFirstLaunch()) {
+                createUserUseCase(
+                    user = User(
+                        username = "jam",
+                        password = "jam",
+                        fullName = "",
+                        role = "Admininistrator"
+                    )
+                )
+                createUserUseCase(
+                    user = User(
+                        username = "jami",
+                        password = "jami",
+                        fullName = "",
+                        role = "Teacher"
+                    )
+                )
+                createUserUseCase(
+                    user = User(
+                        username = "jamille",
+                        password = "jamille",
+                        fullName = "",
+                        role = "Student"
+                    )
+                )
+                preferences.setIsFirstLaunchDone()
+            }
+            if (preferences.isRememberMeChecked()) {
+                val savedUsername = preferences.getRememberedUsername()
+                val savedPassword = preferences.getRememberedPassword()
 
-            _username.value = savedUsername ?: ""
-            _password.value = savedPassword ?: ""
+                _username.value = savedUsername ?: ""
+                _password.value = savedPassword ?: ""
+            }
         }
     }
 
