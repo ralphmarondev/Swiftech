@@ -40,7 +40,8 @@ import org.koin.core.parameter.parametersOf
 @Composable
 fun StudentDetailScreen(
     navigateBack: () -> Unit,
-    username: String
+    username: String,
+    updateStudent: () -> Unit
 ) {
     val viewModel: StudentDetailViewModel = koinViewModel(parameters = { parametersOf(username) })
     val studentDetail = viewModel.userDetail.collectAsState().value
@@ -129,7 +130,7 @@ fun StudentDetailScreen(
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 Button(
-                    onClick = {},
+                    onClick = updateStudent,
                     modifier = Modifier
                         .weight(1f)
                 ) {

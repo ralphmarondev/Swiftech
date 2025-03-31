@@ -84,7 +84,6 @@ fun StudentListScreen(
             contentPadding = PaddingValues(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            item { Spacer(modifier = Modifier.height(1.dp)) }
             item {
                 AnimatedVisibility(isLoading) {
                     Text(

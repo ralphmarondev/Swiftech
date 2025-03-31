@@ -11,6 +11,7 @@ import com.ralphmarondev.swiftech.features.home.presentation.HomeScreen
 import com.ralphmarondev.swiftech.features.students.presentation.new_student.NewStudentScreen
 import com.ralphmarondev.swiftech.features.students.presentation.student_detail.StudentDetailScreen
 import com.ralphmarondev.swiftech.features.students.presentation.student_list.StudentListScreen
+import com.ralphmarondev.swiftech.features.students.presentation.update_student.UpdateStudentScreen
 import com.ralphmarondev.swiftech.ui.theme.SwiftechTheme
 
 @Composable
@@ -86,7 +87,25 @@ fun AppNavigation(
                     navigateBack = {
                         navController.navigateUp()
                     },
-                    username = username ?: "No username provided."
+                    username = username ?: "No username provided.",
+                    updateStudent = {
+                        navController.navigate(
+                            Routes.UpdateStudent(
+                                username ?: "No username provided."
+                            )
+                        ) {
+                            launchSingleTop = true
+                        }
+                    }
+                )
+            }
+            composable<Routes.UpdateStudent> {
+                val username = it.arguments?.getString("username")
+                UpdateStudentScreen(
+                    navigateBack = {
+                        navController.navigateUp()
+                    },
+                    usernameArgs = username ?: "No username provided."
                 )
             }
         }
