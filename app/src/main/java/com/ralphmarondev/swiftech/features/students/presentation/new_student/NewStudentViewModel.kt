@@ -23,6 +23,9 @@ class NewStudentViewModel(
     private val _password = MutableStateFlow("")
     val password = _password.asStateFlow()
 
+    private val _imagePath = MutableStateFlow("")
+    val imagePath = _imagePath.asStateFlow()
+
     private val _response = MutableStateFlow<Result?>(null)
     val response = _response.asStateFlow()
 
@@ -37,6 +40,10 @@ class NewStudentViewModel(
 
     fun onPasswordChange(value: String) {
         _password.value = value
+    }
+
+    fun onImagePathChange(value: String) {
+        _imagePath.value = value
     }
 
     fun register() {
@@ -79,7 +86,8 @@ class NewStudentViewModel(
                     username = username,
                     password = password,
                     fullName = fullName,
-                    role = "Student"
+                    role = "Student",
+                    image = _imagePath.value.trim()
                 )
             )
             _response.value = Result(
