@@ -32,6 +32,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
+import com.ralphmarondev.swiftech.features.students.presentation.components.DeleteUserDialog
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 
@@ -43,6 +44,7 @@ fun StudentDetailScreen(
 ) {
     val viewModel: StudentDetailViewModel = koinViewModel(parameters = { parametersOf(username) })
     val studentDetail = viewModel.userDetail.collectAsState().value
+    val showDeleteDialog = viewModel.showDeleteDialog.collectAsState().value
 
     Scaffold(
         topBar = {
@@ -139,7 +141,7 @@ fun StudentDetailScreen(
                 }
 
                 ElevatedButton(
-                    onClick = {},
+                    onClick = viewModel::setDeleteDialog,
                     modifier = Modifier
                         .weight(1f)
                 ) {
@@ -151,5 +153,18 @@ fun StudentDetailScreen(
                 }
             }
         }
+    }
+
+    if (showDeleteDialog) {
+        DeleteUserDialog(
+            username = studentDetail?.fullName ?: studentDetail?.username
+            ?: "No username provided.",
+            onConfirm = {
+                viewModel.deleteUser()
+                viewModel.setDeleteDialog()
+                navigateBack()
+            },
+            onDismiss = viewModel::setDeleteDialog
+        )
     }
 }
