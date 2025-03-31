@@ -45,8 +45,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ralphmarondev.swiftech.core.util.LocalThemeState
 import com.ralphmarondev.swiftech.features.auth.presentation.login.components.ForgotPasswordDialog
-import com.ralphmarondev.swiftech.features.auth.presentation.login.components.NormalTextField
-import com.ralphmarondev.swiftech.features.auth.presentation.login.components.PasswordTextField
+import com.ralphmarondev.swiftech.core.presentation.NormalTextField
+import com.ralphmarondev.swiftech.core.presentation.PasswordTextField
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)

@@ -1,4 +1,4 @@
-package com.ralphmarondev.swiftech.features.auth.presentation.login.components
+package com.ralphmarondev.swiftech.core.presentation
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.text.KeyboardActions
