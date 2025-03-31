@@ -11,5 +11,6 @@ data class User(
     val password: String,
     val role: String,
     val fullName: String? = null,
-    val image: String? = null
+    val image: String? = null,
+    val isDeleted: Boolean = false
 )
