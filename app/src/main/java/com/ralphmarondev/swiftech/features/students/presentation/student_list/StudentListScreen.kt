@@ -85,7 +85,7 @@ fun StudentListScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             item { Spacer(modifier = Modifier.height(1.dp)) }
-            items(students) { student ->
+            item {
                 AnimatedVisibility(isLoading) {
                     Text(
                         text = "Loading students...",
@@ -105,7 +105,8 @@ fun StudentListScreen(
                         modifier = Modifier.padding(16.dp)
                     )
                 }
-
+            }
+            items(students) { student ->
                 StudentCard(
                     onClick = {
                         onStudentClick(student.username)
