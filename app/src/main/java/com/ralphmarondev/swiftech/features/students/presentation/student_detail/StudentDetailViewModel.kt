@@ -2,6 +2,7 @@ package com.ralphmarondev.swiftech.features.students.presentation.student_detail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ralphmarondev.swiftech.core.data.local.preferences.AppPreferences
 import com.ralphmarondev.swiftech.core.domain.model.User
 import com.ralphmarondev.swiftech.core.domain.usecases.DeleteUserUseCase
 import com.ralphmarondev.swiftech.core.domain.usecases.GetUserDetailByUsername
@@ -12,7 +13,8 @@ import kotlinx.coroutines.launch
 class StudentDetailViewModel(
     private val username: String,
     private val getUserDetailByUsername: GetUserDetailByUsername,
-    private val deleteUserUseCase: DeleteUserUseCase
+    private val deleteUserUseCase: DeleteUserUseCase,
+    private val preferences: AppPreferences
 ) : ViewModel() {
 
     private val _userDetail = MutableStateFlow<User?>(null)
@@ -22,10 +24,21 @@ class StudentDetailViewModel(
     val showDeleteDialog = _showDeleteDialog.asStateFlow()
 
     init {
+        preferences.setToUpdateUsername(username)
+        fetchDetails()
+    }
+
+    private fun fetchDetails() {
         viewModelScope.launch {
-            val user = getUserDetailByUsername(username)
+            val user = getUserDetailByUsername(
+                preferences.getToUpdateUsername() ?: "No username provided."
+            )
             _userDetail.value = user
         }
+    }
+
+    fun refreshDetails() {
+        fetchDetails()
     }
 
     fun setDeleteDialog() {

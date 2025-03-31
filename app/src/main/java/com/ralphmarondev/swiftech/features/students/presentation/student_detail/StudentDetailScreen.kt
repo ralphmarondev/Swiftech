@@ -1,5 +1,6 @@
 package com.ralphmarondev.swiftech.features.students.presentation.student_detail
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -23,6 +24,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -46,6 +48,11 @@ fun StudentDetailScreen(
     val viewModel: StudentDetailViewModel = koinViewModel(parameters = { parametersOf(username) })
     val studentDetail = viewModel.userDetail.collectAsState().value
     val showDeleteDialog = viewModel.showDeleteDialog.collectAsState().value
+
+    LaunchedEffect(username) {
+        viewModel.refreshDetails()
+        Log.d("App", "Refreshing student details screen data...")
+    }
 
     Scaffold(
         topBar = {

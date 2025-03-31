@@ -114,6 +114,7 @@ class UpdateStudentViewModel(
                 success = true,
                 message = "User updated successfully."
             )
+            preferences.setToUpdateUsername(username)
             Log.d("App", "Full name: $fullName, username: $username, password: $password")
             _fullName.value = ""
             _username.value = ""

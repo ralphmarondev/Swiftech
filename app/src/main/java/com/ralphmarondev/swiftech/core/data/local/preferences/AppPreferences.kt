@@ -16,6 +16,7 @@ class AppPreferences(
         private const val CURRENT_USER = "current_user"
 
         private const val DEFAULT_IMAGE = "default_image"
+        private const val TO_UPDATE_USERNAME = "to_update_username"
     }
 
     private val sharedPreferences = context.getSharedPreferences(
@@ -71,11 +72,21 @@ class AppPreferences(
         return sharedPreferences.getString(CURRENT_USER, null)
     }
 
-    fun setDefaultImage(value: String){
+    fun setDefaultImage(value: String) {
         sharedPreferences.edit { putString(DEFAULT_IMAGE, value) }
     }
 
-    fun getDefaultImage(): String?{
+    fun getDefaultImage(): String? {
         return sharedPreferences.getString(DEFAULT_IMAGE, null)
+    }
+
+
+    // Temporary solution
+    fun setToUpdateUsername(value: String) {
+        sharedPreferences.edit { putString(TO_UPDATE_USERNAME, value) }
+    }
+
+    fun getToUpdateUsername(): String? {
+        return sharedPreferences.getString(TO_UPDATE_USERNAME, null)
     }
 }
