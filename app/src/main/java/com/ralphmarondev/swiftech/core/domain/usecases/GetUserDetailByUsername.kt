@@ -14,7 +14,13 @@ class GetUserDetailByUsername(
             result
         } catch (e: Exception) {
             Log.e("App", "Error getting user detail")
-            User(id = -1, username = "error", password = "error", fullName = "error")
+            User(
+                id = -1,
+                username = "error",
+                password = "error",
+                role = "error",
+                fullName = "error"
+            )
         }
     }
 }
