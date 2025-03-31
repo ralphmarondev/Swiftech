@@ -3,6 +3,7 @@ package com.ralphmarondev.swiftech.features.students.presentation.new_student
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ralphmarondev.swiftech.core.data.local.preferences.AppPreferences
 import com.ralphmarondev.swiftech.core.domain.model.Result
 import com.ralphmarondev.swiftech.core.domain.model.User
 import com.ralphmarondev.swiftech.core.domain.usecases.CreateUserUseCase
@@ -11,8 +12,11 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class NewStudentViewModel(
-    private val createUserUseCase: CreateUserUseCase
+    private val createUserUseCase: CreateUserUseCase,
+    private val preferences: AppPreferences
 ) : ViewModel() {
+
+    private val defaultImage = preferences.getDefaultImage()
 
     private val _fullName = MutableStateFlow("")
     val fullName = _fullName.asStateFlow()
@@ -23,7 +27,7 @@ class NewStudentViewModel(
     private val _password = MutableStateFlow("")
     val password = _password.asStateFlow()
 
-    private val _imagePath = MutableStateFlow("")
+    private val _imagePath = MutableStateFlow(defaultImage ?: "")
     val imagePath = _imagePath.asStateFlow()
 
     private val _response = MutableStateFlow<Result?>(null)

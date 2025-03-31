@@ -46,12 +46,10 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
-import com.ralphmarondev.swiftech.R
 import com.ralphmarondev.swiftech.core.presentation.NormalTextField
 import com.ralphmarondev.swiftech.core.presentation.PasswordTextField
 import com.ralphmarondev.swiftech.core.util.saveImageToAppFolder
 import org.koin.androidx.compose.koinViewModel
-import java.io.File
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -113,12 +111,7 @@ fun NewStudentScreen(
         ) {
             Spacer(modifier = Modifier.height(8.dp))
             Image(
-                painter = rememberAsyncImagePainter(
-                    model = when (imagePath) {
-                        null -> R.drawable.profile
-                        else -> File(imagePath)
-                    }
-                ),
+                painter = rememberAsyncImagePainter(imagePath),
                 contentDescription = "Profile",
                 modifier = Modifier
                     .size(100.dp)
