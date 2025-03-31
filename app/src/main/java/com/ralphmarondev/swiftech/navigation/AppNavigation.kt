@@ -9,6 +9,8 @@ import com.ralphmarondev.swiftech.core.data.local.preferences.AppPreferences
 import com.ralphmarondev.swiftech.core.util.LocalThemeState
 import com.ralphmarondev.swiftech.features.auth.presentation.login.LoginScreen
 import com.ralphmarondev.swiftech.features.home.presentation.HomeScreen
+import com.ralphmarondev.swiftech.features.students.presentation.new_student.NewStudentScreen
+import com.ralphmarondev.swiftech.features.students.presentation.student_list.StudentListScreen
 import com.ralphmarondev.swiftech.ui.theme.SwiftechTheme
 
 @Composable
@@ -36,7 +38,35 @@ fun AppNavigation(
                 )
             }
             composable<Routes.Home> {
-                HomeScreen()
+                HomeScreen(
+                    onStudentClick = {
+                        navController.navigate(Routes.StudentList) {
+                            launchSingleTop = true
+                        }
+                    },
+                    onTeacherClick = {},
+                    onCourseClick = {},
+                    onEvaluationClick = {}
+                )
+            }
+            composable<Routes.StudentList> {
+                StudentListScreen(
+                    navigateBack = {
+                        navController.navigateUp()
+                    },
+                    onNewStudentClick = {
+                        navController.navigate(Routes.NewStudent) {
+                            launchSingleTop = true
+                        }
+                    }
+                )
+            }
+            composable<Routes.NewStudent> {
+                NewStudentScreen(
+                    navigateBack = {
+                        navController.navigateUp()
+                    }
+                )
             }
         }
     }

@@ -9,4 +9,10 @@ object Routes {
 
     @Serializable
     data object Home
+
+    @Serializable
+    data object StudentList
+
+    @Serializable
+    data object NewStudent
 }

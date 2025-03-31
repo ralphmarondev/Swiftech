@@ -33,7 +33,12 @@ import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    onStudentClick: () -> Unit,
+    onTeacherClick: () -> Unit,
+    onCourseClick: () -> Unit,
+    onEvaluationClick: () -> Unit
+) {
     val themeState = LocalThemeState.current
     val viewModel: HomeViewModel = koinViewModel()
     val currentUser = viewModel.currentUser.collectAsState().value
@@ -44,22 +49,22 @@ fun HomeScreen() {
                 Options(
                     name = "Students",
                     image = R.drawable.students,
-                    onClick = {}
+                    onClick = { onStudentClick() }
                 ),
                 Options(
                     name = "Teachers",
                     image = R.drawable.teachers,
-                    onClick = {}
+                    onClick = { onTeacherClick() }
                 ),
                 Options(
                     name = "Courses",
                     image = R.drawable.courses,
-                    onClick = {}
+                    onClick = { onCourseClick() }
                 ),
                 Options(
                     name = "Evaluation",
                     image = R.drawable.courses,
-                    onClick = {}
+                    onClick = { onEvaluationClick() }
                 )
             )
 
@@ -68,7 +73,7 @@ fun HomeScreen() {
                     Options(
                         name = "Courses",
                         image = R.drawable.students,
-                        onClick = {}
+                        onClick = { onCourseClick() }
                     )
                 )
             }
