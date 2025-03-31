@@ -205,6 +205,21 @@ fun NewStudentScreen(
                     )
                 }
             }
+            AnimatedVisibility(response?.success == true) {
+                if (response?.message != null) {
+                    Text(
+                        text = response.message,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.W500,
+                        color = if (response.success) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.error,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 8.dp, vertical = 16.dp)
+                    )
+                }
+            }
             Spacer(modifier = Modifier.height(4.dp))
 
             Button(
