@@ -5,7 +5,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.ralphmarondev.swiftech.core.data.local.preferences.AppPreferences
 import com.ralphmarondev.swiftech.core.util.LocalThemeState
 import com.ralphmarondev.swiftech.features.auth.presentation.login.LoginScreen
 import com.ralphmarondev.swiftech.features.home.presentation.HomeScreen
@@ -16,7 +15,6 @@ import com.ralphmarondev.swiftech.ui.theme.SwiftechTheme
 
 @Composable
 fun AppNavigation(
-    preferences: AppPreferences,
     navController: NavHostController = rememberNavController()
 ) {
     val themeState = LocalThemeState.current
@@ -30,16 +28,17 @@ fun AppNavigation(
         ) {
             composable<Routes.Login> {
                 LoginScreen(
-                    onLoginSuccessful = {
-                        navController.navigate(Routes.Home) {
-//                            popUpTo<Routes.Login> { inclusive = true }
+                    onLoginSuccessful = { username ->
+                        navController.navigate(Routes.Home(username)) {
                             launchSingleTop = true
                         }
                     }
                 )
             }
             composable<Routes.Home> {
+                val username = it.arguments?.getString("username")
                 HomeScreen(
+                    username = username ?: "No username provided.",
                     onStudentClick = {
                         navController.navigate(Routes.StudentList) {
                             launchSingleTop = true

@@ -8,7 +8,7 @@ object Routes {
     data object Login
 
     @Serializable
-    data object Home
+    data class Home(val username: String)
 
     @Serializable
     data object StudentList

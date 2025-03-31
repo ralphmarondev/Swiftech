@@ -31,10 +31,12 @@ import com.ralphmarondev.swiftech.features.home.domain.model.Options
 import com.ralphmarondev.swiftech.features.home.presentation.components.AccountCard
 import com.ralphmarondev.swiftech.features.home.presentation.components.OptionsCard
 import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
+    username: String,
     onStudentClick: () -> Unit,
     onTeacherClick: () -> Unit,
     onCourseClick: () -> Unit,
@@ -42,7 +44,7 @@ fun HomeScreen(
     onLogout: () -> Unit
 ) {
     val themeState = LocalThemeState.current
-    val viewModel: HomeViewModel = koinViewModel()
+    val viewModel: HomeViewModel = koinViewModel(parameters = { parametersOf(username) })
     val currentUser = viewModel.currentUser.collectAsState().value
 
     val options =

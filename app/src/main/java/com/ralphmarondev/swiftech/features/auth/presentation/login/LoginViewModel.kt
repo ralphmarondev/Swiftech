@@ -1,21 +1,29 @@
 package com.ralphmarondev.swiftech.features.auth.presentation.login
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ralphmarondev.swiftech.R
 import com.ralphmarondev.swiftech.core.data.local.preferences.AppPreferences
 import com.ralphmarondev.swiftech.core.domain.model.Result
+import com.ralphmarondev.swiftech.core.domain.model.Role
 import com.ralphmarondev.swiftech.core.domain.model.User
 import com.ralphmarondev.swiftech.core.domain.usecases.CreateUserUseCase
 import com.ralphmarondev.swiftech.core.domain.usecases.IsUserExistsUseCase
+import com.ralphmarondev.swiftech.core.util.saveDrawableToInternalStorage
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 class LoginViewModel(
     private val preferences: AppPreferences,
     private val createUserUseCase: CreateUserUseCase,
     private val isUserExistsUseCase: IsUserExistsUseCase
-) : ViewModel() {
+) : ViewModel(), KoinComponent {
+
+    private val context: Context by inject()
 
     private val _username = MutableStateFlow("")
     val username: StateFlow<String> get() = _username
@@ -36,28 +44,20 @@ class LoginViewModel(
         viewModelScope.launch {
             // creating default user on first launch
             if (preferences.isFirstLaunch()) {
+                val imagePath = saveDrawableToInternalStorage(
+                    context = context,
+                    drawableRes = R.drawable.profile,
+                    fileName = "profile.jpg"
+                )
+                preferences.setDefaultImage(imagePath)
+
                 createUserUseCase(
                     user = User(
                         username = "jam",
                         password = "jam",
-                        fullName = "",
-                        role = "Admininistrator"
-                    )
-                )
-                createUserUseCase(
-                    user = User(
-                        username = "jami",
-                        password = "jami",
-                        fullName = "",
-                        role = "Teacher"
-                    )
-                )
-                createUserUseCase(
-                    user = User(
-                        username = "jamille",
-                        password = "jamille",
-                        fullName = "",
-                        role = "Student"
+                        fullName = "Jamille Rivera",
+                        role = Role.ADMINISTRATOR,
+                        image = imagePath
                     )
                 )
                 preferences.setIsFirstLaunchDone()

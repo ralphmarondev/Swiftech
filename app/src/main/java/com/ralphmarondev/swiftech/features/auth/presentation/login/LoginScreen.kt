@@ -52,7 +52,7 @@ import org.koin.androidx.compose.koinViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(
-    onLoginSuccessful: () -> Unit
+    onLoginSuccessful: (String) -> Unit
 ) {
     val themeState = LocalThemeState.current
     val viewModel: LoginViewModel = koinViewModel()
@@ -67,7 +67,7 @@ fun LoginScreen(
     LaunchedEffect(response) {
         response?.let {
             if (it.success) {
-                onLoginSuccessful()
+                onLoginSuccessful(username)
             }
         }
     }
