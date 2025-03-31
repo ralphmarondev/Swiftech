@@ -5,14 +5,18 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ralphmarondev.swiftech.R
 import com.ralphmarondev.swiftech.core.domain.model.User
+import com.ralphmarondev.swiftech.core.domain.usecases.GetAllUserByRoleUseCase
 import com.ralphmarondev.swiftech.core.util.saveDrawableToInternalStorage
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 class StudentListViewModel(
-    private val context: Context
-) : ViewModel() {
+    private val getAllUserByRole: GetAllUserByRoleUseCase
+) : ViewModel(), KoinComponent {
+    private val context: Context by inject()
     private val _students = MutableStateFlow<List<User>>(emptyList())
     val students = _students.asStateFlow()
 
@@ -23,25 +27,10 @@ class StudentListViewModel(
                 drawableRes = R.drawable.profile,
                 fileName = "profile.jpg"
             )
-            val dummyStudents = listOf(
-                User(
-                    username = "jam",
-                    password = "jam",
-                    role = "Student",
-                    fullName = "Jamille Rivera",
-                    image = imagePath
-                ),
-                User(
-                    username = "ralph",
-                    password = "ralph",
-                    role = "Student",
-                    fullName = "Ralph Maron Eda",
-                    image = imagePath
-                )
-            )
-
-            for (student in dummyStudents) {
-                _students.value += student
+            getAllUserByRole(role = "Student").collect { studentList ->
+                _students.value = studentList.map { student ->
+                    student.copy(image = imagePath)
+                }
             }
         }
     }

@@ -46,8 +46,13 @@ fun StudentCard(
                 contentScale = ContentScale.Crop
             )
 
+            val fullName = if (user.fullName.isNullOrEmpty()) {
+                user.username
+            } else {
+                user.fullName
+            }
             Text(
-                text = user.fullName ?: user.username,
+                text = fullName,
                 fontSize = MaterialTheme.typography.titleMedium.fontSize,
                 fontWeight = MaterialTheme.typography.titleMedium.fontWeight,
                 color = MaterialTheme.colorScheme.primary,
