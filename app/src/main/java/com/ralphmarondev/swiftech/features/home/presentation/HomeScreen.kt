@@ -1,5 +1,6 @@
 package com.ralphmarondev.swiftech.features.home.presentation
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -37,7 +38,8 @@ fun HomeScreen(
     onStudentClick: () -> Unit,
     onTeacherClick: () -> Unit,
     onCourseClick: () -> Unit,
-    onEvaluationClick: () -> Unit
+    onEvaluationClick: () -> Unit,
+    onLogout: () -> Unit
 ) {
     val themeState = LocalThemeState.current
     val viewModel: HomeViewModel = koinViewModel()
@@ -78,6 +80,10 @@ fun HomeScreen(
                 )
             }
         }
+
+    BackHandler(enabled = true) {
+        onLogout()
+    }
 
     Scaffold(
         topBar = {

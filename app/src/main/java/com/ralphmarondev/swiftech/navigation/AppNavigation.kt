@@ -46,7 +46,14 @@ fun AppNavigation(
                     },
                     onTeacherClick = {},
                     onCourseClick = {},
-                    onEvaluationClick = {}
+                    onEvaluationClick = {},
+                    onLogout = {
+                        navController.navigate(Routes.Login) {
+                            // we are clearing everything lol
+                            popUpTo(0) { inclusive = true }
+                            launchSingleTop = true
+                        }
+                    }
                 )
             }
             composable<Routes.StudentList> {
