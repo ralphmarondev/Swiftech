@@ -1,6 +1,7 @@
 package com.ralphmarondev.swiftech.features.students.presentation.student_detail
 
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -14,10 +15,11 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -25,6 +27,9 @@ fun StudentDetailScreen(
     navigateBack: () -> Unit,
     username: String
 ) {
+    val viewModel: StudentDetailViewModel = koinViewModel(parameters = { parametersOf(username) })
+    val studentDetail = viewModel.userDetail.collectAsState().value
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -51,19 +56,30 @@ fun StudentDetailScreen(
             )
         }
     ) { innerPadding ->
-        Box(
+        Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding),
-            contentAlignment = Alignment.Center
+                .padding(innerPadding)
+                .padding(horizontal = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Text(
-                text = "Username: $username",
+                text = "Full name: ${studentDetail?.fullName ?: "No name provided."}",
                 fontWeight = MaterialTheme.typography.titleMedium.fontWeight,
                 fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                color = MaterialTheme.colorScheme.secondary,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.padding(16.dp)
+                color = MaterialTheme.colorScheme.secondary
+            )
+            Text(
+                text = "Username: ${studentDetail?.username ?: "No username provided."}",
+                fontWeight = MaterialTheme.typography.titleMedium.fontWeight,
+                fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                color = MaterialTheme.colorScheme.secondary
+            )
+            Text(
+                text = "Password: ${studentDetail?.password ?: "No password provided."}",
+                fontWeight = MaterialTheme.typography.titleMedium.fontWeight,
+                fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                color = MaterialTheme.colorScheme.secondary
             )
         }
     }
