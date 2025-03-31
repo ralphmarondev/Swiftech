@@ -194,8 +194,8 @@ fun LoginScreen(
                         )
                     }
                     Spacer(modifier = Modifier.height(2.dp))
-                    AnimatedVisibility(response?.success == true) {
-                        if (response != null) {
+                    AnimatedVisibility(response?.success == false) {
+                        if (response?.message != null) {
                             Text(
                                 text = response.message,
                                 fontSize = 16.sp,

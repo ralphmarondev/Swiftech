@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.ralphmarondev.swiftech.core.data.local.preferences.AppPreferences
 import com.ralphmarondev.swiftech.core.domain.model.User
 import com.ralphmarondev.swiftech.core.domain.usecases.CreateUserUseCase
+import com.ralphmarondev.swiftech.core.domain.usecases.IsUserExistsUseCase
 import com.ralphmarondev.swiftech.features.auth.domain.model.Result
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -12,7 +13,8 @@ import kotlinx.coroutines.launch
 
 class LoginViewModel(
     private val preferences: AppPreferences,
-    private val createUserUseCase: CreateUserUseCase
+    private val createUserUseCase: CreateUserUseCase,
+    private val isUserExistsUseCase: IsUserExistsUseCase
 ) : ViewModel() {
 
     private val _username = MutableStateFlow("")
@@ -32,6 +34,7 @@ class LoginViewModel(
 
     init {
         viewModelScope.launch {
+            // creating default user on first launch
             if (preferences.isFirstLaunch()) {
                 createUserUseCase(
                     user = User(
@@ -92,31 +95,46 @@ class LoginViewModel(
             val username = _username.value.trim()
             val password = _password.value.trim()
 
-            if (username.isEmpty() || password.isEmpty()) {
+            if (username.isEmpty() && password.isEmpty()) {
                 _response.value = Result(
                     success = false,
-                    message = "Username or password cannot be empty!"
+                    message = "Username and password cannot be empty!"
+                )
+                return@launch
+            }
+            if (username.isEmpty()) {
+                _response.value = Result(
+                    success = false,
+                    message = "Username cannot be empty!"
+                )
+                return@launch
+            }
+            if (password.isEmpty()) {
+                _response.value = Result(
+                    success = false,
+                    message = "Password cannot be empty!"
                 )
                 return@launch
             }
 
-            if ((username == "jam" && password == "jam") ||
-                (username == "jami" && password == "jami") ||
-                (username == "jamille" && password == "jamille")
-            ) {
+            val isUserExists = isUserExistsUseCase(
+                username = username,
+                password = password
+            )
+            if (isUserExists) {
                 _response.value = Result(
                     success = true,
                     message = "Login successful."
                 )
                 if (_rememberMe.value) {
-                    preferences.setUsernameToRemember(_username.value.trim())
-                    preferences.setPasswordToRemember(_password.value.trim())
+                    preferences.setUsernameToRemember(username)
+                    preferences.setPasswordToRemember(password)
                 }
                 preferences.setCurrentUser(username)
             } else {
                 _response.value = Result(
                     success = false,
-                    message = "Invalid username or password!"
+                    message = "Invalid credentials!"
                 )
             }
         }
