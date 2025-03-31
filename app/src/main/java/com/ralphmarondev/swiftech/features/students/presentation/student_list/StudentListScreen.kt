@@ -33,7 +33,8 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun StudentListScreen(
     navigateBack: () -> Unit,
-    onNewStudentClick: () -> Unit
+    onNewStudentClick: () -> Unit,
+    onStudentClick: (String) -> Unit
 ) {
     val viewModel: StudentListViewModel = koinViewModel()
     val students = viewModel.students.collectAsState().value
@@ -85,6 +86,7 @@ fun StudentListScreen(
             items(students) { student ->
                 StudentCard(
                     onClick = {
+                        onStudentClick(student.username)
                         Log.d("App", "Student: ${student.username} is clicked")
                     },
                     user = student,

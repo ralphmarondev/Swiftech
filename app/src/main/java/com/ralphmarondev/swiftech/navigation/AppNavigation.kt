@@ -10,6 +10,7 @@ import com.ralphmarondev.swiftech.core.util.LocalThemeState
 import com.ralphmarondev.swiftech.features.auth.presentation.login.LoginScreen
 import com.ralphmarondev.swiftech.features.home.presentation.HomeScreen
 import com.ralphmarondev.swiftech.features.students.presentation.new_student.NewStudentScreen
+import com.ralphmarondev.swiftech.features.students.presentation.student_detail.StudentDetailScreen
 import com.ralphmarondev.swiftech.features.students.presentation.student_list.StudentListScreen
 import com.ralphmarondev.swiftech.ui.theme.SwiftechTheme
 
@@ -65,6 +66,11 @@ fun AppNavigation(
                         navController.navigate(Routes.NewStudent) {
                             launchSingleTop = true
                         }
+                    },
+                    onStudentClick = { username ->
+                        navController.navigate(Routes.StudentDetail(username)) {
+                            launchSingleTop = true
+                        }
                     }
                 )
             }
@@ -73,6 +79,15 @@ fun AppNavigation(
                     navigateBack = {
                         navController.navigateUp()
                     }
+                )
+            }
+            composable<Routes.StudentDetail> {
+                val username = it.arguments?.getString("username")
+                StudentDetailScreen(
+                    navigateBack = {
+                        navController.navigateUp()
+                    },
+                    username = username ?: "No username provided."
                 )
             }
         }

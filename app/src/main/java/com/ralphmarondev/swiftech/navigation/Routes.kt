@@ -15,4 +15,7 @@ object Routes {
 
     @Serializable
     data object NewStudent
+
+    @Serializable
+    data class StudentDetail(val username: String)
 }
