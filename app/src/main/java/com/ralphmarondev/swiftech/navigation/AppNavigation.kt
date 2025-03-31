@@ -31,7 +31,7 @@ fun AppNavigation(
                 LoginScreen(
                     onLoginSuccessful = {
                         navController.navigate(Routes.Home) {
-                            popUpTo<Routes.Login> { inclusive = true }
+//                            popUpTo<Routes.Login> { inclusive = true }
                             launchSingleTop = true
                         }
                     }
