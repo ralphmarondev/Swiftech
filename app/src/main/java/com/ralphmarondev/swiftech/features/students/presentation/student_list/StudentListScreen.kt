@@ -1,6 +1,7 @@
 package com.ralphmarondev.swiftech.features.students.presentation.student_list
 
 import android.util.Log
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -38,6 +39,7 @@ fun StudentListScreen(
 ) {
     val viewModel: StudentListViewModel = koinViewModel()
     val students = viewModel.students.collectAsState().value
+    val isLoading = viewModel.isLoading.collectAsState().value
 
     Scaffold(
         topBar = {
@@ -84,6 +86,26 @@ fun StudentListScreen(
         ) {
             item { Spacer(modifier = Modifier.height(1.dp)) }
             items(students) { student ->
+                AnimatedVisibility(isLoading) {
+                    Text(
+                        text = "Loading students...",
+                        fontSize = MaterialTheme.typography.titleLarge.fontSize,
+                        fontWeight = MaterialTheme.typography.titleLarge.fontWeight,
+                        color = MaterialTheme.colorScheme.secondary,
+                        modifier = Modifier.padding(16.dp)
+                    )
+                }
+
+                AnimatedVisibility(students.isEmpty()) {
+                    Text(
+                        text = "No students yet.",
+                        fontSize = MaterialTheme.typography.titleLarge.fontSize,
+                        fontWeight = MaterialTheme.typography.titleLarge.fontWeight,
+                        color = MaterialTheme.colorScheme.secondary,
+                        modifier = Modifier.padding(16.dp)
+                    )
+                }
+
                 StudentCard(
                     onClick = {
                         onStudentClick(student.username)

@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ralphmarondev.swiftech.core.data.local.preferences.AppPreferences
 import com.ralphmarondev.swiftech.core.domain.model.Result
+import com.ralphmarondev.swiftech.core.domain.model.Role
 import com.ralphmarondev.swiftech.core.domain.model.User
 import com.ralphmarondev.swiftech.core.domain.usecases.CreateUserUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -90,7 +91,7 @@ class NewStudentViewModel(
                     username = username,
                     password = password,
                     fullName = fullName,
-                    role = "Student",
+                    role = Role.STUDENT,
                     image = _imagePath.value.trim()
                 )
             )
