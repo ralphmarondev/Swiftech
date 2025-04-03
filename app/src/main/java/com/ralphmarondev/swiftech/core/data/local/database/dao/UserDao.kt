@@ -30,4 +30,7 @@ interface UserDao {
 
     @Query("SELECT * FROM user WHERE role = :role AND isDeleted = 0")
     fun getAllUsersByRole(role: String): Flow<List<User>>
+
+    @Query("SELECT * FROM user WHERE id = :id")
+    suspend fun getUserById(id: Int): User?
 }

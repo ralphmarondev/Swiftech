@@ -3,11 +3,13 @@ package com.ralphmarondev.swiftech.core.domain.model
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "course")
-data class Course(
+@Entity(
+    tableName = "teacher_course",
+    primaryKeys = ["teacherId", "courseId"]
+)
+data class TeacherCourseCrossRef(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
-    val name: String,
-    val code: String,
-    val isDeleted: Boolean = false
+    val teacherId: Int,
+    val courseId: Int
 )
