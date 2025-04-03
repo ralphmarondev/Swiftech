@@ -33,4 +33,7 @@ object Routes {
 
     @Serializable
     data class UpdateTeacher(val username: String)
+
+    @Serializable
+    data object CourseNavigation
 }

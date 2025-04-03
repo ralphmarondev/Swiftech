@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.ralphmarondev.swiftech.core.util.LocalThemeState
 import com.ralphmarondev.swiftech.features.auth.presentation.login.LoginScreen
+import com.ralphmarondev.swiftech.features.courses.navigation.CourseNavigation
 import com.ralphmarondev.swiftech.features.home.presentation.HomeScreen
 import com.ralphmarondev.swiftech.features.students.presentation.new_student.NewStudentScreen
 import com.ralphmarondev.swiftech.features.students.presentation.student_detail.StudentDetailScreen
@@ -54,7 +55,11 @@ fun AppNavigation(
                             launchSingleTop = true
                         }
                     },
-                    onCourseClick = {},
+                    onCourseClick = {
+                        navController.navigate(Routes.CourseNavigation) {
+                            launchSingleTop = true
+                        }
+                    },
                     onEvaluationClick = {},
                     onLogout = {
                         navController.navigate(Routes.Login) {
@@ -165,6 +170,13 @@ fun AppNavigation(
                         navController.navigateUp()
                     },
                     usernameArgs = username ?: "No username proveded."
+                )
+            }
+            composable<Routes.CourseNavigation> {
+                CourseNavigation(
+                    navigateBack = {
+                        navController.navigateUp()
+                    }
                 )
             }
         }
