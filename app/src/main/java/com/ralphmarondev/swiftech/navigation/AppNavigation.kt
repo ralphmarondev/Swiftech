@@ -15,6 +15,7 @@ import com.ralphmarondev.swiftech.features.students.presentation.update_student.
 import com.ralphmarondev.swiftech.features.teachers.presentation.new_teacher.NewTeacherScreen
 import com.ralphmarondev.swiftech.features.teachers.presentation.teacher_detail.TeacherDetailScreen
 import com.ralphmarondev.swiftech.features.teachers.presentation.teacher_list.TeacherListScreen
+import com.ralphmarondev.swiftech.features.teachers.presentation.update_teacher.UpdateTeacherScreen
 import com.ralphmarondev.swiftech.ui.theme.SwiftechTheme
 
 @Composable
@@ -155,6 +156,15 @@ fun AppNavigation(
                             launchSingleTop = true
                         }
                     }
+                )
+            }
+            composable<Routes.UpdateTeacher> {
+                val username = it.arguments?.getString("username")
+                UpdateTeacherScreen(
+                    navigateBack = {
+                        navController.navigateUp()
+                    },
+                    usernameArgs = username ?: "No username proveded."
                 )
             }
         }
