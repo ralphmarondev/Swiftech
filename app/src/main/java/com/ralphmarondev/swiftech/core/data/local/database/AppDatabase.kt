@@ -7,10 +7,23 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.ralphmarondev.swiftech.core.data.local.database.dao.UserDao
 import com.ralphmarondev.swiftech.core.domain.model.Course
+import com.ralphmarondev.swiftech.core.domain.model.EvaluationAnswer
+import com.ralphmarondev.swiftech.core.domain.model.EvaluationForm
+import com.ralphmarondev.swiftech.core.domain.model.EvaluationQuestion
+import com.ralphmarondev.swiftech.core.domain.model.EvaluationResponse
+import com.ralphmarondev.swiftech.core.domain.model.StudentCourseCrossRef
 import com.ralphmarondev.swiftech.core.domain.model.User
 
 @Database(
-    entities = [User::class, Course::class],
+    entities = [
+        User::class,
+        Course::class,
+        StudentCourseCrossRef::class,
+        EvaluationForm::class,
+        EvaluationQuestion::class,
+        EvaluationResponse::class,
+        EvaluationAnswer::class
+    ],
     version = 1,
     exportSchema = false
 )

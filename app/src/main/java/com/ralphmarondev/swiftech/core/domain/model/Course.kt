@@ -9,5 +9,12 @@ data class Course(
     val id: Int = 0,
     val name: String,
     val code: String,
+    val teacherId: Int,
     val isDeleted: Boolean = false
+)
+
+@Entity(tableName = "student_course", primaryKeys = ["studentId", "courseId"])
+data class StudentCourseCrossRef(
+    val studentId: Int,
+    val courseId: Int
 )
