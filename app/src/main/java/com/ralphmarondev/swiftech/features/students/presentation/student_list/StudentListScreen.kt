@@ -95,7 +95,7 @@ fun StudentListScreen(
                     )
                 }
 
-                AnimatedVisibility(students.isEmpty()) {
+                AnimatedVisibility(visible = students.isEmpty() && !isLoading) {
                     Text(
                         text = "No students yet.",
                         fontSize = MaterialTheme.typography.titleLarge.fontSize,

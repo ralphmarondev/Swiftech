@@ -95,7 +95,7 @@ fun TeacherListScreen(
                     )
                 }
 
-                AnimatedVisibility(teachers.isEmpty()) {
+                AnimatedVisibility(visible = teachers.isEmpty() && !isLoading) {
                     Text(
                         text = "No teachers yet.",
                         fontSize = MaterialTheme.typography.titleLarge.fontSize,
