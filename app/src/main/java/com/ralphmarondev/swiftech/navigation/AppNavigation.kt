@@ -13,6 +13,7 @@ import com.ralphmarondev.swiftech.features.students.presentation.student_detail.
 import com.ralphmarondev.swiftech.features.students.presentation.student_list.StudentListScreen
 import com.ralphmarondev.swiftech.features.students.presentation.update_student.UpdateStudentScreen
 import com.ralphmarondev.swiftech.features.teachers.presentation.new_teacher.NewTeacherScreen
+import com.ralphmarondev.swiftech.features.teachers.presentation.teacher_detail.TeacherDetailScreen
 import com.ralphmarondev.swiftech.features.teachers.presentation.teacher_list.TeacherListScreen
 import com.ralphmarondev.swiftech.ui.theme.SwiftechTheme
 
@@ -124,13 +125,35 @@ fun AppNavigation(
                             launchSingleTop = true
                         }
                     },
-                    onTeacherClick = { }
+                    onTeacherClick = { username ->
+                        navController.navigate(Routes.TeacherDetail(username)) {
+                            launchSingleTop = true
+                        }
+                    }
                 )
             }
             composable<Routes.NewTeacher> {
                 NewTeacherScreen(
                     navigateBack = {
                         navController.navigateUp()
+                    }
+                )
+            }
+            composable<Routes.TeacherDetail> {
+                val username = it.arguments?.getString("username")
+                TeacherDetailScreen(
+                    navigateBack = {
+                        navController.navigateUp()
+                    },
+                    username = username ?: "No username provided.",
+                    updateTeacher = {
+                        navController.navigate(
+                            Routes.UpdateTeacher(
+                                username ?: "No username provided."
+                            )
+                        ) {
+                            launchSingleTop = true
+                        }
                     }
                 )
             }
