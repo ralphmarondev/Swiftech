@@ -6,10 +6,11 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.ralphmarondev.swiftech.core.data.local.database.dao.UserDao
+import com.ralphmarondev.swiftech.core.domain.model.Course
 import com.ralphmarondev.swiftech.core.domain.model.User
 
 @Database(
-    entities = [User::class],
+    entities = [User::class, Course::class],
     version = 1,
     exportSchema = false
 )
