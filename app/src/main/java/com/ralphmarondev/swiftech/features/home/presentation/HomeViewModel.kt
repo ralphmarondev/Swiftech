@@ -16,9 +16,16 @@ class HomeViewModel(
     private val _currentUser = MutableStateFlow<User?>(null)
     val currentUser = _currentUser.asStateFlow()
 
+    private val _showConfirmExitDialog = MutableStateFlow(false)
+    val showConfirmExitDialog = _showConfirmExitDialog.asStateFlow()
+
     init {
         viewModelScope.launch {
             _currentUser.value = getUserDetailByUsername(username)
         }
+    }
+
+    fun setShowConfirmExitDialog() {
+        _showConfirmExitDialog.value = !_showConfirmExitDialog.value
     }
 }

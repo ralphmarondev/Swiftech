@@ -1,5 +1,7 @@
 package com.ralphmarondev.swiftech.features.home.presentation
 
+import android.annotation.SuppressLint
+import android.app.Activity
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -26,6 +28,7 @@ import androidx.compose.material.icons.outlined.DarkMode
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.LightMode
 import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -36,6 +39,7 @@ import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
@@ -45,6 +49,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.ralphmarondev.swiftech.R
@@ -56,6 +61,7 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 
+@SuppressLint("ContextCastToActivity")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
@@ -69,6 +75,7 @@ fun HomeScreen(
     val themeState = LocalThemeState.current
     val viewModel: HomeViewModel = koinViewModel(parameters = { parametersOf(username) })
     val currentUser = viewModel.currentUser.collectAsState().value
+    val showConfirmExitDiloag = viewModel.showConfirmExitDialog.collectAsState().value
 
     val options =
         when (currentUser?.role) {
@@ -106,11 +113,12 @@ fun HomeScreen(
             }
         }
 
+    val activity = LocalContext.current as? Activity
     val scope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
 
     BackHandler(enabled = true) {
-        onLogout()
+        viewModel.setShowConfirmExitDialog()
     }
 
     ModalNavigationDrawer(
@@ -206,6 +214,17 @@ fun HomeScreen(
                 }
             }
         }
+    }
+
+    if (showConfirmExitDiloag) {
+        ConfirmExitDialog(
+            onDismiss = {
+                viewModel.setShowConfirmExitDialog()
+            },
+            onConfirm = {
+                activity?.finish()
+            }
+        )
     }
 }
 
@@ -308,4 +327,37 @@ private fun DrawerContent(
             )
         }
     }
+}
+
+@Composable
+fun ConfirmExitDialog(
+    onDismiss: () -> Unit,
+    onConfirm: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        confirmButton = {
+            TextButton(
+                onClick = onConfirm
+            ) {
+                Text(
+                    text = "Confirm"
+                )
+            }
+        },
+        dismissButton = {
+            TextButton(
+                onClick = onDismiss
+            ) {
+                Text(
+                    text = "Cancel"
+                )
+            }
+        },
+        text = {
+            Text(
+                text = "Are you sure you want to exit the app?"
+            )
+        }
+    )
 }
