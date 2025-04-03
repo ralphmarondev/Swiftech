@@ -108,8 +108,8 @@ fun CourseListScreen(
             items(courses) { course ->
                 CourseCard(
                     onClick = {
-                        onCourseClick(course.username)
-                        Log.d("App", "Course: ${course.username} is clicked")
+                        onCourseClick(course.code)
+                        Log.d("App", "Course: ${course.name} is clicked")
                     },
                     course = course,
                     modifier = Modifier

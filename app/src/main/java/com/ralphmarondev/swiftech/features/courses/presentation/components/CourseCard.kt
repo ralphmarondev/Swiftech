@@ -1,7 +1,9 @@
 package com.ralphmarondev.swiftech.features.courses.presentation.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -18,12 +20,12 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
-import com.ralphmarondev.swiftech.core.domain.model.User
+import com.ralphmarondev.swiftech.core.domain.model.Course
 
 @Composable
 fun CourseCard(
     onClick: () -> Unit,
-    course: User,
+    course: Course,
     modifier: Modifier = Modifier
 ) {
     ElevatedCard(
@@ -37,22 +39,38 @@ fun CourseCard(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Image(
-                painter = rememberAsyncImagePainter(course.image),
-                contentDescription = course.username,
-                modifier = Modifier
-                    .size(60.dp)
-                    .clip(CircleShape),
-                contentScale = ContentScale.Crop
-            )
-
-            val fullName = if (course.fullName.isNullOrEmpty()) {
-                course.username
+            if (course.image != null) {
+                Image(
+                    painter = rememberAsyncImagePainter(course.image),
+                    contentDescription = course.name,
+                    modifier = Modifier
+                        .size(60.dp)
+                        .clip(CircleShape),
+                    contentScale = ContentScale.Crop
+                )
             } else {
-                course.fullName
+                val firstLetter = course.code[0]
+                Box(
+                    modifier = Modifier
+                        .size(60.dp)
+                        .clip(CircleShape)
+                        .background(MaterialTheme.colorScheme.secondary),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "$firstLetter",
+                        fontSize = MaterialTheme.typography.titleLarge.fontSize,
+                        fontWeight = MaterialTheme.typography.titleLarge.fontWeight,
+                        color = MaterialTheme.colorScheme.onSecondary
+                    )
+                }
+            }
+
+            val courseName = course.name.ifEmpty {
+                course.code
             }
             Text(
-                text = fullName,
+                text = courseName,
                 fontSize = MaterialTheme.typography.titleMedium.fontSize,
                 fontWeight = MaterialTheme.typography.titleMedium.fontWeight,
                 color = MaterialTheme.colorScheme.primary,

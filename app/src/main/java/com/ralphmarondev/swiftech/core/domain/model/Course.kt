@@ -9,7 +9,8 @@ data class Course(
     val id: Int = 0,
     val name: String,
     val code: String,
-    val teacherId: Int,
+    val teacherId: Int? = null,
+    val image: String? = null,
     val isDeleted: Boolean = false
 )
 
