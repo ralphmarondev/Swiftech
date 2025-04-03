@@ -67,7 +67,7 @@ fun HomeScreen(
                 ),
                 Options(
                     name = "Evaluation",
-                    image = R.drawable.courses,
+                    image = R.drawable.evaluation,
                     onClick = { onEvaluationClick() }
                 )
             )

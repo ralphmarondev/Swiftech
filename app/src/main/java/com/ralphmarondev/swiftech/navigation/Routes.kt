@@ -21,4 +21,10 @@ object Routes {
 
     @Serializable
     data class UpdateStudent(val username: String)
+
+    @Serializable
+    data object TeacherList
+
+    @Serializable
+    data object NewTeacher
 }

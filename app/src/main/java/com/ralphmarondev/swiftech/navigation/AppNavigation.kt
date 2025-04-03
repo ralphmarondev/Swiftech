@@ -12,6 +12,8 @@ import com.ralphmarondev.swiftech.features.students.presentation.new_student.New
 import com.ralphmarondev.swiftech.features.students.presentation.student_detail.StudentDetailScreen
 import com.ralphmarondev.swiftech.features.students.presentation.student_list.StudentListScreen
 import com.ralphmarondev.swiftech.features.students.presentation.update_student.UpdateStudentScreen
+import com.ralphmarondev.swiftech.features.teachers.presentation.new_teacher.NewTeacherScreen
+import com.ralphmarondev.swiftech.features.teachers.presentation.teacher_list.TeacherListScreen
 import com.ralphmarondev.swiftech.ui.theme.SwiftechTheme
 
 @Composable
@@ -45,7 +47,11 @@ fun AppNavigation(
                             launchSingleTop = true
                         }
                     },
-                    onTeacherClick = {},
+                    onTeacherClick = {
+                        navController.navigate(Routes.TeacherList) {
+                            launchSingleTop = true
+                        }
+                    },
                     onCourseClick = {},
                     onEvaluationClick = {},
                     onLogout = {
@@ -106,6 +112,26 @@ fun AppNavigation(
                         navController.navigateUp()
                     },
                     usernameArgs = username ?: "No username provided."
+                )
+            }
+            composable<Routes.TeacherList> {
+                TeacherListScreen(
+                    navigateBack = {
+                        navController.navigateUp()
+                    },
+                    onNewTeacherClick = {
+                        navController.navigate(Routes.NewTeacher) {
+                            launchSingleTop = true
+                        }
+                    },
+                    onTeacherClick = { }
+                )
+            }
+            composable<Routes.NewTeacher> {
+                NewTeacherScreen(
+                    navigateBack = {
+                        navController.navigateUp()
+                    }
                 )
             }
         }
