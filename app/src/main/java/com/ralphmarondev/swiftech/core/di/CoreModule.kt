@@ -2,8 +2,12 @@ package com.ralphmarondev.swiftech.core.di
 
 import com.ralphmarondev.swiftech.core.data.local.database.AppDatabase
 import com.ralphmarondev.swiftech.core.data.local.preferences.AppPreferences
+import com.ralphmarondev.swiftech.core.data.repositories.CourseRepositoryImpl
 import com.ralphmarondev.swiftech.core.data.repositories.UserRepositoryImpl
+import com.ralphmarondev.swiftech.core.domain.repositories.CourseRepository
 import com.ralphmarondev.swiftech.core.domain.repositories.UserRepository
+import com.ralphmarondev.swiftech.core.domain.usecases.course.CreateCourseUseCase
+import com.ralphmarondev.swiftech.core.domain.usecases.course.GetAllCoursesUseCase
 import com.ralphmarondev.swiftech.core.domain.usecases.user.CreateUserUseCase
 import com.ralphmarondev.swiftech.core.domain.usecases.user.DeleteUserUseCase
 import com.ralphmarondev.swiftech.core.domain.usecases.user.GetAllUserByRoleUseCase
@@ -23,7 +27,9 @@ val coreModule = module {
 
     single { AppDatabase.createDatabase(androidContext()) }
     single { get<AppDatabase>().userDao }
+    single { get<AppDatabase>().courseDao }
     single<UserRepository> { UserRepositoryImpl(get()) }
+    single<CourseRepository> { CourseRepositoryImpl(get()) }
 
     factoryOf(::CreateUserUseCase)
     factoryOf(::UpdateUserUseCase)
@@ -32,4 +38,7 @@ val coreModule = module {
     factoryOf(::IsUserExistsUseCase)
     factoryOf(::GetAllUserUseCase)
     factoryOf(::GetAllUserByRoleUseCase)
+
+    factoryOf(::CreateCourseUseCase)
+    factoryOf(::GetAllCoursesUseCase)
 }

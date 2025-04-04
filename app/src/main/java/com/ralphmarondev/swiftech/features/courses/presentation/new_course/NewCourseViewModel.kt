@@ -3,13 +3,16 @@ package com.ralphmarondev.swiftech.features.courses.presentation.new_course
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ralphmarondev.swiftech.core.data.local.preferences.AppPreferences
+import com.ralphmarondev.swiftech.core.domain.model.Course
 import com.ralphmarondev.swiftech.core.domain.model.Result
+import com.ralphmarondev.swiftech.core.domain.usecases.course.CreateCourseUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class NewCourseViewModel(
-    private val preferences: AppPreferences
+    private val preferences: AppPreferences,
+    private val createCourseUseCase: CreateCourseUseCase
 ) : ViewModel() {
 
     private val defaultImage = preferences.getDefaultImage()
@@ -53,6 +56,15 @@ class NewCourseViewModel(
     }
 
     fun register() {
-
+        viewModelScope.launch {
+            createCourseUseCase(
+                course = Course(
+                    name = name.value,
+                    code = code.value,
+                    teacherId = teacher.value,
+                    image = imagePath.value
+                )
+            )
+        }
     }
 }

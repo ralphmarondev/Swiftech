@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.ralphmarondev.swiftech.core.data.local.database.dao.CourseDao
 import com.ralphmarondev.swiftech.core.data.local.database.dao.UserDao
 import com.ralphmarondev.swiftech.core.domain.model.Course
 import com.ralphmarondev.swiftech.core.domain.model.EvaluationAnswer
@@ -29,6 +30,7 @@ import com.ralphmarondev.swiftech.core.domain.model.User
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract val userDao: UserDao
+    abstract val courseDao: CourseDao
 
     companion object {
         private const val NAME = "swiftech_database"

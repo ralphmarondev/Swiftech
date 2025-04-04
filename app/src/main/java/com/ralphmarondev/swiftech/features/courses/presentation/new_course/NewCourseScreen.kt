@@ -217,7 +217,7 @@ fun NewCourseScreen(
                 )
             }
             ElevatedButton(
-                onClick = viewModel::register,
+                onClick = {},
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(8.dp)
