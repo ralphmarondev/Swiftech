@@ -1,5 +1,6 @@
 package com.ralphmarondev.swiftech.features.courses.presentation.course_detail
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,11 +13,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.ArrowBackIosNew
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -47,6 +51,7 @@ fun CourseDetailScreen(
     val viewModel: CourseDetailViewModel = koinViewModel(parameters = { parametersOf(courseId) })
     val courseDetail = viewModel.courseDetail.collectAsState().value
     val teacherDetail = viewModel.teacherDetail.collectAsState().value
+    val students = viewModel.students.collectAsState().value
 
     Scaffold(
         topBar = {
@@ -72,6 +77,16 @@ fun CourseDetailScreen(
                     navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
                 )
             )
+        },
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = {}
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.Add,
+                    contentDescription = "New student"
+                )
+            }
         }
     ) { innerPadding ->
         LazyColumn(
@@ -174,7 +189,52 @@ fun CourseDetailScreen(
                 )
             }
             item {
-                // list of students
+                AnimatedVisibility(students.isEmpty()) {
+                    Text(
+                        text = "No students yet.",
+                        fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                        fontWeight = MaterialTheme.typography.titleMedium.fontWeight,
+                        color = MaterialTheme.colorScheme.secondary,
+                        modifier = Modifier.padding(start = 6.dp)
+                    )
+                }
+            }
+            items(students) { student ->
+                ElevatedCard(
+                    modifier = Modifier
+                        .padding(horizontal = 8.dp, vertical = 2.dp)
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        Image(
+                            painter = rememberAsyncImagePainter(student.image),
+                            contentDescription = teacherDetail?.username,
+                            modifier = Modifier
+                                .size(60.dp)
+                                .clip(CircleShape),
+                            contentScale = ContentScale.Crop
+                        )
+
+                        val fullName = if (student.fullName.isNullOrEmpty()) {
+                            student.username
+                        } else {
+                            student.fullName
+                        }
+                        Text(
+                            text = fullName,
+                            fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                            fontWeight = MaterialTheme.typography.titleMedium.fontWeight,
+                            color = MaterialTheme.colorScheme.primary,
+                            maxLines = 2,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    }
+                }
             }
             item { Spacer(modifier = Modifier.height(100.dp)) }
         }
