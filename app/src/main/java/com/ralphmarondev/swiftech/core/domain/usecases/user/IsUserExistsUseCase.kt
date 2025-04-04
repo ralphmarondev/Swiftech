@@ -1,4 +1,4 @@
-package com.ralphmarondev.swiftech.core.domain.usecases
+package com.ralphmarondev.swiftech.core.domain.usecases.user
 
 import android.util.Log
 import com.ralphmarondev.swiftech.core.domain.repositories.UserRepository

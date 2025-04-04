@@ -6,8 +6,8 @@ import androidx.lifecycle.viewModelScope
 import com.ralphmarondev.swiftech.core.data.local.preferences.AppPreferences
 import com.ralphmarondev.swiftech.core.domain.model.Result
 import com.ralphmarondev.swiftech.core.domain.model.User
-import com.ralphmarondev.swiftech.core.domain.usecases.GetUserDetailByUsername
-import com.ralphmarondev.swiftech.core.domain.usecases.UpdateUserUseCase
+import com.ralphmarondev.swiftech.core.domain.usecases.user.GetUserDetailByUsername
+import com.ralphmarondev.swiftech.core.domain.usecases.user.UpdateUserUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch

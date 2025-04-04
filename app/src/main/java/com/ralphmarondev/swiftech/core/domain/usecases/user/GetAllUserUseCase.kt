@@ -1,13 +1,13 @@
-package com.ralphmarondev.swiftech.core.domain.usecases
+package com.ralphmarondev.swiftech.core.domain.usecases.user
 
 import com.ralphmarondev.swiftech.core.domain.model.User
 import com.ralphmarondev.swiftech.core.domain.repositories.UserRepository
 import kotlinx.coroutines.flow.Flow
 
-class GetAllUserByRoleUseCase(
+class GetAllUserUseCase(
     private val repository: UserRepository
 ) {
-    operator fun invoke(role: String): Flow<List<User>> {
-        return repository.getAllUsersByRole(role)
+    operator fun invoke(): Flow<List<User>> {
+        return repository.getAllUsers()
     }
 }
