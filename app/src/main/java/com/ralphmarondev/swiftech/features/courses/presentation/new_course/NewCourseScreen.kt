@@ -16,9 +16,10 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.Grading
 import androidx.compose.material.icons.outlined.AccountBox
 import androidx.compose.material.icons.outlined.ArrowBackIosNew
-import androidx.compose.material.icons.outlined.PersonOutline
+import androidx.compose.material.icons.outlined.QrCode
 import androidx.compose.material3.Button
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -133,13 +134,13 @@ fun NewCourseScreen(
             Spacer(modifier = Modifier.height(8.dp))
             NormalTextField(
                 value = name,
-                onValueChange = viewModel::onFullNameChange,
+                onValueChange = viewModel::onNameValueChange,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 8.dp, vertical = 4.dp),
                 label = "Name",
                 placeholder = "Technopreneurship",
-                leadingIcon = Icons.Outlined.PersonOutline,
+                leadingIcon = Icons.AutoMirrored.Outlined.Grading,
                 keyboardOptions = KeyboardOptions(
                     imeAction = ImeAction.Next
                 ),
@@ -152,13 +153,13 @@ fun NewCourseScreen(
 
             NormalTextField(
                 value = code,
-                onValueChange = viewModel::onUsernameChange,
+                onValueChange = viewModel::onCodeValueChange,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 8.dp, vertical = 4.dp),
                 label = "Code",
                 placeholder = "T2025",
-                leadingIcon = Icons.Outlined.AccountBox,
+                leadingIcon = Icons.Outlined.QrCode,
                 keyboardOptions = KeyboardOptions(
                     imeAction = ImeAction.Next
                 ),
@@ -169,6 +170,24 @@ fun NewCourseScreen(
                 )
             )
 
+            NormalTextField(
+                value = teacher,
+                onValueChange = viewModel::onTeacherValueChange,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp, vertical = 4.dp),
+                label = "Teacher",
+                placeholder = "Jamille",
+                leadingIcon = Icons.Outlined.AccountBox,
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Done
+                ),
+                keyboardActions = KeyboardActions(
+                    onDone = {
+                        focusManager.clearFocus()
+                    }
+                )
+            )
 
             Spacer(modifier = Modifier.height(2.dp))
             AnimatedVisibility(response?.success == false) {

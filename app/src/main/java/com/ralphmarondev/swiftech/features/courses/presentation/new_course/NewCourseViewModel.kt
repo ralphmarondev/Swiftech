@@ -23,8 +23,8 @@ class NewCourseViewModel(
     private val _code = MutableStateFlow("")
     val code = _code.asStateFlow()
 
-    private val teacherId = MutableStateFlow(-1)
-    val teacher = teacherId.asStateFlow()
+    private val _teacher = MutableStateFlow("")
+    val teacher = _teacher.asStateFlow()
 
     private val _imagePath = MutableStateFlow(defaultImage ?: "")
     val imagePath = _imagePath.asStateFlow()
@@ -33,16 +33,16 @@ class NewCourseViewModel(
     val response = _response.asStateFlow()
 
 
-    fun onFullNameChange(value: String) {
+    fun onNameValueChange(value: String) {
         _name.value = value
     }
 
-    fun onUsernameChange(value: String) {
+    fun onCodeValueChange(value: String) {
         _code.value = value
     }
 
-    fun onPasswordChange(value: Int) {
-        teacherId.value = value
+    fun onTeacherValueChange(value: String) {
+        _teacher.value = value
     }
 
     fun onImagePathChange(value: String) {
@@ -57,11 +57,12 @@ class NewCourseViewModel(
 
     fun register() {
         viewModelScope.launch {
+            val teacherId = 0 // getTeacherIdByUsername(teacher.value)
             createCourseUseCase(
                 course = Course(
                     name = name.value,
                     code = code.value,
-                    teacherId = teacher.value,
+                    teacherId = teacherId,
                     image = imagePath.value
                 )
             )
