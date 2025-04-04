@@ -8,10 +8,12 @@ import com.ralphmarondev.swiftech.core.domain.repositories.CourseRepository
 import com.ralphmarondev.swiftech.core.domain.repositories.UserRepository
 import com.ralphmarondev.swiftech.core.domain.usecases.course.CreateCourseUseCase
 import com.ralphmarondev.swiftech.core.domain.usecases.course.GetAllCoursesUseCase
+import com.ralphmarondev.swiftech.core.domain.usecases.course.GetCourseDetailByIdUseCase
 import com.ralphmarondev.swiftech.core.domain.usecases.user.CreateUserUseCase
 import com.ralphmarondev.swiftech.core.domain.usecases.user.DeleteUserUseCase
 import com.ralphmarondev.swiftech.core.domain.usecases.user.GetAllUserByRoleUseCase
 import com.ralphmarondev.swiftech.core.domain.usecases.user.GetAllUserUseCase
+import com.ralphmarondev.swiftech.core.domain.usecases.user.GetUserByIdUseCase
 import com.ralphmarondev.swiftech.core.domain.usecases.user.GetUserDetailByUsername
 import com.ralphmarondev.swiftech.core.domain.usecases.user.IsUserExistsUseCase
 import com.ralphmarondev.swiftech.core.domain.usecases.user.UpdateUserUseCase
@@ -38,7 +40,9 @@ val coreModule = module {
     factoryOf(::IsUserExistsUseCase)
     factoryOf(::GetAllUserUseCase)
     factoryOf(::GetAllUserByRoleUseCase)
+    factoryOf(::GetUserByIdUseCase)
 
     factoryOf(::CreateCourseUseCase)
     factoryOf(::GetAllCoursesUseCase)
+    factoryOf(::GetCourseDetailByIdUseCase)
 }

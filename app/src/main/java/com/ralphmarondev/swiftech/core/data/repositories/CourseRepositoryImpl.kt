@@ -13,6 +13,10 @@ class CourseRepositoryImpl(
         courseDao.createCourse(course)
     }
 
+    override suspend fun getCourseDetailById(id: Int): Course? {
+        return courseDao.getCourseDetailById(id)
+    }
+
     override fun getAllCourses(): Flow<List<Course>> {
         return courseDao.getAllCourses()
     }

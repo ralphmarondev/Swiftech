@@ -35,7 +35,7 @@ import org.koin.androidx.compose.koinViewModel
 fun CourseListScreen(
     navigateBack: () -> Unit,
     onNewCourseClick: () -> Unit,
-    onCourseClick: (String) -> Unit
+    onCourseClick: (Int) -> Unit
 ) {
     val viewModel: CourseListViewModel = koinViewModel()
     val courses = viewModel.courses.collectAsState().value
@@ -108,7 +108,7 @@ fun CourseListScreen(
             items(courses) { course ->
                 CourseCard(
                     onClick = {
-                        onCourseClick(course.code)
+                        onCourseClick(course.id)
                         Log.d("App", "Course: ${course.name} is clicked")
                     },
                     course = course,

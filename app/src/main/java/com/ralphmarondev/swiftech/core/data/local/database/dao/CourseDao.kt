@@ -13,6 +13,9 @@ interface CourseDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun createCourse(course: Course)
 
+    @Query("SELECT * FROM course WHERE id = :id")
+    suspend fun getCourseDetailById(id: Int): Course?
+
     @Query("SELECT * FROM course")
     fun getAllCourses(): Flow<List<Course>>
 }

@@ -9,6 +9,7 @@ interface UserRepository {
     suspend fun deleteUser(id: Int)
     suspend fun getUserDetailByUsername(username: String): User
     suspend fun isUserExists(username: String, password: String): Boolean
+    suspend fun getUserDetailById(id: Int): User?
 
     fun getAllUsers(): Flow<List<User>>
     fun getAllUsersByRole(role: String): Flow<List<User>>

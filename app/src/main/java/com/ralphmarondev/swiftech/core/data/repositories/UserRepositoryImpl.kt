@@ -28,6 +28,10 @@ class UserRepositoryImpl(
         return userDao.isUserExists(username, password) > 0
     }
 
+    override suspend fun getUserDetailById(id: Int): User? {
+        return userDao.getUserById(id)
+    }
+
     override fun getAllUsers(): Flow<List<User>> {
         return userDao.getAllUsers()
     }
