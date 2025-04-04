@@ -1,18 +1,21 @@
 package com.ralphmarondev.swiftech.features.courses.presentation.new_course
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ralphmarondev.swiftech.core.data.local.preferences.AppPreferences
 import com.ralphmarondev.swiftech.core.domain.model.Course
 import com.ralphmarondev.swiftech.core.domain.model.Result
 import com.ralphmarondev.swiftech.core.domain.usecases.course.CreateCourseUseCase
+import com.ralphmarondev.swiftech.core.domain.usecases.user.GetUserDetailByUsername
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class NewCourseViewModel(
     private val preferences: AppPreferences,
-    private val createCourseUseCase: CreateCourseUseCase
+    private val createCourseUseCase: CreateCourseUseCase,
+    private val getUserDetailByUsername: GetUserDetailByUsername
 ) : ViewModel() {
 
     private val defaultImage = preferences.getDefaultImage()
@@ -57,15 +60,66 @@ class NewCourseViewModel(
 
     fun register() {
         viewModelScope.launch {
-            val teacherId = 0 // getTeacherIdByUsername(teacher.value)
+            val name = _name.value.trim()
+            val code = _code.value.trim()
+            val teacher = _teacher.value.trim()
+            val imagePath = _imagePath.value.trim()
+
+            if (name.isEmpty() && code.isEmpty() && teacher.isEmpty()) {
+                _response.value = Result(
+                    success = false,
+                    message = "All fields are required!"
+                )
+                return@launch
+            }
+            if (name.isEmpty()) {
+                _response.value = Result(
+                    success = false,
+                    message = "Name cannot be empty!"
+                )
+                return@launch
+            }
+            if (code.isEmpty()) {
+                _response.value = Result(
+                    success = false,
+                    message = "Code cannot be empty!"
+                )
+                return@launch
+            }
+            if (teacher.isEmpty()) {
+                _response.value = Result(
+                    success = false,
+                    message = "Teacher cannot be empty!"
+                )
+                return@launch
+            }
+
+            val teacherDetail = getUserDetailByUsername(teacher)
+            val teacherId = teacherDetail?.id
+            if (teacherId == -1 || teacherDetail == null) {
+                _response.value = Result(
+                    success = false,
+                    message = "Teacher not found!"
+                )
+                return@launch
+            }
+
             createCourseUseCase(
                 course = Course(
-                    name = name.value,
-                    code = code.value,
+                    name = name,
+                    code = code,
                     teacherId = teacherId,
-                    image = imagePath.value
+                    image = imagePath
                 )
             )
+            _response.value = Result(
+                success = true,
+                message = "Course created successfully!"
+            )
+            Log.d("App", "Name: $name, code: $code, teacher: $teacher")
+            _name.value = ""
+            _code.value = ""
+            _teacher.value = ""
         }
     }
 }

@@ -42,10 +42,10 @@ class UpdateStudentViewModel(
         viewModelScope.launch {
             val user = getUserDetailByUsername(usernameArgs)
             _selectedStudent.value = user
-            _fullName.value = user.fullName ?: "No full name provided"
-            _username.value = user.username
-            _password.value = user.password
-            _imagePath.value = user.image ?: defaultImage ?: "No image provided"
+            _fullName.value = user?.fullName ?: "No full name provided"
+            _username.value = user?.username ?: "No username provided"
+            _password.value = user?.password ?: "No password provided"
+            _imagePath.value = user?.image ?: defaultImage ?: "No image provided"
         }
     }
 

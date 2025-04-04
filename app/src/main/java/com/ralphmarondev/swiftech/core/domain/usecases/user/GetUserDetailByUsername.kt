@@ -7,7 +7,7 @@ import com.ralphmarondev.swiftech.core.domain.repositories.UserRepository
 class GetUserDetailByUsername(
     private val repository: UserRepository
 ) {
-    suspend operator fun invoke(username: String): User {
+    suspend operator fun invoke(username: String): User? {
         return try {
             val result = repository.getUserDetailByUsername(username)
             Log.d("App", "Success getting user detail")
