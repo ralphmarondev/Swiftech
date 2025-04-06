@@ -8,6 +8,7 @@ import androidx.navigation.compose.rememberNavController
 import com.ralphmarondev.swiftech.core.util.LocalThemeState
 import com.ralphmarondev.swiftech.features.auth.presentation.login.LoginScreen
 import com.ralphmarondev.swiftech.features.courses.navigation.CourseNavigation
+import com.ralphmarondev.swiftech.features.evaluation.navigation.EvaluationNavigation
 import com.ralphmarondev.swiftech.features.home.presentation.HomeScreen
 import com.ralphmarondev.swiftech.features.students.presentation.new_student.NewStudentScreen
 import com.ralphmarondev.swiftech.features.students.presentation.student_detail.StudentDetailScreen
@@ -60,7 +61,11 @@ fun AppNavigation(
                             launchSingleTop = true
                         }
                     },
-                    onEvaluationClick = {},
+                    onEvaluationClick = {
+                        navController.navigate(Routes.EvaluationNavigation) {
+                            launchSingleTop = true
+                        }
+                    },
                     onLogout = {
                         navController.navigate(Routes.Login) {
                             // we are clearing everything lol
@@ -174,6 +179,13 @@ fun AppNavigation(
             }
             composable<Routes.CourseNavigation> {
                 CourseNavigation(
+                    navigateBack = {
+                        navController.navigateUp()
+                    }
+                )
+            }
+            composable<Routes.EvaluationNavigation> {
+                EvaluationNavigation(
                     navigateBack = {
                         navController.navigateUp()
                     }

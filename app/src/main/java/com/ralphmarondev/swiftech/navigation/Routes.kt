@@ -36,4 +36,7 @@ object Routes {
 
     @Serializable
     data object CourseNavigation
+
+    @Serializable
+    data object EvaluationNavigation
 }
