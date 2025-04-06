@@ -38,6 +38,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
+import com.ralphmarondev.swiftech.features.courses.presentation.components.EnrollStudentDialog
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 
@@ -52,6 +53,7 @@ fun CourseDetailScreen(
     val courseDetail = viewModel.courseDetail.collectAsState().value
     val teacherDetail = viewModel.teacherDetail.collectAsState().value
     val students = viewModel.students.collectAsState().value
+    val showEnrollStudentDialog = viewModel.showEnrollStudentDialog.collectAsState().value
 
     Scaffold(
         topBar = {
@@ -80,7 +82,7 @@ fun CourseDetailScreen(
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = {}
+                onClick = viewModel::setShowEnrollStudentDialog
             ) {
                 Icon(
                     imageVector = Icons.Outlined.Add,
@@ -202,7 +204,7 @@ fun CourseDetailScreen(
             items(students) { student ->
                 ElevatedCard(
                     modifier = Modifier
-                        .padding(horizontal = 8.dp, vertical = 2.dp)
+                        .padding(horizontal = 8.dp, vertical = 4.dp)
                 ) {
                     Row(
                         modifier = Modifier
@@ -238,5 +240,15 @@ fun CourseDetailScreen(
             }
             item { Spacer(modifier = Modifier.height(100.dp)) }
         }
+    }
+
+    if (showEnrollStudentDialog) {
+        EnrollStudentDialog(
+            onDismiss = viewModel::setShowEnrollStudentDialog,
+            onConfirm = {
+                viewModel.enrollStudent()
+            },
+            viewModel = viewModel
+        )
     }
 }

@@ -2,6 +2,8 @@ package com.ralphmarondev.swiftech.core.data.repositories
 
 import com.ralphmarondev.swiftech.core.data.local.database.dao.CourseDao
 import com.ralphmarondev.swiftech.core.domain.model.Course
+import com.ralphmarondev.swiftech.core.domain.model.StudentCourseCrossRef
+import com.ralphmarondev.swiftech.core.domain.model.User
 import com.ralphmarondev.swiftech.core.domain.repositories.CourseRepository
 import kotlinx.coroutines.flow.Flow
 
@@ -19,5 +21,13 @@ class CourseRepositoryImpl(
 
     override fun getAllCourses(): Flow<List<Course>> {
         return courseDao.getAllCourses()
+    }
+
+    override suspend fun insertStudentToCourse(crossRef: StudentCourseCrossRef) {
+        courseDao.insertStudentToCourse(crossRef)
+    }
+
+    override fun getStudentInCourse(id: Int): Flow<List<User>> {
+        return courseDao.getStudentsInCourse(id)
     }
 }

@@ -9,6 +9,8 @@ import com.ralphmarondev.swiftech.core.domain.repositories.UserRepository
 import com.ralphmarondev.swiftech.core.domain.usecases.course.CreateCourseUseCase
 import com.ralphmarondev.swiftech.core.domain.usecases.course.GetAllCoursesUseCase
 import com.ralphmarondev.swiftech.core.domain.usecases.course.GetCourseDetailByIdUseCase
+import com.ralphmarondev.swiftech.core.domain.usecases.course.GetStudentInCourseUseCase
+import com.ralphmarondev.swiftech.core.domain.usecases.course.InsertStudentToCourseUseCase
 import com.ralphmarondev.swiftech.core.domain.usecases.user.CreateUserUseCase
 import com.ralphmarondev.swiftech.core.domain.usecases.user.DeleteUserUseCase
 import com.ralphmarondev.swiftech.core.domain.usecases.user.GetAllUserByRoleUseCase
@@ -45,4 +47,6 @@ val coreModule = module {
     factoryOf(::CreateCourseUseCase)
     factoryOf(::GetAllCoursesUseCase)
     factoryOf(::GetCourseDetailByIdUseCase)
+    factoryOf(::GetStudentInCourseUseCase)
+    factoryOf(::InsertStudentToCourseUseCase)
 }
