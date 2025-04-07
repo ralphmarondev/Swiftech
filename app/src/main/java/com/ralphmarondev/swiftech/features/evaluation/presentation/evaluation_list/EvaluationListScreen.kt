@@ -45,7 +45,7 @@ fun EvaluationListScreen(
             TopAppBar(
                 title = {
                     Text(
-                        text = "Evaluations"
+                        text = "Evaluation Forms"
                     )
                 },
                 navigationIcon = {

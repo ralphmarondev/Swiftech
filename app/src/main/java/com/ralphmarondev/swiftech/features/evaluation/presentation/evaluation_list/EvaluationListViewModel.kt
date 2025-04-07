@@ -3,12 +3,14 @@ package com.ralphmarondev.swiftech.features.evaluation.presentation.evaluation_l
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ralphmarondev.swiftech.core.domain.model.EvaluationForm
-import kotlinx.coroutines.delay
+import com.ralphmarondev.swiftech.core.domain.usecases.evaluation.GetAllEvaluationFormsUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class EvaluationListViewModel : ViewModel() {
+class EvaluationListViewModel(
+    private val getAllEvaluationFormsUseCase: GetAllEvaluationFormsUseCase
+) : ViewModel() {
 
     private val _evaluations = MutableStateFlow<List<EvaluationForm>>(emptyList())
     val evaluations = _evaluations.asStateFlow()
@@ -19,12 +21,10 @@ class EvaluationListViewModel : ViewModel() {
     init {
         viewModelScope.launch {
             _isLoading.value = true
-            _evaluations.value += EvaluationForm(
-                title = "Test evaluation",
-                description = "This is a test evaluation"
-            )
-            delay(2000)
-            _isLoading.value = false
+            getAllEvaluationFormsUseCase().collect {
+                _evaluations.value = it
+                _isLoading.value = false
+            }
         }
     }
 }
