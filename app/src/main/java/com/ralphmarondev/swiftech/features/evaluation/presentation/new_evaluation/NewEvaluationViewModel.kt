@@ -9,11 +9,15 @@ import kotlinx.coroutines.launch
 
 class NewEvaluationViewModel : ViewModel() {
 
-    /*
-     * title
-     * description
-     * questions
-     */
+    private val _title = MutableStateFlow("")
+    val title = _title.asStateFlow()
+
+    private val _description = MutableStateFlow("")
+    val description = _description.asStateFlow()
+
+    private val _questions = MutableStateFlow<List<String>>(emptyList())
+    val questions = _questions.asStateFlow()
+
     private val _newQuestion = MutableStateFlow("")
     val newQuestion = _newQuestion.asStateFlow()
 
@@ -23,6 +27,14 @@ class NewEvaluationViewModel : ViewModel() {
     private val _response = MutableStateFlow<Result?>(null)
     val response = _response.asStateFlow()
 
+
+    fun onTitleValueChange(value: String) {
+        _title.value = value
+    }
+
+    fun onDescriptionValueChange(value: String) {
+        _description.value = value
+    }
 
     fun onNewQuestionValueChange(value: String) {
         _newQuestion.value = value
@@ -47,6 +59,8 @@ class NewEvaluationViewModel : ViewModel() {
                 success = true,
                 message = "Question added"
             )
+            _questions.value += question
+            _newQuestion.value = ""
             setShowNewQuestionDialog()
         }
     }
