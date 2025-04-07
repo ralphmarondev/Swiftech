@@ -1,8 +1,15 @@
 package com.ralphmarondev.swiftech.features.evaluation.presentation.evaluation_list
 
-import androidx.compose.foundation.layout.Box
+import android.util.Log
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.ArrowBackIosNew
@@ -16,14 +23,23 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import com.ralphmarondev.swiftech.features.evaluation.presentation.components.EvaluationCard
+import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EvaluationListScreen(
     navigateBack: () -> Unit,
-    newEvaluation: () -> Unit
+    newEvaluation: () -> Unit,
+    onEvaluationClick: (Int) -> Unit
 ) {
+    val viewModel: EvaluationListViewModel = koinViewModel()
+    val evaluations = viewModel.evaluations.collectAsState().value
+    val isLoading = viewModel.isLoading.collectAsState().value
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -60,14 +76,48 @@ fun EvaluationListScreen(
             }
         }
     ) { innerPadding ->
-        Box(
+        LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding)
+                .padding(innerPadding),
+            contentPadding = PaddingValues(horizontal = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Text(
-                text = "Evaluation goes here!"
-            )
+            item {
+                AnimatedVisibility(isLoading) {
+                    Text(
+                        text = "Loading evaluations...",
+                        fontSize = MaterialTheme.typography.titleLarge.fontSize,
+                        fontWeight = MaterialTheme.typography.titleLarge.fontWeight,
+                        color = MaterialTheme.colorScheme.secondary,
+                        modifier = Modifier.padding(16.dp)
+                    )
+                }
+
+                AnimatedVisibility(visible = evaluations.isEmpty() && !isLoading) {
+                    Text(
+                        text = "No evaluations yet.",
+                        fontSize = MaterialTheme.typography.titleLarge.fontSize,
+                        fontWeight = MaterialTheme.typography.titleLarge.fontWeight,
+                        color = MaterialTheme.colorScheme.secondary,
+                        modifier = Modifier.padding(16.dp)
+                    )
+                }
+            }
+            items(evaluations) { evaluation ->
+                EvaluationCard(
+                    onClick = {
+                        Log.d(
+                            "App",
+                            "Evaluation with id: ${evaluation.id} and title: ${evaluation.title} is clicked."
+                        )
+                        onEvaluationClick(evaluation.id)
+                    },
+                    title = evaluation.title,
+                    date = "2025-04-07"
+                )
+            }
+            item { Spacer(modifier = Modifier.height(100.dp)) }
         }
     }
 }

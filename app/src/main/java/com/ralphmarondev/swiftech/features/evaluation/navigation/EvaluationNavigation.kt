@@ -5,8 +5,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.ralphmarondev.swiftech.features.evaluation.presentation.new_evaluation.NewEvaluationScreen
 import com.ralphmarondev.swiftech.features.evaluation.presentation.evaluation_list.EvaluationListScreen
+import com.ralphmarondev.swiftech.features.evaluation.presentation.new_evaluation.NewEvaluationScreen
 import kotlinx.serialization.Serializable
 
 object EvaluationRoutes {
@@ -33,7 +33,8 @@ fun EvaluationNavigation(
                     navController.navigate(EvaluationRoutes.NewEvaluation) {
                         launchSingleTop = true
                     }
-                }
+                },
+                onEvaluationClick = {}
             )
         }
         composable<EvaluationRoutes.NewEvaluation> {
