@@ -1,4 +1,4 @@
-package com.ralphmarondev.swiftech.features.evaluation.presentation.new_evaluation
+package com.ralphmarondev.swiftech.features.evaluation.presentation.evaluation_detail
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,13 +21,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.ralphmarondev.swiftech.features.evaluation.presentation.components.NewQuestionDialog
 import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NewEvaluationScreen(
+fun EvaluationDetailScreen(
+    id: Int,
     navigateBack: () -> Unit
 ) {
-    val viewModel: NewEvaluationViewModel = koinViewModel()
+    val viewModel: EvaluationDetailViewModel = koinViewModel(parameters = { parametersOf(id) })
     val showNewQuestionDialog = viewModel.showNewQuestionDialog.collectAsState().value
 
     Scaffold(
@@ -35,7 +37,7 @@ fun NewEvaluationScreen(
             TopAppBar(
                 title = {
                     Text(
-                        text = "New Evaluation"
+                        text = "Evaluation Detail"
                     )
                 },
                 navigationIcon = {
@@ -61,7 +63,7 @@ fun NewEvaluationScreen(
             ) {
                 Icon(
                     imageVector = Icons.Outlined.Add,
-                    contentDescription = "New question"
+                    contentDescription = "New Question"
                 )
             }
         }
@@ -73,15 +75,14 @@ fun NewEvaluationScreen(
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = "New evaluation screen"
+                text = "Evaluation detail for id: $id"
             )
         }
     }
-
     if (showNewQuestionDialog) {
         NewQuestionDialog(
-            onConfirm = viewModel::onConfirm,
             onDismiss = viewModel::setShowNewQuestionDialog,
+            onConfirm = viewModel::onConfirm,
             value = viewModel.newQuestion.collectAsState().value,
             onValueChange = viewModel::onNewQuestionValueChange
         )
