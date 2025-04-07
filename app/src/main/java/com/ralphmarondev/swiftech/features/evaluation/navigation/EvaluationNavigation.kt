@@ -6,12 +6,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.ralphmarondev.swiftech.features.evaluation.presentation.new_evaluation.NewEvaluationScreen
-import com.ralphmarondev.swiftech.features.evaluation.presentation.overview.OverviewScreen
+import com.ralphmarondev.swiftech.features.evaluation.presentation.evaluation_list.EvaluationListScreen
 import kotlinx.serialization.Serializable
 
 object EvaluationRoutes {
     @Serializable
-    data object Overview
+    data object EvaluationList
 
     @Serializable
     data object NewEvaluation
@@ -24,10 +24,10 @@ fun EvaluationNavigation(
 ) {
     NavHost(
         navController = navController,
-        startDestination = EvaluationRoutes.Overview
+        startDestination = EvaluationRoutes.EvaluationList
     ) {
-        composable<EvaluationRoutes.Overview> {
-            OverviewScreen(
+        composable<EvaluationRoutes.EvaluationList> {
+            EvaluationListScreen(
                 navigateBack = navigateBack,
                 newEvaluation = {
                     navController.navigate(EvaluationRoutes.NewEvaluation) {

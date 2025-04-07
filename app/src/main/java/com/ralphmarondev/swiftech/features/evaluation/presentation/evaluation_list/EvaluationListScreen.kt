@@ -1,4 +1,4 @@
-package com.ralphmarondev.swiftech.features.evaluation.presentation.overview
+package com.ralphmarondev.swiftech.features.evaluation.presentation.evaluation_list
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,7 +20,7 @@ import androidx.compose.ui.Modifier
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun OverviewScreen(
+fun EvaluationListScreen(
     navigateBack: () -> Unit,
     newEvaluation: () -> Unit
 ) {
@@ -29,7 +29,7 @@ fun OverviewScreen(
             TopAppBar(
                 title = {
                     Text(
-                        text = "Evaluation"
+                        text = "Evaluations"
                     )
                 },
                 navigationIcon = {
