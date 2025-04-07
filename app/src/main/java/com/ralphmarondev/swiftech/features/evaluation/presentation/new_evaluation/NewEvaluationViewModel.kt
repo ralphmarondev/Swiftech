@@ -2,12 +2,16 @@ package com.ralphmarondev.swiftech.features.evaluation.presentation.new_evaluati
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ralphmarondev.swiftech.core.domain.model.EvaluationForm
 import com.ralphmarondev.swiftech.core.domain.model.Result
+import com.ralphmarondev.swiftech.core.domain.usecases.evaluation.CreateEvaluationFormUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class NewEvaluationViewModel : ViewModel() {
+class NewEvaluationViewModel(
+    private val createEvaluationFormUseCase: CreateEvaluationFormUseCase
+) : ViewModel() {
 
     private val _title = MutableStateFlow("")
     val title = _title.asStateFlow()
@@ -62,6 +66,48 @@ class NewEvaluationViewModel : ViewModel() {
             _questions.value += question
             _newQuestion.value = ""
             setShowNewQuestionDialog()
+        }
+    }
+
+    fun onSave() {
+        viewModelScope.launch {
+            val title = _title.value.trim()
+            val description = _description.value.trim()
+
+            if (title.isEmpty() && description.isEmpty()) {
+                _response.value = Result(
+                    success = false,
+                    message = "Title and description cannot be empty"
+                )
+                return@launch
+            }
+
+            if (title.isEmpty()) {
+                _response.value = Result(
+                    success = false,
+                    message = "Title cannot be empty"
+                )
+                return@launch
+            }
+
+            if (description.isEmpty()) {
+                _response.value = Result(
+                    success = false,
+                    message = "Description cannot be empty"
+                )
+                return@launch
+            }
+
+            createEvaluationFormUseCase(
+                EvaluationForm(
+                    title = title,
+                    description = description
+                )
+            )
+            _response.value = Result(
+                success = true,
+                message = "Evaluation form created"
+            )
         }
     }
 }

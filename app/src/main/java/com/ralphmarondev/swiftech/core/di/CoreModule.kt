@@ -3,14 +3,17 @@ package com.ralphmarondev.swiftech.core.di
 import com.ralphmarondev.swiftech.core.data.local.database.AppDatabase
 import com.ralphmarondev.swiftech.core.data.local.preferences.AppPreferences
 import com.ralphmarondev.swiftech.core.data.repositories.CourseRepositoryImpl
+import com.ralphmarondev.swiftech.core.data.repositories.EvaluationFormRepositoryImpl
 import com.ralphmarondev.swiftech.core.data.repositories.UserRepositoryImpl
 import com.ralphmarondev.swiftech.core.domain.repositories.CourseRepository
+import com.ralphmarondev.swiftech.core.domain.repositories.EvaluationFormRepository
 import com.ralphmarondev.swiftech.core.domain.repositories.UserRepository
 import com.ralphmarondev.swiftech.core.domain.usecases.course.CreateCourseUseCase
 import com.ralphmarondev.swiftech.core.domain.usecases.course.GetAllCoursesUseCase
 import com.ralphmarondev.swiftech.core.domain.usecases.course.GetCourseDetailByIdUseCase
 import com.ralphmarondev.swiftech.core.domain.usecases.course.GetStudentInCourseUseCase
 import com.ralphmarondev.swiftech.core.domain.usecases.course.InsertStudentToCourseUseCase
+import com.ralphmarondev.swiftech.core.domain.usecases.evaluation.CreateEvaluationFormUseCase
 import com.ralphmarondev.swiftech.core.domain.usecases.user.CreateUserUseCase
 import com.ralphmarondev.swiftech.core.domain.usecases.user.DeleteUserUseCase
 import com.ralphmarondev.swiftech.core.domain.usecases.user.GetAllUserByRoleUseCase
@@ -32,8 +35,10 @@ val coreModule = module {
     single { AppDatabase.createDatabase(androidContext()) }
     single { get<AppDatabase>().userDao }
     single { get<AppDatabase>().courseDao }
+    single { get<AppDatabase>().evaluationFormDao }
     single<UserRepository> { UserRepositoryImpl(get()) }
     single<CourseRepository> { CourseRepositoryImpl(get()) }
+    single<EvaluationFormRepository> { EvaluationFormRepositoryImpl(get()) }
 
     factoryOf(::CreateUserUseCase)
     factoryOf(::UpdateUserUseCase)
@@ -49,4 +54,6 @@ val coreModule = module {
     factoryOf(::GetCourseDetailByIdUseCase)
     factoryOf(::GetStudentInCourseUseCase)
     factoryOf(::InsertStudentToCourseUseCase)
+
+    factoryOf(::CreateEvaluationFormUseCase)
 }

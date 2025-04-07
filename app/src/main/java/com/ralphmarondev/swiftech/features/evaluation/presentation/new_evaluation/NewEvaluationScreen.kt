@@ -65,7 +65,7 @@ fun NewEvaluationScreen(
                 },
                 actions = {
                     IconButton(
-                        onClick = {}
+                        onClick = viewModel::onSave
                     ) {
                         Icon(
                             imageVector = Icons.Outlined.SaveAlt,
