@@ -14,4 +14,7 @@ interface EvaluationFormDao {
 
     @Query("SELECT * FROM evaluation_form")
     fun getAllEvaluationForms(): Flow<List<EvaluationForm>>
+
+    @Query("SELECT * FROM evaluation_form WHERE id = :id LIMIT 1")
+    suspend fun getEvaluationFormById(id: Int): EvaluationForm?
 }

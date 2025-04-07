@@ -2,14 +2,20 @@ package com.ralphmarondev.swiftech.features.evaluation.presentation.evaluation_d
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ralphmarondev.swiftech.core.domain.model.EvaluationForm
 import com.ralphmarondev.swiftech.core.domain.model.Result
+import com.ralphmarondev.swiftech.core.domain.usecases.evaluation.GetEvaluationFormByIdUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class EvaluationDetailViewModel(
-    evaluationId: Int
-): ViewModel() {
+    private val evaluationId: Int,
+    private val getEvaluationFormByIdUseCase: GetEvaluationFormByIdUseCase
+) : ViewModel() {
+
+    private val _evaluationForm = MutableStateFlow<EvaluationForm?>(null)
+    val evaluationForm = _evaluationForm.asStateFlow()
 
     private val _newQuestion = MutableStateFlow("")
     val newQuestion = _newQuestion.asStateFlow()
@@ -20,6 +26,18 @@ class EvaluationDetailViewModel(
     private val _response = MutableStateFlow<Result?>(null)
     val response = _response.asStateFlow()
 
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading = _isLoading.asStateFlow()
+
+
+    init {
+        viewModelScope.launch {
+            _isLoading.value = true
+            val evaluationForm = getEvaluationFormByIdUseCase(evaluationId)
+            _evaluationForm.value = evaluationForm
+            _isLoading.value = false
+        }
+    }
 
     fun onNewQuestionValueChange(value: String) {
         _newQuestion.value = value

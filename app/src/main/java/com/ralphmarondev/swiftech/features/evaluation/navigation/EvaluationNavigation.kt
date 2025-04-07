@@ -55,7 +55,7 @@ fun EvaluationNavigation(
         composable<EvaluationRoutes.EvaluationDetail> {
             val id = it.arguments?.getInt("id")
             EvaluationDetailScreen(
-                id = id ?: -1,
+                id = id ?: 0,
                 navigateBack = {
                     navController.navigateUp()
                 }

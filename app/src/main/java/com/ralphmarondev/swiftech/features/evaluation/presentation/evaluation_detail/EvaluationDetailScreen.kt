@@ -31,6 +31,9 @@ fun EvaluationDetailScreen(
 ) {
     val viewModel: EvaluationDetailViewModel = koinViewModel(parameters = { parametersOf(id) })
     val showNewQuestionDialog = viewModel.showNewQuestionDialog.collectAsState().value
+    val response = viewModel.response.collectAsState().value
+    val isLoading = viewModel.isLoading.collectAsState().value
+    val evaluationForm = viewModel.evaluationForm.collectAsState().value
 
     Scaffold(
         topBar = {
@@ -75,7 +78,7 @@ fun EvaluationDetailScreen(
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = "Evaluation detail for id: $id"
+                text = "Evaluation detail for id: $id, title: ${evaluationForm?.title}, description: ${evaluationForm?.description}"
             )
         }
     }

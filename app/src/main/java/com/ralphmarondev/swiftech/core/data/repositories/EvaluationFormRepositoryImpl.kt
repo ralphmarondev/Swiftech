@@ -16,4 +16,8 @@ class EvaluationFormRepositoryImpl(
     override fun getAllEvaluationForms(): Flow<List<EvaluationForm>> {
         return evaluationFormDao.getAllEvaluationForms()
     }
+
+    override suspend fun getEvaluationFormById(id: Int): EvaluationForm? {
+        return evaluationFormDao.getEvaluationFormById(id)
+    }
 }
