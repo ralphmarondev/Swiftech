@@ -1,16 +1,20 @@
 package com.ralphmarondev.swiftech.features.evaluation.presentation.new_evaluation
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ralphmarondev.swiftech.core.domain.model.EvaluationForm
+import com.ralphmarondev.swiftech.core.domain.model.EvaluationQuestion
 import com.ralphmarondev.swiftech.core.domain.model.Result
 import com.ralphmarondev.swiftech.core.domain.usecases.evaluation.CreateEvaluationFormUseCase
+import com.ralphmarondev.swiftech.core.domain.usecases.evaluation.SaveQuestionToEvaluationFormUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class NewEvaluationViewModel(
-    private val createEvaluationFormUseCase: CreateEvaluationFormUseCase
+    private val createEvaluationFormUseCase: CreateEvaluationFormUseCase,
+    private val saveQuestionToEvaluationFormUseCase: SaveQuestionToEvaluationFormUseCase
 ) : ViewModel() {
 
     private val _title = MutableStateFlow("")
@@ -98,16 +102,45 @@ class NewEvaluationViewModel(
                 return@launch
             }
 
-            createEvaluationFormUseCase(
-                EvaluationForm(
-                    title = title,
-                    description = description
+            try {
+                val form = createEvaluationFormUseCase(
+                    EvaluationForm(
+                        title = title,
+                        description = description
+                    )
                 )
-            )
-            _response.value = Result(
-                success = true,
-                message = "Evaluation form created"
-            )
+
+                Log.d("App", "Form title: ${form.title}, id: ${form.id}")
+
+                if (form.id == 0) {
+                    _response.value = Result(
+                        success = false,
+                        message = "Error: Failed to create evaluation form."
+                    )
+                    Log.e("App", "Error: Failed to create evaluation form.")
+                    return@launch
+                }
+
+                _questions.value.forEach {
+                    saveQuestionToEvaluationFormUseCase(
+                        question = EvaluationQuestion(
+                            questionText = it,
+                            evaluationFormId = form.id
+                        )
+                    )
+                }
+
+                _response.value = Result(
+                    success = true,
+                    message = "Evaluation form created"
+                )
+            } catch (e: Exception) {
+                Log.e("App", "Error creating evaluation form: ${e.message}")
+                _response.value = Result(
+                    success = false,
+                    message = "Error creating evaluation form"
+                )
+            }
         }
     }
 }

@@ -2,6 +2,7 @@ package com.ralphmarondev.swiftech.core.data.repositories
 
 import com.ralphmarondev.swiftech.core.data.local.database.dao.EvaluationFormDao
 import com.ralphmarondev.swiftech.core.domain.model.EvaluationForm
+import com.ralphmarondev.swiftech.core.domain.model.EvaluationQuestion
 import com.ralphmarondev.swiftech.core.domain.repositories.EvaluationFormRepository
 import kotlinx.coroutines.flow.Flow
 
@@ -19,5 +20,13 @@ class EvaluationFormRepositoryImpl(
 
     override suspend fun getEvaluationFormById(id: Int): EvaluationForm? {
         return evaluationFormDao.getEvaluationFormById(id)
+    }
+
+    override suspend fun saveQuestionToEvaluationForms(question: EvaluationQuestion) {
+        evaluationFormDao.saveQuestionToEvaluationForm(question)
+    }
+
+    override suspend fun getLastInsertedId(): Long {
+        return evaluationFormDao.getLastInsertedId()
     }
 }
