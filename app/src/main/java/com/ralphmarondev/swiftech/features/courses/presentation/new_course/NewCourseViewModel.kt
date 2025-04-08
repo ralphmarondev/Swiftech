@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.ralphmarondev.swiftech.core.data.local.preferences.AppPreferences
 import com.ralphmarondev.swiftech.core.domain.model.Course
 import com.ralphmarondev.swiftech.core.domain.model.Result
+import com.ralphmarondev.swiftech.core.domain.model.Role
 import com.ralphmarondev.swiftech.core.domain.usecases.course.CreateCourseUseCase
 import com.ralphmarondev.swiftech.core.domain.usecases.user.GetUserDetailByUsername
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -96,7 +97,7 @@ class NewCourseViewModel(
 
             val teacherDetail = getUserDetailByUsername(teacher)
             val teacherId = teacherDetail?.id
-            if (teacherId == -1 || teacherDetail == null) {
+            if (teacherId == -1 || teacherDetail == null || teacherDetail.role != Role.TEACHER) {
                 _response.value = Result(
                     success = false,
                     message = "Teacher not found!"
