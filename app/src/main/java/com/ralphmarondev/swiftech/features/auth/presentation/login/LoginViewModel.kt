@@ -53,9 +53,9 @@ class LoginViewModel(
 
                 createUserUseCase(
                     user = User(
-                        username = "jam",
-                        password = "jam",
-                        fullName = "Jamille Rivera",
+                        username = "admin",
+                        password = "123",
+                        fullName = "Administrator :)",
                         role = Role.ADMINISTRATOR,
                         image = imagePath
                     )
