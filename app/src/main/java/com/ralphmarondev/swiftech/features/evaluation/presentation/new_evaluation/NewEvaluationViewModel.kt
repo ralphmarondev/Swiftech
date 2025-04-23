@@ -103,16 +103,14 @@ class NewEvaluationViewModel(
             }
 
             try {
-                val form = createEvaluationFormUseCase(
+                val id = createEvaluationFormUseCase(
                     EvaluationForm(
                         title = title,
                         description = description
                     )
                 )
 
-                Log.d("App", "Form title: ${form.title}, id: ${form.id}")
-
-                if (form.id == 0) {
+                if (id == 0) {
                     _response.value = Result(
                         success = false,
                         message = "Error: Failed to create evaluation form."
@@ -125,7 +123,7 @@ class NewEvaluationViewModel(
                     saveQuestionToEvaluationFormUseCase(
                         question = EvaluationQuestion(
                             questionText = it,
-                            evaluationFormId = form.id
+                            evaluationFormId = id
                         )
                     )
                 }

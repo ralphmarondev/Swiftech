@@ -7,18 +7,15 @@ import com.ralphmarondev.swiftech.core.domain.repositories.EvaluationFormReposit
 class CreateEvaluationFormUseCase(
     private val repository: EvaluationFormRepository
 ) {
-    suspend operator fun invoke(evaluationForm: EvaluationForm): EvaluationForm {
+    suspend operator fun invoke(evaluationForm: EvaluationForm): Int {
         try {
-            repository.createEvaluationForm(evaluationForm)
+            val id = repository.createEvaluationForm(evaluationForm)
             Log.d(
                 "App",
                 "Evaluation form with title: ${evaluationForm.title} created successfully."
             )
-            Log.d(
-                "App",
-                "From evaluation form use case, last inserted row id: ${repository.getLastInsertedId()}"
-            )
-            return evaluationForm.copy(id = repository.getLastInsertedId().toInt())
+            Log.d("App", "ID of newly inserted: `$id`")
+            return id
         } catch (e: Exception) {
             Log.e("App", "Error creating evaluation form.")
             throw e

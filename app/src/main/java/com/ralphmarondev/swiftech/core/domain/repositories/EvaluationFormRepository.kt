@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface EvaluationFormRepository {
 
-    suspend fun createEvaluationForm(evaluationForm: EvaluationForm)
+    suspend fun createEvaluationForm(evaluationForm: EvaluationForm): Int
 
     fun getAllEvaluationForms(): Flow<List<EvaluationForm>>
 

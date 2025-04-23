@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.Flow
 interface EvaluationFormDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun createEvaluationForm(evaluationForm: EvaluationForm)
+    suspend fun createEvaluationForm(evaluationForm: EvaluationForm): Long
 
     @Query("SELECT * FROM evaluation_form")
     fun getAllEvaluationForms(): Flow<List<EvaluationForm>>

@@ -10,8 +10,8 @@ class EvaluationFormRepositoryImpl(
     private val evaluationFormDao: EvaluationFormDao
 ) : EvaluationFormRepository {
 
-    override suspend fun createEvaluationForm(evaluationForm: EvaluationForm) {
-        evaluationFormDao.createEvaluationForm(evaluationForm)
+    override suspend fun createEvaluationForm(evaluationForm: EvaluationForm): Int {
+        return evaluationFormDao.createEvaluationForm(evaluationForm).toInt()
     }
 
     override fun getAllEvaluationForms(): Flow<List<EvaluationForm>> {
