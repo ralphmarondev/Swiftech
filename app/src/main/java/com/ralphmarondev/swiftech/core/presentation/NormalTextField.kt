@@ -84,7 +84,7 @@ fun NormalTextField(
                 }
             }
         },
-        singleLine = true,
+        singleLine = singleLine,
         isError = isError,
         keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,

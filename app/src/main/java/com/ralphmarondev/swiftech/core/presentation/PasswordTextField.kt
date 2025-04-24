@@ -96,7 +96,7 @@ fun PasswordTextField(
             }
         },
         visualTransformation = if (show) VisualTransformation.None else PasswordVisualTransformation(),
-        singleLine = true,
+        singleLine = singleLine,
         isError = isError,
         keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,
