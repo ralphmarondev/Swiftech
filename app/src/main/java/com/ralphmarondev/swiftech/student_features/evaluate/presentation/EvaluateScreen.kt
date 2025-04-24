@@ -1,11 +1,22 @@
 package com.ralphmarondev.swiftech.student_features.evaluate.presentation
 
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBackIosNew
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -14,8 +25,11 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -23,6 +37,9 @@ fun EvaluateScreen(
     id: Int,
     navigateBack: () -> Unit
 ) {
+    val viewModel: EvaluateViewModel = koinViewModel()
+    val questions = viewModel.questions.collectAsState().value
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -49,15 +66,115 @@ fun EvaluateScreen(
             )
         }
     ) { innerPadding ->
-        Box(
+        LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding),
-            contentAlignment = Alignment.Center
+            contentPadding = PaddingValues(16.dp)
         ) {
-            Text(
-                text = "Coming soon... id: `$id`"
-            )
+            item {
+                Column {
+                    Text(
+                        text = "Course Name:",
+                        fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                        fontWeight = MaterialTheme.typography.titleMedium.fontWeight,
+                        color = MaterialTheme.colorScheme.secondary
+                    )
+                    Text(
+                        text = "Technopreneurship",
+                        fontSize = MaterialTheme.typography.titleLarge.fontSize,
+                        fontWeight = MaterialTheme.typography.titleLarge.fontWeight,
+                        color = MaterialTheme.colorScheme.secondary
+                    )
+                    Text(
+                        text = "Teacher:",
+                        fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                        fontWeight = MaterialTheme.typography.titleMedium.fontWeight,
+                        color = MaterialTheme.colorScheme.secondary
+                    )
+                    Text(
+                        text = "Ralph Maron Eda",
+                        fontSize = MaterialTheme.typography.titleLarge.fontSize,
+                        fontWeight = MaterialTheme.typography.titleLarge.fontWeight,
+                        color = MaterialTheme.colorScheme.secondary
+                    )
+                    HorizontalDivider(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 16.dp)
+                    )
+                }
+            }
+            items(questions) { question ->
+                ElevatedCard(
+                    modifier = Modifier
+                        .padding(vertical = 4.dp)
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(8.dp)
+                    ) {
+                        Text(
+                            text = question,
+                            fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                            fontWeight = MaterialTheme.typography.titleMedium.fontWeight,
+                            color = MaterialTheme.colorScheme.secondary,
+                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+                        )
+                        RatingBox(
+                            label = "Excellent",
+                            value = false,
+                            onValueChanged = {}
+                        )
+                        RatingBox(
+                            label = "Saks lang",
+                            value = false,
+                            onValueChanged = {}
+                        )
+                        RatingBox(
+                            label = "Meds",
+                            value = false,
+                            onValueChanged = {}
+                        )
+                        RatingBox(
+                            label = "Poor yan",
+                            value = false,
+                            onValueChanged = {}
+                        )
+                        RatingBox(
+                            label = "Very poorrr",
+                            value = false,
+                            onValueChanged = {}
+                        )
+                    }
+                }
+            }
+            item { Spacer(modifier = Modifier.height(100.dp)) }
         }
+    }
+}
+
+@Composable
+fun RatingBox(
+    label: String,
+    value: Boolean,
+    onValueChanged: (Boolean) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        Checkbox(
+            checked = value,
+            onCheckedChange = onValueChanged
+        )
+
+        Text(
+            text = label,
+            color = MaterialTheme.colorScheme.secondary
+        )
     }
 }
