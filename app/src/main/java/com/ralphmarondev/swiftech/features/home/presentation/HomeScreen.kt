@@ -7,7 +7,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -18,8 +17,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.systemBarsPadding
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.Logout
@@ -53,10 +50,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.ralphmarondev.swiftech.R
+import com.ralphmarondev.swiftech.core.domain.model.Role
 import com.ralphmarondev.swiftech.core.util.LocalThemeState
 import com.ralphmarondev.swiftech.features.home.domain.model.Options
 import com.ralphmarondev.swiftech.features.home.presentation.components.AccountCard
-import com.ralphmarondev.swiftech.features.home.presentation.components.OptionsCard
+import com.ralphmarondev.swiftech.features.home.presentation.components.AdminContent
+import com.ralphmarondev.swiftech.features.home.presentation.components.StudentContent
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
@@ -79,7 +78,7 @@ fun HomeScreen(
 
     val options =
         when (currentUser?.role) {
-            "Administrator" -> listOf(
+            Role.ADMINISTRATOR -> listOf(
                 Options(
                     name = "Students",
                     image = R.drawable.students,
@@ -186,29 +185,19 @@ fun HomeScreen(
                         .padding(16.dp)
                 )
 
-                Text(
-                    text = "Manage",
-                    modifier = Modifier
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
-                        .align(Alignment.Start),
-                    color = MaterialTheme.colorScheme.secondary
-                )
+                // We need to display content based on role [Administrator, Student, Teacher]
+                when (currentUser?.role) {
+                    Role.ADMINISTRATOR -> {
+                        AdminContent(options)
+                    }
 
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(2),
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
-                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 4.dp)
-                ) {
-                    items(
-                        count = options.size
-                    ) { index ->
-                        OptionsCard(
-                            name = options[index].name,
-                            image = options[index].image,
-                            onClick = options[index].onClick
+                    Role.STUDENT -> {
+                        StudentContent()
+                    }
+
+                    else -> {
+                        Text(
+                            text = "Invalid role."
                         )
                     }
                 }
