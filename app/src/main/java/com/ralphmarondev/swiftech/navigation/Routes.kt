@@ -8,35 +8,11 @@ object Routes {
     data object Login
 
     @Serializable
-    data class Home(val username: String)
+    data class Admin(val username: String)
 
     @Serializable
-    data object StudentList
+    data class Student(val username: String)
 
     @Serializable
-    data object NewStudent
-
-    @Serializable
-    data class StudentDetail(val username: String)
-
-    @Serializable
-    data class UpdateStudent(val username: String)
-
-    @Serializable
-    data object TeacherList
-
-    @Serializable
-    data object NewTeacher
-
-    @Serializable
-    data class TeacherDetail(val username: String)
-
-    @Serializable
-    data class UpdateTeacher(val username: String)
-
-    @Serializable
-    data object CourseNavigation
-
-    @Serializable
-    data object EvaluationNavigation
+    data class Teacher(val username: String)
 }

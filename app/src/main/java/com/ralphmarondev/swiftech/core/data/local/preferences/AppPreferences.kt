@@ -17,6 +17,8 @@ class AppPreferences(
 
         private const val DEFAULT_IMAGE = "default_image"
         private const val TO_UPDATE_USERNAME = "to_update_username"
+
+        private const val ROLE = "role"
     }
 
     private val sharedPreferences = context.getSharedPreferences(
@@ -88,5 +90,14 @@ class AppPreferences(
 
     fun getToUpdateUsername(): String? {
         return sharedPreferences.getString(TO_UPDATE_USERNAME, null)
+    }
+
+
+    fun setRole(value: String) {
+        sharedPreferences.edit { putString(ROLE, value) }
+    }
+
+    fun getRole(): String? {
+        return sharedPreferences.getString(ROLE, null)
     }
 }
