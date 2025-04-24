@@ -17,6 +17,7 @@ import com.ralphmarondev.swiftech.auth.presentation.login.LoginScreen
 import com.ralphmarondev.swiftech.core.data.local.preferences.AppPreferences
 import com.ralphmarondev.swiftech.core.domain.model.Role
 import com.ralphmarondev.swiftech.core.util.LocalThemeState
+import com.ralphmarondev.swiftech.student_features.navigation.StudentNavigation
 import com.ralphmarondev.swiftech.ui.theme.SwiftechTheme
 
 @Composable
@@ -80,15 +81,16 @@ fun AppNavigation(
                 )
             }
             composable<Routes.Student> {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = "Student"
-                    )
-                }
+                val username = it.arguments?.getString("username")
+                StudentNavigation(
+                    username = username ?: "No username provided.",
+                    onLogout = {
+                        navController.navigate(Routes.Login) {
+                            popUpTo(0) { inclusive = true }
+                            launchSingleTop = true
+                        }
+                    }
+                )
             }
             composable<Routes.Teacher> {
                 Box(
