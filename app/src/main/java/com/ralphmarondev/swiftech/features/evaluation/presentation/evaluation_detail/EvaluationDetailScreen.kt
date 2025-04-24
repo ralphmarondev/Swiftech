@@ -1,11 +1,15 @@
 package com.ralphmarondev.swiftech.features.evaluation.presentation.evaluation_detail
 
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.ArrowBackIosNew
+import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -17,8 +21,8 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.ralphmarondev.swiftech.features.evaluation.presentation.components.NewQuestionDialog
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
@@ -34,6 +38,7 @@ fun EvaluationDetailScreen(
     val response = viewModel.response.collectAsState().value
     val isLoading = viewModel.isLoading.collectAsState().value
     val evaluationForm = viewModel.evaluationForm.collectAsState().value
+    val questions = viewModel.questions.collectAsState().value
 
     Scaffold(
         topBar = {
@@ -71,15 +76,32 @@ fun EvaluationDetailScreen(
             }
         }
     ) { innerPadding ->
-        Box(
+        LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding),
-            contentAlignment = Alignment.Center
+                .padding(innerPadding)
         ) {
-            Text(
-                text = "Evaluation detail for id: $id, title: ${evaluationForm?.title}, description: ${evaluationForm?.description}"
-            )
+            item {
+                Text(
+                    text = "Evaluation detail for id: $id, title: ${evaluationForm?.title}, description: ${evaluationForm?.description}"
+                )
+            }
+            items(questions) {
+                Card(
+                    modifier = Modifier
+                        .padding(16.dp)
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp)
+                    ) {
+                        Text(
+                            text = it.questionText
+                        )
+                    }
+                }
+            }
         }
     }
     if (showNewQuestionDialog) {

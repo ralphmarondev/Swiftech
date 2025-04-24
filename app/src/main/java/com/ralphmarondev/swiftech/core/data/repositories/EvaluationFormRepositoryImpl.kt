@@ -29,4 +29,17 @@ class EvaluationFormRepositoryImpl(
     override suspend fun getLastInsertedId(): Long {
         return evaluationFormDao.getLastInsertedId()
     }
+
+
+    override fun getQuestionsByEvaluationId(id: Int): Flow<List<EvaluationQuestion>> {
+        return evaluationFormDao.getQuestionsByEvaluationId(id)
+    }
+
+    override suspend fun deleteQuestionById(id: Int) {
+        evaluationFormDao.deleteQuestionById(id)
+    }
+
+    override suspend fun updateQuestionById(question: EvaluationQuestion) {
+        evaluationFormDao.updateQuestionById(question)
+    }
 }

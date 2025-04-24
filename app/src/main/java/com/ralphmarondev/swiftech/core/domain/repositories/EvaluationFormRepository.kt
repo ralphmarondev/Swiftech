@@ -15,4 +15,10 @@ interface EvaluationFormRepository {
     suspend fun saveQuestionToEvaluationForms(question: EvaluationQuestion)
 
     suspend fun getLastInsertedId(): Long
+
+    fun getQuestionsByEvaluationId(id: Int): Flow<List<EvaluationQuestion>>
+
+    suspend fun deleteQuestionById(id: Int)
+
+    suspend fun updateQuestionById(question: EvaluationQuestion)
 }

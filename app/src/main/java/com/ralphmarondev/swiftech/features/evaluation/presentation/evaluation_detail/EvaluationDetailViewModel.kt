@@ -1,12 +1,12 @@
 package com.ralphmarondev.swiftech.features.evaluation.presentation.evaluation_detail
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ralphmarondev.swiftech.core.domain.model.EvaluationForm
 import com.ralphmarondev.swiftech.core.domain.model.EvaluationQuestion
 import com.ralphmarondev.swiftech.core.domain.model.Result
 import com.ralphmarondev.swiftech.core.domain.usecases.evaluation.GetEvaluationFormByIdUseCase
+import com.ralphmarondev.swiftech.core.domain.usecases.evaluation.GetQuestionsByEvaluationIdUseCase
 import com.ralphmarondev.swiftech.core.domain.usecases.evaluation.SaveQuestionToEvaluationFormUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -15,11 +15,15 @@ import kotlinx.coroutines.launch
 class EvaluationDetailViewModel(
     private val evaluationId: Int,
     private val getEvaluationFormByIdUseCase: GetEvaluationFormByIdUseCase,
+    private val getQuestionsByEvaluationIdUseCase: GetQuestionsByEvaluationIdUseCase,
     private val saveQuestionToEvaluationFormUseCase: SaveQuestionToEvaluationFormUseCase
 ) : ViewModel() {
 
     private val _evaluationForm = MutableStateFlow<EvaluationForm?>(null)
     val evaluationForm = _evaluationForm.asStateFlow()
+
+    private val _questions = MutableStateFlow<List<EvaluationQuestion>>(emptyList())
+    val questions = _questions.asStateFlow()
 
     private val _newQuestion = MutableStateFlow("")
     val newQuestion = _newQuestion.asStateFlow()
@@ -39,16 +43,10 @@ class EvaluationDetailViewModel(
             _isLoading.value = true
             val evaluationForm = getEvaluationFormByIdUseCase(evaluationId)
             _evaluationForm.value = evaluationForm
-            _isLoading.value = false
-
-            Log.d("App", "Saving sample question to evaluation form...")
-            saveQuestionToEvaluationFormUseCase(
-                question = EvaluationQuestion(
-                    evaluationFormId = evaluationId,
-                    questionText = "This is a sample question"
-                )
-            )
-            Log.d("App", "Saved...")
+            getQuestionsByEvaluationIdUseCase(evaluationId).collect {
+                _questions.value = it
+                _isLoading.value = false
+            }
         }
     }
 
