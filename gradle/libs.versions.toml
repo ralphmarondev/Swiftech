@@ -34,6 +34,8 @@ material = "1.10.0"
 workRuntimeVersion = "2.10.0"
 googleGmsGoogleServices = "4.4.2"
 firebaseDatabase = "21.0.0"
+# charts
+charts = "pies"
 
 
 [libraries]
@@ -79,6 +81,8 @@ material = { group = "com.google.android.material", name = "material", version.r
 calculator-rhino = { module = "org.mozilla:rhino", version.ref = "rhino" }
 work-runtime = { module = "androidx.work:work-runtime", version.ref = "workRuntimeVersion" }
 firebase-database = { group = "com.google.firebase", name = "firebase-database", version.ref = "firebaseDatabase" }
+# charts
+charts = { module = "com.github.tehras:charts", version.ref = "charts" }
 
 
 [plugins]

@@ -63,6 +63,8 @@ dependencies {
     implementation(libs.bundles.room)
     kapt(libs.androidx.room.compiler)
 
+    implementation("co.yml:ycharts:2.1.0")
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
