@@ -27,6 +27,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -44,6 +45,13 @@ fun NewEvaluationScreen(
     val title = viewModel.title.collectAsState().value
     val description = viewModel.description.collectAsState().value
     val questions = viewModel.questions.collectAsState().value
+    val formResponse = viewModel.formResponse.collectAsState().value
+
+    LaunchedEffect(formResponse) {
+        if (formResponse?.success == true) {
+            navigateBack()
+        }
+    }
 
     Scaffold(
         topBar = {

@@ -32,8 +32,11 @@ class NewEvaluationViewModel(
     private val _showNewQuestionDialog = MutableStateFlow(false)
     val showNewQuestionDialog = _showNewQuestionDialog.asStateFlow()
 
-    private val _response = MutableStateFlow<Result?>(null)
-    val response = _response.asStateFlow()
+    private val _formResponse = MutableStateFlow<Result?>(null)
+    val formResponse = _formResponse.asStateFlow()
+
+    private val _questionResponse = MutableStateFlow<Result?>(null)
+    val questionResponse = _questionResponse.asStateFlow()
 
 
     fun onTitleValueChange(value: String) {
@@ -57,13 +60,13 @@ class NewEvaluationViewModel(
             val question = newQuestion.value
 
             if (question.isEmpty()) {
-                _response.value = Result(
+                _questionResponse.value = Result(
                     success = false,
                     message = "Question cannot be empty"
                 )
                 return@launch
             }
-            _response.value = Result(
+            _questionResponse.value = Result(
                 success = true,
                 message = "Question added"
             )
@@ -79,7 +82,7 @@ class NewEvaluationViewModel(
             val description = _description.value.trim()
 
             if (title.isEmpty() && description.isEmpty()) {
-                _response.value = Result(
+                _formResponse.value = Result(
                     success = false,
                     message = "Title and description cannot be empty"
                 )
@@ -87,7 +90,7 @@ class NewEvaluationViewModel(
             }
 
             if (title.isEmpty()) {
-                _response.value = Result(
+                _formResponse.value = Result(
                     success = false,
                     message = "Title cannot be empty"
                 )
@@ -95,7 +98,7 @@ class NewEvaluationViewModel(
             }
 
             if (description.isEmpty()) {
-                _response.value = Result(
+                _formResponse.value = Result(
                     success = false,
                     message = "Description cannot be empty"
                 )
@@ -111,7 +114,7 @@ class NewEvaluationViewModel(
                 )
 
                 if (id == 0) {
-                    _response.value = Result(
+                    _formResponse.value = Result(
                         success = false,
                         message = "Error: Failed to create evaluation form."
                     )
@@ -128,13 +131,13 @@ class NewEvaluationViewModel(
                     )
                 }
 
-                _response.value = Result(
+                _formResponse.value = Result(
                     success = true,
                     message = "Evaluation form created"
                 )
             } catch (e: Exception) {
                 Log.e("App", "Error creating evaluation form: ${e.message}")
-                _response.value = Result(
+                _formResponse.value = Result(
                     success = false,
                     message = "Error creating evaluation form"
                 )
