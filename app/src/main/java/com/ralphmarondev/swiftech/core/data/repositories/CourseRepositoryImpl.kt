@@ -30,4 +30,8 @@ class CourseRepositoryImpl(
     override fun getStudentInCourse(id: Int): Flow<List<User>> {
         return courseDao.getStudentsInCourse(id)
     }
+
+    override fun getCousesForStudent(studentId: Int): Flow<List<Course>> {
+        return courseDao.getCoursesForStudent(studentId)
+    }
 }

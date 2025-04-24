@@ -13,4 +13,6 @@ interface CourseRepository {
 
     suspend fun insertStudentToCourse(crossRef: StudentCourseCrossRef)
     fun getStudentInCourse(id: Int): Flow<List<User>>
+
+    fun getCousesForStudent(studentId: Int): Flow<List<Course>>
 }

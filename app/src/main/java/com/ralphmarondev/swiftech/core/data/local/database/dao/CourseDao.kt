@@ -37,4 +37,14 @@ interface CourseDao {
     """
     )
     fun getStudentsInCourse(courseId: Int): Flow<List<User>>
+
+    // get list of courses a student is enrolled in
+    @Query(
+        """
+            SELECT * FROM course 
+            INNER JOIN student_course ON course.id = student_course.courseId
+            WHERE student_course.studentId = :studentId AND course.isDeleted = 0
+        """
+    )
+    fun getCoursesForStudent(studentId: Int): Flow<List<Course>>
 }
