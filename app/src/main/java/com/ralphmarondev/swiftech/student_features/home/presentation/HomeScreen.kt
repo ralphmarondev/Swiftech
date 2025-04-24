@@ -2,9 +2,10 @@ package com.ralphmarondev.swiftech.student_features.home.presentation
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.util.Log
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -15,7 +16,6 @@ import androidx.compose.material.icons.automirrored.outlined.MenuOpen
 import androidx.compose.material.icons.outlined.DarkMode
 import androidx.compose.material.icons.outlined.LightMode
 import androidx.compose.material3.DrawerValue
-import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -37,6 +37,7 @@ import com.ralphmarondev.swiftech.core.presentation.AccountCard
 import com.ralphmarondev.swiftech.core.presentation.ConfirmExitDialog
 import com.ralphmarondev.swiftech.core.presentation.DrawerContent
 import com.ralphmarondev.swiftech.core.util.LocalThemeState
+import com.ralphmarondev.swiftech.student_features.home.presentation.components.CourseCard
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
@@ -135,25 +136,21 @@ fun HomeScreen(
                         .align(Alignment.Start),
                     color = MaterialTheme.colorScheme.secondary
                 )
-                LazyColumn {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    contentPadding = PaddingValues(horizontal = 16.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
                     items(courses) {
-                        ElevatedCard(
+                        CourseCard(
                             onClick = {
-                                Log.d("App", "Course id: `${it.id}`")
+                                onCourseClick(it.id)
                             },
+                            course = it,
                             modifier = Modifier
-                                .padding(horizontal = 16.dp, vertical = 4.dp)
-                        ) {
-                            Column(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(16.dp)
-                            ) {
-                                Text(
-                                    text = "${it.name} - ${it.code}"
-                                )
-                            }
-                        }
+                                .fillMaxWidth()
+                        )
                     }
                 }
             }
