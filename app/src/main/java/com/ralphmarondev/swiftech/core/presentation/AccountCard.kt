@@ -1,4 +1,4 @@
-package com.ralphmarondev.swiftech.admin_features.home.presentation.components
+package com.ralphmarondev.swiftech.core.presentation
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement

@@ -35,9 +35,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.ralphmarondev.swiftech.R
 import com.ralphmarondev.swiftech.admin_features.home.domain.model.Options
-import com.ralphmarondev.swiftech.admin_features.home.presentation.components.AccountCard
-import com.ralphmarondev.swiftech.admin_features.home.presentation.components.ConfirmExitDialog
-import com.ralphmarondev.swiftech.admin_features.home.presentation.components.DrawerContent
+import com.ralphmarondev.swiftech.core.presentation.AccountCard
+import com.ralphmarondev.swiftech.core.presentation.ConfirmExitDialog
+import com.ralphmarondev.swiftech.core.presentation.DrawerContent
 import com.ralphmarondev.swiftech.admin_features.home.presentation.components.OptionsCard
 import com.ralphmarondev.swiftech.core.util.LocalThemeState
 import kotlinx.coroutines.launch
