@@ -1,4 +1,4 @@
-package com.ralphmarondev.swiftech.features.home.presentation
+package com.ralphmarondev.swiftech.features.home.navigation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class HomeViewModel(
+class HomeNavigationViewModel(
     private val username: String,
     private val getUserDetailByUsername: GetUserDetailByUsername
 ) : ViewModel() {
@@ -16,16 +16,9 @@ class HomeViewModel(
     private val _currentUser = MutableStateFlow<User?>(null)
     val currentUser = _currentUser.asStateFlow()
 
-    private val _showConfirmExitDialog = MutableStateFlow(false)
-    val showConfirmExitDialog = _showConfirmExitDialog.asStateFlow()
-
     init {
         viewModelScope.launch {
             _currentUser.value = getUserDetailByUsername(username)
         }
-    }
-
-    fun setShowConfirmExitDialog() {
-        _showConfirmExitDialog.value = !_showConfirmExitDialog.value
     }
 }

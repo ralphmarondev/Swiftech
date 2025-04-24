@@ -9,7 +9,7 @@ import com.ralphmarondev.swiftech.core.util.LocalThemeState
 import com.ralphmarondev.swiftech.features.auth.presentation.login.LoginScreen
 import com.ralphmarondev.swiftech.features.courses.navigation.CourseNavigation
 import com.ralphmarondev.swiftech.features.evaluation.navigation.EvaluationNavigation
-import com.ralphmarondev.swiftech.features.home.presentation.HomeScreen
+import com.ralphmarondev.swiftech.features.home.navigation.HomeNavigation
 import com.ralphmarondev.swiftech.features.students.presentation.new_student.NewStudentScreen
 import com.ralphmarondev.swiftech.features.students.presentation.student_detail.StudentDetailScreen
 import com.ralphmarondev.swiftech.features.students.presentation.student_list.StudentListScreen
@@ -44,7 +44,7 @@ fun AppNavigation(
             }
             composable<Routes.Home> {
                 val username = it.arguments?.getString("username")
-                HomeScreen(
+                HomeNavigation(
                     username = username ?: "No username provided.",
                     onStudentClick = {
                         navController.navigate(Routes.StudentList) {
