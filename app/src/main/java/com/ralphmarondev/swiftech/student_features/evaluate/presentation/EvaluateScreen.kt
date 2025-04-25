@@ -30,6 +30,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -37,7 +38,9 @@ fun EvaluateScreen(
     id: Int,
     navigateBack: () -> Unit
 ) {
-    val viewModel: EvaluateViewModel = koinViewModel()
+    val viewModel: EvaluateViewModel = koinViewModel(parameters = { parametersOf(id) })
+    val courseName = viewModel.courseName.collectAsState().value
+    val courseTeacher = viewModel.courseTeacher.collectAsState().value
     val questions = viewModel.questions.collectAsState().value
 
     Scaffold(
@@ -81,7 +84,7 @@ fun EvaluateScreen(
                         color = MaterialTheme.colorScheme.secondary
                     )
                     Text(
-                        text = "Technopreneurship",
+                        text = courseName,
                         fontSize = MaterialTheme.typography.titleLarge.fontSize,
                         fontWeight = MaterialTheme.typography.titleLarge.fontWeight,
                         color = MaterialTheme.colorScheme.secondary
@@ -93,7 +96,7 @@ fun EvaluateScreen(
                         color = MaterialTheme.colorScheme.secondary
                     )
                     Text(
-                        text = "Ralph Maron Eda",
+                        text = courseTeacher,
                         fontSize = MaterialTheme.typography.titleLarge.fontSize,
                         fontWeight = MaterialTheme.typography.titleLarge.fontWeight,
                         color = MaterialTheme.colorScheme.secondary
