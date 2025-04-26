@@ -8,5 +8,8 @@ object StudentRoutes {
     data object Home
 
     @Serializable
-    data class Evaluate(val id: Int)
+    data class EvaluationForms(val courseId: Int)
+
+    @Serializable
+    data class Evaluate(val formId: Int)
 }
