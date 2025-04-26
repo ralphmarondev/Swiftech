@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBackIosNew
+import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -44,6 +45,7 @@ fun EvaluateScreen(
     val courseName = viewModel.courseName.collectAsState().value
     val courseTeacher = viewModel.courseTeacher.collectAsState().value
     val questions = viewModel.questions.collectAsState().value
+    val answers = viewModel.answers.collectAsState().value
 
     Scaffold(
         topBar = {
@@ -147,6 +149,25 @@ fun EvaluateScreen(
                                 }
                             )
                         }
+                    }
+                }
+            }
+            item {
+                Button(
+                    onClick = viewModel::printAnswers,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 16.dp, horizontal = 8.dp)
+                ) {
+                    Text(
+                        text = "SUBMIT"
+                    )
+                }
+            }
+            item {
+                Column {
+                    answers.forEach { (q, a) ->
+                        Text(text = "Question: `$q`, Answer: `$a`")
                     }
                 }
             }

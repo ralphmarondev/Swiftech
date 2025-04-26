@@ -1,5 +1,6 @@
 package com.ralphmarondev.swiftech.student_features.evaluate.presentation
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ralphmarondev.swiftech.core.data.local.preferences.AppPreferences
@@ -28,6 +29,9 @@ class EvaluateViewModel(
     private val _questions = MutableStateFlow<List<QuestionRating>>(emptyList())
     val questions = _questions.asStateFlow()
 
+    private val _answers = MutableStateFlow<Map<String, String>>(emptyMap())
+    val answers = _answers.asStateFlow()
+
     init {
         viewModelScope.launch {
             // NOTE: THIS IS SET ON `EVALUATION_FORMS`
@@ -54,6 +58,15 @@ class EvaluateViewModel(
             if (it.question == question) {
                 it.copy(selectedRating = rating)
             } else it
+        }
+        _answers.value = _answers.value.toMutableMap().apply {
+            this[question] = rating
+        }
+    }
+
+    fun printAnswers() {
+        _answers.value.forEach { (question, answer) ->
+            Log.d("App", "Question: `$question`, Answer: `$answer`")
         }
     }
 }
