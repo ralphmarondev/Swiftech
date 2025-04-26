@@ -15,6 +15,7 @@ import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.ArrowBackIosNew
 import androidx.compose.material.icons.outlined.Description
 import androidx.compose.material.icons.outlined.SaveAlt
+import androidx.compose.material.icons.outlined.Timeline
 import androidx.compose.material.icons.outlined.Title
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -44,6 +45,7 @@ fun NewEvaluationScreen(
     val showNewQuestionDialog = viewModel.showNewQuestionDialog.collectAsState().value
     val title = viewModel.title.collectAsState().value
     val description = viewModel.description.collectAsState().value
+    val term = viewModel.term.collectAsState().value
     val questions = viewModel.questions.collectAsState().value
     val formResponse = viewModel.formResponse.collectAsState().value
 
@@ -124,6 +126,16 @@ fun NewEvaluationScreen(
                     label = "Description",
                     placeholder = "For cuties only.",
                     leadingIcon = Icons.Outlined.Description,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 8.dp, vertical = 4.dp)
+                )
+                NormalTextField(
+                    value = term,
+                    onValueChange = viewModel::onTermValueChange,
+                    label = "Term",
+                    placeholder = "24-25-1",
+                    leadingIcon = Icons.Outlined.Timeline,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 8.dp, vertical = 4.dp)

@@ -20,6 +20,7 @@ import androidx.compose.material.icons.automirrored.outlined.Grading
 import androidx.compose.material.icons.outlined.AccountBox
 import androidx.compose.material.icons.outlined.ArrowBackIosNew
 import androidx.compose.material.icons.outlined.QrCode
+import androidx.compose.material.icons.outlined.Timeline
 import androidx.compose.material3.Button
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -59,6 +60,7 @@ fun NewCourseScreen(
     val viewModel: NewCourseViewModel = koinViewModel()
     val name = viewModel.name.collectAsState().value
     val code = viewModel.code.collectAsState().value
+    val term = viewModel.term.collectAsState().value
     val teacher = viewModel.teacher.collectAsState().value
     val imagePath = viewModel.imagePath.collectAsState().value
     val response = viewModel.response.collectAsState().value
@@ -160,6 +162,25 @@ fun NewCourseScreen(
                 label = "Code",
                 placeholder = "T2025",
                 leadingIcon = Icons.Outlined.QrCode,
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Next
+                ),
+                keyboardActions = KeyboardActions(
+                    onNext = {
+                        focusManager.moveFocus(FocusDirection.Next)
+                    }
+                )
+            )
+
+            NormalTextField(
+                value = term,
+                onValueChange = viewModel::onTermValueChange,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp, vertical = 4.dp),
+                label = "Term",
+                placeholder = "24-25-1",
+                leadingIcon = Icons.Outlined.Timeline,
                 keyboardOptions = KeyboardOptions(
                     imeAction = ImeAction.Next
                 ),

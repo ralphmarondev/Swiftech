@@ -50,6 +50,10 @@ class NewEvaluationViewModel(
         _description.value = value
     }
 
+    fun onTermValueChange(value: String) {
+        _term.value = value
+    }
+
     fun onNewQuestionValueChange(value: String) {
         _newQuestion.value = value
     }

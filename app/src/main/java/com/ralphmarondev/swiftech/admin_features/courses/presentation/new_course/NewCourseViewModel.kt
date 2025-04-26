@@ -48,6 +48,10 @@ class NewCourseViewModel(
         _code.value = value
     }
 
+    fun onTermValueChange(value: String) {
+        _term.value = value
+    }
+
     fun onTeacherValueChange(value: String) {
         _teacher.value = value
     }
