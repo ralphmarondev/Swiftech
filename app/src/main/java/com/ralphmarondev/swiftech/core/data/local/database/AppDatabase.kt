@@ -8,6 +8,7 @@ import androidx.room.RoomDatabase
 import com.ralphmarondev.swiftech.core.data.local.database.dao.CourseDao
 import com.ralphmarondev.swiftech.core.data.local.database.dao.EvaluationFormDao
 import com.ralphmarondev.swiftech.core.data.local.database.dao.UserDao
+import com.ralphmarondev.swiftech.core.data.local.database.sfdao.SFEvaluationFormsDao
 import com.ralphmarondev.swiftech.core.domain.model.Course
 import com.ralphmarondev.swiftech.core.domain.model.EvaluationAnswer
 import com.ralphmarondev.swiftech.core.domain.model.EvaluationForm
@@ -33,6 +34,9 @@ abstract class AppDatabase : RoomDatabase() {
     abstract val userDao: UserDao
     abstract val courseDao: CourseDao
     abstract val evaluationFormDao: EvaluationFormDao
+
+    // student feature dao
+    abstract val sfEvalutionFormDao: SFEvaluationFormsDao
 
     companion object {
         private const val NAME = "swiftech_database"
