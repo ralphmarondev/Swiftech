@@ -23,7 +23,7 @@ fun StudentNavigation(
             HomeScreen(
                 username = username,
                 onCourseClick = { id ->
-                    navController.navigate(StudentRoutes.Evaluate(id)) {
+                    navController.navigate(StudentRoutes.EvaluationForms(id)) {
                         launchSingleTop = true
                     }
                 },
@@ -36,6 +36,11 @@ fun StudentNavigation(
                 courseId = courseId ?: 0,
                 navigateBack = {
                     navController.navigateUp()
+                },
+                onEvaluationFormClick = { formId ->
+                    navController.navigate(StudentRoutes.Evaluate(formId)) {
+                        launchSingleTop = true
+                    }
                 }
             )
         }

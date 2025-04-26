@@ -1,13 +1,20 @@
 package com.ralphmarondev.swiftech.student_features.evaluation_forms.presentation
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBackIosNew
@@ -21,18 +28,25 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EvaluationFormScreen(
     courseId: Int,
-    navigateBack: () -> Unit
+    navigateBack: () -> Unit,
+    onEvaluationFormClick: (Int) -> Unit
 ) {
+    val viewModel: EvaluationFormViewModel = koinViewModel(parameters = { parametersOf(courseId) })
+    val evaluationForms = viewModel.evaluationForms.collectAsState().value
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -58,8 +72,30 @@ fun EvaluationFormScreen(
                 )
             )
         }
-    ) {
-
+    ) { innerPadding ->
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding),
+            contentPadding = PaddingValues(horizontal = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            item { Spacer(modifier = Modifier.height(1.dp)) }
+            items(evaluationForms) { evaluation ->
+                EvaluationCard(
+                    onClick = {
+                        Log.d(
+                            "App",
+                            "Evaluation with id: ${evaluation.id} and title: ${evaluation.title} is clicked."
+                        )
+                        onEvaluationFormClick(evaluation.id)
+                    },
+                    title = evaluation.title,
+                    date = "2025-04-07"
+                )
+            }
+            item { Spacer(modifier = Modifier.height(100.dp)) }
+        }
     }
 }
 
