@@ -9,8 +9,8 @@ data class EvaluationForm(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     val title: String,
+    val term: String,
     val description: String? = null,
-    val term: String? = null,
     val isDeleted: Boolean = false
 )
 
