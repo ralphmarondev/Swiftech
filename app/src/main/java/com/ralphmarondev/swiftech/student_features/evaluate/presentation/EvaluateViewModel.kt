@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.ralphmarondev.swiftech.core.data.local.preferences.AppPreferences
 import com.ralphmarondev.swiftech.core.domain.usecases.course.GetCourseDetailByIdUseCase
 import com.ralphmarondev.swiftech.core.domain.usecases.user.GetUserByIdUseCase
+import com.ralphmarondev.swiftech.student_features.evaluate.domain.model.QuestionRating
 import com.ralphmarondev.swiftech.student_features.evaluate.domain.usecase.GetEvaluationFormQuestionByIdUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -24,7 +25,7 @@ class EvaluateViewModel(
     private val _courseTeacher = MutableStateFlow("")
     val courseTeacher = _courseTeacher.asStateFlow()
 
-    private val _questions = MutableStateFlow<List<String>>(emptyList())
+    private val _questions = MutableStateFlow<List<QuestionRating>>(emptyList())
     val questions = _questions.asStateFlow()
 
     init {
@@ -43,8 +44,16 @@ class EvaluateViewModel(
             )?.fullName ?: "Teacher name is not specified."
 
             getEvaluationFormQuestionByIdUseCase(formId).collect { questions ->
-                _questions.value = questions.map { it.questionText }
+                _questions.value = questions.map { QuestionRating(it.questionText) }
             }
+        }
+    }
+
+    fun selectRating(question: String, rating: String) {
+        _questions.value = _questions.value.map {
+            if (it.question == question) {
+                it.copy(selectedRating = rating)
+            } else it
         }
     }
 }

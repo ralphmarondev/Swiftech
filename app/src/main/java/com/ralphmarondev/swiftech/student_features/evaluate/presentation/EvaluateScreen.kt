@@ -110,7 +110,7 @@ fun EvaluateScreen(
                     )
                 }
             }
-            items(questions) { question ->
+            items(questions) { questionRating ->
                 ElevatedCard(
                     modifier = Modifier
                         .padding(vertical = 4.dp)
@@ -121,37 +121,32 @@ fun EvaluateScreen(
                             .padding(8.dp)
                     ) {
                         Text(
-                            text = question,
+                            text = questionRating.question,
                             fontSize = MaterialTheme.typography.titleMedium.fontSize,
                             fontWeight = MaterialTheme.typography.titleMedium.fontWeight,
                             color = MaterialTheme.colorScheme.secondary,
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                         )
-                        RatingBox(
-                            label = "Excellent",
-                            value = false,
-                            onValueChanged = {}
+
+                        val ratings = listOf(
+                            "Excellent",
+                            "Saks lang",
+                            "Meds",
+                            "Poor yan",
+                            "Very porrr"
                         )
-                        RatingBox(
-                            label = "Saks lang",
-                            value = false,
-                            onValueChanged = {}
-                        )
-                        RatingBox(
-                            label = "Meds",
-                            value = false,
-                            onValueChanged = {}
-                        )
-                        RatingBox(
-                            label = "Poor yan",
-                            value = false,
-                            onValueChanged = {}
-                        )
-                        RatingBox(
-                            label = "Very poorrr",
-                            value = false,
-                            onValueChanged = {}
-                        )
+
+                        ratings.forEach { rating ->
+                            RatingBox(
+                                label = rating,
+                                value = questionRating.selectedRating == rating,
+                                onValueChanged = { isChecked ->
+                                    if (isChecked) {
+                                        viewModel.selectRating(questionRating.question, rating)
+                                    }
+                                }
+                            )
+                        }
                     }
                 }
             }
