@@ -27,6 +27,9 @@ class NewCourseViewModel(
     private val _code = MutableStateFlow("")
     val code = _code.asStateFlow()
 
+    private val _term = MutableStateFlow("")
+    val term = _term.asStateFlow()
+
     private val _teacher = MutableStateFlow("")
     val teacher = _teacher.asStateFlow()
 
@@ -63,6 +66,7 @@ class NewCourseViewModel(
         viewModelScope.launch {
             val name = _name.value.trim()
             val code = _code.value.trim()
+            val term = _term.value.trim()
             val teacher = _teacher.value.trim()
             val imagePath = _imagePath.value.trim()
 
@@ -110,7 +114,8 @@ class NewCourseViewModel(
                     name = name,
                     code = code,
                     teacherId = teacherId,
-                    image = imagePath
+                    image = imagePath,
+                    term = term
                 )
             )
             _response.value = Result(

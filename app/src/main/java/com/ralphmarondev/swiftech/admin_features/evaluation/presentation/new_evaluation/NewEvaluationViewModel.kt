@@ -20,6 +20,9 @@ class NewEvaluationViewModel(
     private val _title = MutableStateFlow("")
     val title = _title.asStateFlow()
 
+    private val _term = MutableStateFlow("")
+    val term = _term.asStateFlow()
+
     private val _description = MutableStateFlow("")
     val description = _description.asStateFlow()
 
@@ -79,6 +82,7 @@ class NewEvaluationViewModel(
     fun onSave() {
         viewModelScope.launch {
             val title = _title.value.trim()
+            val term = _term.value.trim()
             val description = _description.value.trim()
 
             if (title.isEmpty() && description.isEmpty()) {
@@ -109,6 +113,7 @@ class NewEvaluationViewModel(
                 val id = createEvaluationFormUseCase(
                     EvaluationForm(
                         title = title,
+                        term = term,
                         description = description
                     )
                 )
