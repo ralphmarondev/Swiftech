@@ -5,5 +5,5 @@ import com.ralphmarondev.swiftech.student_features.evaluate.domain.repository.Ev
 class GetEvaluationFormQuestionByIdUseCase(
     private val repository: EvaluateRepository
 ) {
-    suspend operator fun invoke(formId: Int) = repository.getEvaluationFormQuestionsById(formId)
+    operator fun invoke(formId: Int) = repository.getEvaluationFormQuestionsById(formId)
 }

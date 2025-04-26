@@ -5,5 +5,5 @@ import com.ralphmarondev.swiftech.student_features.evaluation_forms.domain.repos
 class GetEvaluationFormByTermUseCase(
     private val repository: EvaluationFormsRepository
 ) {
-    suspend operator fun invoke(term: String) = repository.getEvaluationFormsByTerm(term)
+    operator fun invoke(term: String) = repository.getEvaluationFormsByTerm(term)
 }

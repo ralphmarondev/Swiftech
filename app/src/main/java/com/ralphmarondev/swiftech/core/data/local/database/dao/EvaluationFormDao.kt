@@ -36,4 +36,15 @@ interface EvaluationFormDao {
 
     @Update
     suspend fun updateQuestionById(question: EvaluationQuestion)
+
+
+    // NOTE: FUNCTIONS FOR STUDENT FEATURE
+    @Query("SELECT * FROM evaluation_form WHERE term = :term")
+    fun getEvaluationFormsByTerm(term: String): Flow<List<EvaluationForm>>
+
+    @Query("SELECT * FROM evaluation_form WHERE id = :id LIMIT 1")
+    suspend fun getEvaluationFormDetailById(id: Int): EvaluationForm
+
+    @Query("SELECT * FROM evaluation_question WHERE evaluationFormId = :id")
+    fun getEvaluationFormQuestionsById(id: Int): Flow<List<EvaluationQuestion>>
 }
