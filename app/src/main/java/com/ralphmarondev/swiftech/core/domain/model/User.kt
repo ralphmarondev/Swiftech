@@ -9,8 +9,9 @@ data class User(
     val id: Int = 0,
     val username: String,
     val password: String,
-    val role: String, // STUDENT, ADMIN, TEACHER
+    val gender: String = Gender.MALE, // Male, Female; [Default: Male]
     val fullName: String? = null,
+    val role: String = Role.STUDENT, // STUDENT, ADMIN, TEACHER; [Default Student]
     val email: String? = null,
     val phoneNumber: String? = null,
     val image: String? = null,
