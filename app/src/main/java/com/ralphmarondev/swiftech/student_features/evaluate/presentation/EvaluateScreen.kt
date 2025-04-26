@@ -28,7 +28,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 
@@ -79,26 +81,26 @@ fun EvaluateScreen(
                 Column {
                     Text(
                         text = "Course Name:",
-                        fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                        fontWeight = MaterialTheme.typography.titleMedium.fontWeight,
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.W300,
                         color = MaterialTheme.colorScheme.secondary
                     )
                     Text(
                         text = courseName,
-                        fontSize = MaterialTheme.typography.titleLarge.fontSize,
-                        fontWeight = MaterialTheme.typography.titleLarge.fontWeight,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.W500,
                         color = MaterialTheme.colorScheme.secondary
                     )
                     Text(
                         text = "Teacher:",
-                        fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                        fontWeight = MaterialTheme.typography.titleMedium.fontWeight,
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.W300,
                         color = MaterialTheme.colorScheme.secondary
                     )
                     Text(
                         text = courseTeacher,
-                        fontSize = MaterialTheme.typography.titleLarge.fontSize,
-                        fontWeight = MaterialTheme.typography.titleLarge.fontWeight,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.W500,
                         color = MaterialTheme.colorScheme.secondary
                     )
                     HorizontalDivider(
