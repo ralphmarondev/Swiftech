@@ -66,7 +66,12 @@ fun HomeScreen(
 
     ModalNavigationDrawer(
         drawerContent = {
-            DrawerContent(onLogout)
+            DrawerContent(
+                onLogout = onLogout,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(end = 24.dp)
+            )
         },
         drawerState = drawerState
     ) {

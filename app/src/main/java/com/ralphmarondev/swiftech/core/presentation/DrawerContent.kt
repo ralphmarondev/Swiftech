@@ -32,10 +32,11 @@ import com.ralphmarondev.swiftech.R
 
 @Composable
 fun DrawerContent(
+    modifier: Modifier = Modifier,
     onLogout: () -> Unit
 ) {
     ModalDrawerSheet(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxHeight()
             .statusBarsPadding()
             .systemBarsPadding()
