@@ -19,6 +19,8 @@ class AppPreferences(
         private const val TO_UPDATE_USERNAME = "to_update_username"
 
         private const val ROLE = "role"
+
+        private const val STUDENT_COURSE_ID = "student_course_id"
     }
 
     private val sharedPreferences = context.getSharedPreferences(
@@ -99,5 +101,14 @@ class AppPreferences(
 
     fun getRole(): String? {
         return sharedPreferences.getString(ROLE, null)
+    }
+
+    // NOTE: TEMPORARY SOLUTION FOR STUDENT FEATURE
+    fun setCourseId(value: Int) {
+        sharedPreferences.edit { putInt(STUDENT_COURSE_ID, value) }
+    }
+
+    fun getCourseId(): Int {
+        return sharedPreferences.getInt(STUDENT_COURSE_ID, 0)
     }
 }

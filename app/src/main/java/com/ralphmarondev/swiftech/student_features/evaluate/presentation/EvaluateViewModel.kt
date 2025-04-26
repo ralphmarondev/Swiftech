@@ -2,6 +2,7 @@ package com.ralphmarondev.swiftech.student_features.evaluate.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ralphmarondev.swiftech.core.data.local.preferences.AppPreferences
 import com.ralphmarondev.swiftech.core.domain.usecases.course.GetCourseDetailByIdUseCase
 import com.ralphmarondev.swiftech.core.domain.usecases.user.GetUserByIdUseCase
 import com.ralphmarondev.swiftech.student_features.evaluate.domain.usecase.GetEvaluationFormQuestionByIdUseCase
@@ -11,6 +12,7 @@ import kotlinx.coroutines.launch
 
 class EvaluateViewModel(
     private val formId: Int,
+    private val preferences: AppPreferences,
     private val getCourseDetailByIdUseCase: GetCourseDetailByIdUseCase,
     private val getUserByIdUseCase: GetUserByIdUseCase,
     private val getEvaluationFormQuestionByIdUseCase: GetEvaluationFormQuestionByIdUseCase
@@ -27,21 +29,18 @@ class EvaluateViewModel(
 
     init {
         viewModelScope.launch {
-//            val course = getCourseDetailByIdUseCase(id)
-//            _courseName.value = course?.name ?: "Course name not defined."
-//
-//            _courseTeacher.value = getUserByIdUseCase(course?.teacherId ?: -1)?.fullName
-//                ?: "Teacher name not defined."
+            // NOTE: THIS IS SET ON `EVALUATION_FORMS`
+            val courseId = preferences.getCourseId()
 
-//            _questions.value = listOf(
-//                "Displayed energy, enthusiasm, and commitment to teaching.",
-//                "Arrived promptly and remained for the agreed upon time.",
-//                "Demonstrated ability to learn about students.",
-//                "Demonstrated ability to design lessons based on student's needs.",
-//                "Displayed sensitivity to special needs students."
-//            )
-            _courseName.value = "Tech"
-            _courseTeacher.value = "Ralph"
+            _courseName.value =
+                getCourseDetailByIdUseCase(
+                    courseId
+                )?.name ?: "Course name is not specified."
+            _courseTeacher.value = getUserByIdUseCase(
+                id = getCourseDetailByIdUseCase(
+                    courseId
+                )?.teacherId ?: 0
+            )?.fullName ?: "Teacher name is not specified."
 
             getEvaluationFormQuestionByIdUseCase(formId).collect { questions ->
                 _questions.value = questions.map { it.questionText }
