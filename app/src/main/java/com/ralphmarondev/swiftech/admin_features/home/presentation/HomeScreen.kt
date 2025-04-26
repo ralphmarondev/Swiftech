@@ -35,10 +35,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.ralphmarondev.swiftech.R
 import com.ralphmarondev.swiftech.admin_features.home.domain.model.Options
+import com.ralphmarondev.swiftech.admin_features.home.presentation.components.OptionsCard
 import com.ralphmarondev.swiftech.core.presentation.AccountCard
 import com.ralphmarondev.swiftech.core.presentation.ConfirmExitDialog
 import com.ralphmarondev.swiftech.core.presentation.DrawerContent
-import com.ralphmarondev.swiftech.admin_features.home.presentation.components.OptionsCard
 import com.ralphmarondev.swiftech.core.util.LocalThemeState
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
@@ -58,7 +58,7 @@ fun HomeScreen(
     val themeState = LocalThemeState.current
     val viewModel: HomeViewModel = koinViewModel(parameters = { parametersOf(username) })
     val currentUser = viewModel.currentUser.collectAsState().value
-    val showConfirmExitDiloag = viewModel.showConfirmExitDialog.collectAsState().value
+    val showConfirmExitDialog = viewModel.showConfirmExitDialog.collectAsState().value
 
     val options = listOf(
         Options(
@@ -186,7 +186,7 @@ fun HomeScreen(
         }
     }
 
-    if (showConfirmExitDiloag) {
+    if (showConfirmExitDialog) {
         ConfirmExitDialog(
             onDismiss = {
                 viewModel.setShowConfirmExitDialog()
