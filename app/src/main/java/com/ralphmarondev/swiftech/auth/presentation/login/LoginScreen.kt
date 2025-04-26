@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -27,7 +28,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -43,7 +43,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.ralphmarondev.swiftech.auth.presentation.login.components.ForgotPasswordDialog
 import com.ralphmarondev.swiftech.core.presentation.NormalTextField
 import com.ralphmarondev.swiftech.core.presentation.PasswordTextField
 import com.ralphmarondev.swiftech.core.util.LocalThemeState
@@ -59,7 +58,6 @@ fun LoginScreen(
     val username = viewModel.username.collectAsState().value
     val password = viewModel.password.collectAsState().value
     val rememberMe = viewModel.rememberMe.collectAsState().value
-    val showPasswordDialog = viewModel.showForgotPasswordDialog.collectAsState().value
     val response = viewModel.response.collectAsState().value
 
     val focusManager = LocalFocusManager.current
@@ -213,7 +211,8 @@ fun LoginScreen(
                         },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(8.dp)
+                            .padding(8.dp),
+                        shape = RoundedCornerShape(8.dp)
                     ) {
                         Text(
                             text = "LOGIN",
@@ -222,24 +221,8 @@ fun LoginScreen(
                             fontSize = 16.sp
                         )
                     }
-
-                    TextButton(
-                        onClick = viewModel::toggleForgotPasswordDialog,
-                        modifier = Modifier.align(Alignment.CenterHorizontally)
-                    ) {
-                        Text(
-                            text = "Forgot Password?",
-                            color = MaterialTheme.colorScheme.tertiary
-                        )
-                    }
                 }
             }
         }
-    }
-
-    if (showPasswordDialog) {
-        ForgotPasswordDialog(
-            onDismiss = viewModel::toggleForgotPasswordDialog
-        )
     }
 }

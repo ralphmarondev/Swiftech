@@ -37,9 +37,6 @@ class LoginViewModel(
     private val _rememberMe = MutableStateFlow(preferences.isRememberMeChecked())
     val rememberMe: StateFlow<Boolean> get() = _rememberMe
 
-    private val _showForgotPasswordDialog = MutableStateFlow(false)
-    val showForgotPasswordDialog: StateFlow<Boolean> get() = _showForgotPasswordDialog
-
     private val _response = MutableStateFlow<Result?>(null)
     val response: StateFlow<Result?> get() = _response
 
@@ -85,10 +82,6 @@ class LoginViewModel(
     fun toggleRememberMe() {
         _rememberMe.value = !_rememberMe.value
         preferences.setRememberMe()
-    }
-
-    fun toggleForgotPasswordDialog() {
-        _showForgotPasswordDialog.value = !_showForgotPasswordDialog.value
     }
 
     fun login() {
