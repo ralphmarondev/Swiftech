@@ -10,6 +10,7 @@ data class EvaluationForm(
     val id: Int = 0,
     val title: String,
     val description: String? = null,
+    val term: String? = null,
     val isDeleted: Boolean = false
 )
 
