@@ -2,6 +2,7 @@ package com.ralphmarondev.swiftech.student_features.home.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ralphmarondev.swiftech.core.data.local.preferences.AppPreferences
 import com.ralphmarondev.swiftech.core.domain.model.Course
 import com.ralphmarondev.swiftech.core.domain.model.User
 import com.ralphmarondev.swiftech.core.domain.usecases.course.GetCourseByStudentIdUseCase
@@ -13,7 +14,8 @@ import kotlinx.coroutines.launch
 class HomeViewModel(
     private val username: String,
     private val getUserDetailByUsername: GetUserDetailByUsername,
-    private val getCourseByStudentIdUseCase: GetCourseByStudentIdUseCase
+    private val getCourseByStudentIdUseCase: GetCourseByStudentIdUseCase,
+    private val preferences: AppPreferences
 ) : ViewModel() {
 
     private val _currentUser = MutableStateFlow<User?>(null)
@@ -28,6 +30,7 @@ class HomeViewModel(
     init {
         viewModelScope.launch {
             _currentUser.value = getUserDetailByUsername(username)
+            preferences.setStudentId(_currentUser.value?.id ?: 0)
             getCourseByStudentIdUseCase(_currentUser.value?.id ?: 0).collect {
                 _courses.value = it
             }

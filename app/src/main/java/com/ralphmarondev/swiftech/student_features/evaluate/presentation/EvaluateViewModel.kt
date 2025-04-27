@@ -85,7 +85,8 @@ class EvaluateViewModel(
     fun submitEvaluation() {
         viewModelScope.launch {
             try {
-                val studentId = 1
+                // NOTE: studentId is set on HomeViewModel
+                val studentId = preferences.getStudentId()
                 val courseId = preferences.getCourseId()
                 val evaluationAnswers = _questions.value.map { questionRating ->
                     SubmitEvaluationAnswer(
