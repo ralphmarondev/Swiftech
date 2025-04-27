@@ -1,7 +1,7 @@
 package com.ralphmarondev.swiftech.student_features.evaluate.domain.model
 
-data class QuestionRating(
+data class SubmitEvaluationAnswer(
     val id: Int,
     val question: String,
-    val selectedRating: String? = null
+    val answer: String
 )

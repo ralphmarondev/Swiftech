@@ -4,9 +4,12 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
 import androidx.room.Update
+import com.ralphmarondev.swiftech.core.domain.model.EvaluationAnswer
 import com.ralphmarondev.swiftech.core.domain.model.EvaluationForm
 import com.ralphmarondev.swiftech.core.domain.model.EvaluationQuestion
+import com.ralphmarondev.swiftech.core.domain.model.EvaluationResponse
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -47,4 +50,30 @@ interface EvaluationFormDao {
 
     @Query("SELECT * FROM evaluation_question WHERE evaluationFormId = :id")
     fun getEvaluationFormQuestionsById(id: Int): Flow<List<EvaluationQuestion>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertEvaluationResponse(response: EvaluationResponse): Long
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertEvaluationAnswer(answers: List<EvaluationAnswer>)
+
+    @Transaction
+    suspend fun submitEvaluation(response: EvaluationResponse, answers: List<EvaluationAnswer>) {
+        val responseId = insertEvaluationResponse(response)
+        val answersWithResponseId =
+            answers.map { it.copy(evaluationResponseId = responseId.toInt()) }
+        insertEvaluationAnswer(answersWithResponseId)
+    }
+
+    @Query(
+        """
+            SELECT COUNT(*) FROM evaluation_response
+            WHERE studentId = :studentId AND courseId = :courseId AND evaluationFormId = :evaluationFormId
+        """
+    )
+    suspend fun hasStudentAlreadyEvaluated(
+        studentId: Int,
+        courseId: Int,
+        evaluationFormId: Int
+    ): Int
 }

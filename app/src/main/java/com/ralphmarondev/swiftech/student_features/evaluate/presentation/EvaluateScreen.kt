@@ -154,7 +154,7 @@ fun EvaluateScreen(
             }
             item {
                 Button(
-                    onClick = viewModel::printAnswers,
+                    onClick = viewModel::submitEvaluation,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 16.dp, horizontal = 8.dp)

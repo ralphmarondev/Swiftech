@@ -57,7 +57,7 @@ data class EvaluationQuestion(
 )
 data class EvaluationResponse(
     @PrimaryKey(autoGenerate = true)
-    val id: Int,
+    val id: Int = 0,
     val studentId: Int,
     val teacherId: Int,
     val courseId: Int,
