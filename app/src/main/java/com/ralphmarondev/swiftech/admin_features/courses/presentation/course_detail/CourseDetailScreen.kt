@@ -18,6 +18,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.ArrowBackIosNew
+import androidx.compose.material.icons.outlined.DatasetLinked
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -47,7 +48,8 @@ import org.koin.core.parameter.parametersOf
 fun CourseDetailScreen(
     courseId: Int,
     navigateBack: () -> Unit,
-    updateCourse: () -> Unit
+    updateCourse: () -> Unit,
+    navigateToReports: (Int) -> Unit
 ) {
     val viewModel: CourseDetailViewModel = koinViewModel(parameters = { parametersOf(courseId) })
     val courseDetail = viewModel.courseDetail.collectAsState().value
@@ -73,10 +75,19 @@ fun CourseDetailScreen(
                         )
                     }
                 },
+                actions = {
+                    IconButton(onClick = { navigateToReports(courseId) }) {
+                        Icon(
+                            imageVector = Icons.Outlined.DatasetLinked,
+                            contentDescription = "Reports"
+                        )
+                    }
+                },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primary,
                     titleContentColor = MaterialTheme.colorScheme.onPrimary,
-                    navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
+                    navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,
+                    actionIconContentColor = MaterialTheme.colorScheme.onPrimary
                 )
             )
         },

@@ -1,5 +1,6 @@
 package com.ralphmarondev.swiftech.admin_features.courses.navigation
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -25,6 +26,7 @@ object CourseRoutes {
 @Composable
 fun CourseNavigation(
     navigateBack: () -> Unit,
+    navigateToReports: (Int) -> Unit,
     navController: NavHostController = rememberNavController()
 ) {
     NavHost(
@@ -40,6 +42,7 @@ fun CourseNavigation(
                     }
                 },
                 onCourseClick = { id ->
+                    Log.d("App", "Course navigation, id: `$id`")
                     navController.navigate(CourseRoutes.CourseDetail(id)) {
                         launchSingleTop = true
                     }
@@ -55,12 +58,16 @@ fun CourseNavigation(
         }
         composable<CourseRoutes.CourseDetail> {
             val courseId = it.arguments?.getInt("id")
+            Log.d("App", "Course navigation - course detail, retrieved id: `$courseId`")
             CourseDetailScreen(
                 courseId = courseId ?: -1,
                 navigateBack = {
                     navController.navigateUp()
                 },
-                updateCourse = {}
+                updateCourse = {},
+                navigateToReports = { id ->
+                    navigateToReports(id)
+                }
             )
         }
     }

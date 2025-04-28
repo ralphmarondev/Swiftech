@@ -1,5 +1,6 @@
 package com.ralphmarondev.swiftech.admin_features.navigation
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -8,6 +9,7 @@ import androidx.navigation.compose.rememberNavController
 import com.ralphmarondev.swiftech.admin_features.courses.navigation.CourseNavigation
 import com.ralphmarondev.swiftech.admin_features.evaluation.navigation.EvaluationNavigation
 import com.ralphmarondev.swiftech.admin_features.home.presentation.HomeScreen
+import com.ralphmarondev.swiftech.admin_features.reports.presentation.ReportScreen
 import com.ralphmarondev.swiftech.admin_features.students.presentation.new_student.NewStudentScreen
 import com.ralphmarondev.swiftech.admin_features.students.presentation.student_detail.StudentDetailScreen
 import com.ralphmarondev.swiftech.admin_features.students.presentation.student_list.StudentListScreen
@@ -159,11 +161,26 @@ fun AdminNavigation(
             CourseNavigation(
                 navigateBack = {
                     navController.navigateUp()
+                },
+                navigateToReports = { courseId ->
+                    navController.navigate(AdminRoutes.Report(courseId)) {
+                        launchSingleTop = true
+                    }
                 }
             )
         }
         composable<AdminRoutes.EvaluationNavigation> {
             EvaluationNavigation(
+                navigateBack = {
+                    navController.navigateUp()
+                }
+            )
+        }
+        composable<AdminRoutes.Report> {
+            val courseId = it.arguments?.getInt("courseId")
+            Log.d("App", "AdminNavigation, courseId: `$courseId`")
+            ReportScreen(
+                courseId = courseId ?: 0,
                 navigateBack = {
                     navController.navigateUp()
                 }

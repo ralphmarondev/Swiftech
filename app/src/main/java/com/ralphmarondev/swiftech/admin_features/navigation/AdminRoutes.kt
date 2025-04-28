@@ -36,4 +36,7 @@ object AdminRoutes {
 
     @Serializable
     data object EvaluationNavigation
+
+    @Serializable
+    data class Report(val courseId: Int)
 }
