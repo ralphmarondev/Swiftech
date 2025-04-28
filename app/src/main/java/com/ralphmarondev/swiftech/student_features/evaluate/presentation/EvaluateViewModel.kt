@@ -12,6 +12,7 @@ import com.ralphmarondev.swiftech.core.domain.usecases.user.GetUserByIdUseCase
 import com.ralphmarondev.swiftech.student_features.evaluate.domain.model.QuestionRating
 import com.ralphmarondev.swiftech.student_features.evaluate.domain.model.SubmitEvaluationAnswer
 import com.ralphmarondev.swiftech.student_features.evaluate.domain.usecase.GetEvaluationFormQuestionByIdUseCase
+import com.ralphmarondev.swiftech.student_features.evaluate.domain.usecase.HasEvaluatedUseCase
 import com.ralphmarondev.swiftech.student_features.evaluate.domain.usecase.SubmitEvaluationUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -23,7 +24,8 @@ class EvaluateViewModel(
     private val getCourseDetailByIdUseCase: GetCourseDetailByIdUseCase,
     private val getUserByIdUseCase: GetUserByIdUseCase,
     private val getEvaluationFormQuestionByIdUseCase: GetEvaluationFormQuestionByIdUseCase,
-    private val submitEvaluationUseCase: SubmitEvaluationUseCase
+    private val submitEvaluationUseCase: SubmitEvaluationUseCase,
+    private val hasEvaluatedUseCase: HasEvaluatedUseCase
 ) : ViewModel() {
 
     private val _courseName = MutableStateFlow("")
@@ -43,6 +45,9 @@ class EvaluateViewModel(
 
     private val _teacherId = MutableStateFlow(0)
 
+    private val _hasEvaluated = MutableStateFlow(false)
+    val hasEvaluated = _hasEvaluated.asStateFlow()
+
     init {
         viewModelScope.launch {
             // NOTE: THIS IS SET ON `EVALUATION_FORMS`
@@ -60,6 +65,19 @@ class EvaluateViewModel(
             _courseTeacher.value = courseTeacher?.fullName ?: "Teacher name is not specified."
             _teacherId.value = courseTeacher?.id ?: 0
 
+            val hasEvaluated = hasEvaluatedUseCase(
+                courseId = courseId,
+                studentId = preferences.getStudentId(),
+                evaluationFormId = formId
+            )
+
+            _hasEvaluated.value = hasEvaluated
+            if (hasEvaluated) {
+                Log.d("App", "Student has already evaluated. Returning...")
+                return@launch
+            }
+
+            Log.d("App", "Student has not evaluated yet. Getting evaluation forms...")
             getEvaluationFormQuestionByIdUseCase(formId).collect { questions ->
                 _questions.value = questions.map {
                     QuestionRating(
@@ -68,6 +86,7 @@ class EvaluateViewModel(
                     )
                 }
             }
+            Log.d("App", "Form count: ${_questions.value.size}")
         }
     }
 
@@ -84,6 +103,11 @@ class EvaluateViewModel(
 
     fun submitEvaluation() {
         viewModelScope.launch {
+            if (_hasEvaluated.value) {
+                Log.d("App", "Cannot submit, student has already evaluated.")
+                return@launch
+            }
+
             try {
                 // NOTE: studentId is set on HomeViewModel
                 val studentId = preferences.getStudentId()

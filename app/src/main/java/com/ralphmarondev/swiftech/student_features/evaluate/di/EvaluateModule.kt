@@ -4,6 +4,7 @@ import com.ralphmarondev.swiftech.student_features.evaluate.data.repository.Eval
 import com.ralphmarondev.swiftech.student_features.evaluate.domain.repository.EvaluateRepository
 import com.ralphmarondev.swiftech.student_features.evaluate.domain.usecase.GetEvaluationFormDetailByIdUseCase
 import com.ralphmarondev.swiftech.student_features.evaluate.domain.usecase.GetEvaluationFormQuestionByIdUseCase
+import com.ralphmarondev.swiftech.student_features.evaluate.domain.usecase.HasEvaluatedUseCase
 import com.ralphmarondev.swiftech.student_features.evaluate.domain.usecase.SubmitEvaluationUseCase
 import com.ralphmarondev.swiftech.student_features.evaluate.presentation.EvaluateViewModel
 import org.koin.androidx.viewmodel.dsl.viewModelOf
@@ -18,4 +19,5 @@ val evaluateModule = module {
     factoryOf(::GetEvaluationFormQuestionByIdUseCase)
     factoryOf(::GetEvaluationFormDetailByIdUseCase)
     factoryOf(::SubmitEvaluationUseCase)
+    factoryOf(::HasEvaluatedUseCase)
 }

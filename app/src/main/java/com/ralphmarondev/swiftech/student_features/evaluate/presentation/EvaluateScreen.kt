@@ -1,5 +1,6 @@
 package com.ralphmarondev.swiftech.student_features.evaluate.presentation
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBackIosNew
 import androidx.compose.material3.Button
@@ -46,6 +48,7 @@ fun EvaluateScreen(
     val courseTeacher = viewModel.courseTeacher.collectAsState().value
     val questions = viewModel.questions.collectAsState().value
     val answers = viewModel.answers.collectAsState().value
+    val hasEvaluated = viewModel.hasEvaluated.collectAsState().value
 
     Scaffold(
         topBar = {
@@ -112,6 +115,13 @@ fun EvaluateScreen(
                     )
                 }
             }
+            item {
+                AnimatedVisibility(visible = hasEvaluated && questions.isEmpty()) {
+                    Text(
+                        text = "You evaluated already."
+                    )
+                }
+            }
             items(questions) { questionRating ->
                 ElevatedCard(
                     modifier = Modifier
@@ -153,24 +163,27 @@ fun EvaluateScreen(
                 }
             }
             item {
-                Button(
-                    onClick = viewModel::submitEvaluation,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 16.dp, horizontal = 8.dp)
-                ) {
-                    Text(
-                        text = "SUBMIT"
-                    )
-                }
-            }
-            item {
-                Column {
-                    answers.forEach { (q, a) ->
-                        Text(text = "Question: `$q`, Answer: `$a`")
+                AnimatedVisibility(visible = !hasEvaluated) {
+                    Button(
+                        onClick = viewModel::submitEvaluation,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 16.dp, horizontal = 6.dp),
+                        shape = RoundedCornerShape(8.dp)
+                    ) {
+                        Text(
+                            text = "SUBMIT"
+                        )
                     }
                 }
             }
+//            item {
+//                Column {
+//                    answers.forEach { (q, a) ->
+//                        Text(text = "Question: `$q`, Answer: `$a`")
+//                    }
+//                }
+//            }
             item { Spacer(modifier = Modifier.height(100.dp)) }
         }
     }
