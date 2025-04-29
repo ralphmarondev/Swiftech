@@ -15,7 +15,7 @@ fun DeleteUserDialog(
     modifier: Modifier = Modifier
 ) {
     AlertDialog(
-        modifier = modifier,
+        modifier = modifier ,
         onDismissRequest = onDismiss,
         confirmButton = {
             TextButton(

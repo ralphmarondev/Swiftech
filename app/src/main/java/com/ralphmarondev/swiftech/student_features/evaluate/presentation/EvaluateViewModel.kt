@@ -111,6 +111,17 @@ class EvaluateViewModel(
                 return@launch
             }
 
+            // NOTE: we need to check if all questions are answered before submitting
+            val unansweredQuestions = _questions.value.filter { it.selectedRating == null }
+            if (unansweredQuestions.isNotEmpty()) {
+                Log.d("App", "Cannot submit, not all questions are answered.")
+                _response.value = Result(
+                    success = false,
+                    message = "Please answer all questions before submitting."
+                )
+                return@launch
+            }
+
             try {
                 // NOTE: studentId is set on HomeViewModel
                 val studentId = preferences.getStudentId()

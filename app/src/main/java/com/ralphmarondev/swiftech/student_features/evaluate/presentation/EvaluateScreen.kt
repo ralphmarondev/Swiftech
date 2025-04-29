@@ -164,9 +164,9 @@ fun EvaluateScreen(
                 }
             }
             item {
-                AnimatedVisibility(visible = !hasEvaluated) {
+                AnimatedVisibility(!hasEvaluated) {
                     Button(
-                        onClick = viewModel::submitEvaluation,
+                        onClick = viewModel::showEvaluationResultDialogValueChange,
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(vertical = 16.dp, horizontal = 6.dp),
@@ -186,7 +186,10 @@ fun EvaluateScreen(
         EvaluationResultDialog(
             resultText = "Evaluation submitted successfully.",
             onDismiss = viewModel::showEvaluationResultDialogValueChange,
-            onConfirm = viewModel::showEvaluationResultDialogValueChange
+            onConfirm = {
+                viewModel.submitEvaluation()
+                viewModel.showEvaluationResultDialogValueChange()
+            }
         )
     }
 }
