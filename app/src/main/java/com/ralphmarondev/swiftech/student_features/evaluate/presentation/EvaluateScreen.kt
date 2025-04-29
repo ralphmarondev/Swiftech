@@ -35,6 +35,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ralphmarondev.swiftech.student_features.evaluate.presentation.components.EvaluationResultDialog
+import com.ralphmarondev.swiftech.student_features.evaluate.presentation.components.SubmitConfirmationDialog
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 
@@ -50,6 +51,8 @@ fun EvaluateScreen(
     val questions = viewModel.questions.collectAsState().value
     val hasEvaluated = viewModel.hasEvaluated.collectAsState().value
     val showEvaluationResultDialog = viewModel.showEvaluationResultDialog.collectAsState().value
+    val showSubmitConfirmationDialog = viewModel.showSubmitConfirmationDialog.collectAsState().value
+    val response = viewModel.response.collectAsState().value
 
     Scaffold(
         topBar = {
@@ -166,7 +169,7 @@ fun EvaluateScreen(
             item {
                 AnimatedVisibility(!hasEvaluated) {
                     Button(
-                        onClick = viewModel::showEvaluationResultDialogValueChange,
+                        onClick = viewModel::showSubmitConfirmationDialogValueChange,
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(vertical = 16.dp, horizontal = 6.dp),
@@ -182,12 +185,25 @@ fun EvaluateScreen(
         }
     }
 
-    if (showEvaluationResultDialog) {
-        EvaluationResultDialog(
-            resultText = "Evaluation submitted successfully.",
-            onDismiss = viewModel::showEvaluationResultDialogValueChange,
+    if (showSubmitConfirmationDialog) {
+        SubmitConfirmationDialog(
+            resultText = "Are you sure you want to submit the evaluation. This cannot be undone.",
+            onDismiss = viewModel::showSubmitConfirmationDialogValueChange,
             onConfirm = {
                 viewModel.submitEvaluation()
+                viewModel.showSubmitConfirmationDialogValueChange()
+                viewModel.showEvaluationResultDialogValueChange()
+            }
+        )
+    }
+    if (showEvaluationResultDialog) {
+        EvaluationResultDialog(
+            resultText = response?.message ?: "Empty response message.",
+            onDismiss = viewModel::showEvaluationResultDialogValueChange,
+            onConfirm = {
+                if (response?.success == true) {
+                    navigateBack()
+                }
                 viewModel.showEvaluationResultDialogValueChange()
             }
         )

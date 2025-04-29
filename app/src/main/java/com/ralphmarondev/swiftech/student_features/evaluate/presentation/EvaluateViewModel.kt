@@ -51,6 +51,9 @@ class EvaluateViewModel(
     private val _showEvaluationResultDialog = MutableStateFlow(false)
     val showEvaluationResultDialog = _showEvaluationResultDialog.asStateFlow()
 
+    private val _showSubmitConfirmationDialog = MutableStateFlow(false)
+    val showSubmitConfirmationDialog = _showSubmitConfirmationDialog.asStateFlow()
+
     init {
         viewModelScope.launch {
             // NOTE: THIS IS SET ON `EVALUATION_FORMS`
@@ -164,5 +167,9 @@ class EvaluateViewModel(
 
     fun showEvaluationResultDialogValueChange() {
         _showEvaluationResultDialog.value = !_showEvaluationResultDialog.value
+    }
+
+    fun showSubmitConfirmationDialogValueChange() {
+        _showSubmitConfirmationDialog.value = !_showSubmitConfirmationDialog.value
     }
 }

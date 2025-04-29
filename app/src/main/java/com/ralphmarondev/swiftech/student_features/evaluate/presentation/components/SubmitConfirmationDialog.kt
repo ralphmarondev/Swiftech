@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 @Composable
-fun EvaluationResultDialog(
+fun SubmitConfirmationDialog(
     resultText: String,
     onDismiss: () -> Unit,
     onConfirm: () -> Unit,
@@ -22,8 +22,15 @@ fun EvaluationResultDialog(
                 onClick = onConfirm
             ) {
                 Text(
-                    text = "Close"
+                    text = "Confirm"
                 )
+            }
+        },
+        dismissButton = {
+            TextButton(
+                onClick = onDismiss
+            ) {
+                Text(text = "Cancel")
             }
         },
         text = {
@@ -34,7 +41,7 @@ fun EvaluationResultDialog(
         },
         title = {
             Text(
-                text = "Result",
+                text = "Confirm",
                 color = MaterialTheme.colorScheme.primary
             )
         }
