@@ -1,4 +1,4 @@
-package com.ralphmarondev.swiftech.student_features.home.presentation.components
+package com.ralphmarondev.swiftech.core.presentation
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

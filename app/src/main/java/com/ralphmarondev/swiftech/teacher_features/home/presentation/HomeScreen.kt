@@ -37,7 +37,7 @@ import com.ralphmarondev.swiftech.core.presentation.AccountCard
 import com.ralphmarondev.swiftech.core.presentation.ConfirmExitDialog
 import com.ralphmarondev.swiftech.core.presentation.DrawerContent
 import com.ralphmarondev.swiftech.core.util.LocalThemeState
-import com.ralphmarondev.swiftech.student_features.home.presentation.components.CourseCard
+import com.ralphmarondev.swiftech.core.presentation.CourseCard
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
@@ -53,7 +53,7 @@ fun HomeScreen(
     val themeState = LocalThemeState.current
     val viewModel: HomeViewModel = koinViewModel(parameters = { parametersOf(username) })
     val currentUser = viewModel.currentUser.collectAsState().value
-    val showConfirmExitDiloag = viewModel.showConfirmExitDialog.collectAsState().value
+    val showConfirmExitDialog = viewModel.showConfirmExitDialog.collectAsState().value
     val courses = viewModel.courses.collectAsState().value
 
     val activity = LocalContext.current as? Activity
@@ -162,7 +162,7 @@ fun HomeScreen(
         }
     }
 
-    if (showConfirmExitDiloag) {
+    if (showConfirmExitDialog) {
         ConfirmExitDialog(
             onDismiss = {
                 viewModel.setShowConfirmExitDialog()

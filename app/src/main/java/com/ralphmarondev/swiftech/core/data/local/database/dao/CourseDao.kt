@@ -47,4 +47,9 @@ interface CourseDao {
         """
     )
     fun getCoursesForStudent(studentId: Int): Flow<List<Course>>
+
+
+    // NOTE: FOR TEACHER FEATURE
+    @Query("SELECT * FROM course WHERE teacherId = :teacherId AND isDeleted = 0")
+    fun getCoursesByTeacherId(teacherId: Int): Flow<List<Course>>
 }
