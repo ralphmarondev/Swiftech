@@ -31,6 +31,8 @@ fun ReportScreen(
     navigateBack: () -> Unit
 ) {
     val viewModel: ReportViewModel = koinViewModel(parameters = { parametersOf(courseId) })
+    val teacherName = viewModel.teacherName.collectAsState().value
+    val courseName = viewModel.courseName.collectAsState().value
     val averageRating = viewModel.averageRating.collectAsState().value
     val ratingCounts = viewModel.ratingCounts.collectAsState().value
     val isLoading = viewModel.isLoading.collectAsState().value
@@ -67,12 +69,22 @@ fun ReportScreen(
                 .padding(innerPadding)
         ) {
             Text(
-                text = "Teacher Evaluation Report",
-                style = MaterialTheme.typography.titleLarge
+                text = "Course Name:",
+                style = MaterialTheme.typography.titleSmall
             )
             Text(
-                text = "Course id: `$courseId`"
+                text = courseName,
+                style = MaterialTheme.typography.titleMedium
             )
+            Text(
+                text = "Teacher Name:",
+                style = MaterialTheme.typography.titleSmall
+            )
+            Text(
+                text = teacherName,
+                style = MaterialTheme.typography.titleMedium
+            )
+
             Text(
                 text = "Average rating: $averageRating"
             )
