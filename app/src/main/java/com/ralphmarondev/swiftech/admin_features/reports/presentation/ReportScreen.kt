@@ -16,6 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import org.koin.androidx.compose.koinViewModel
@@ -29,6 +30,7 @@ fun ReportScreen(
     navigateBack: () -> Unit
 ) {
     val viewModel: ReportViewModel = koinViewModel(parameters = { parametersOf(courseId) })
+    val averageRating = viewModel.averageRating.collectAsState().value
 
     Scaffold(
         topBar = {
@@ -67,6 +69,9 @@ fun ReportScreen(
             )
             Text(
                 text = "Course id: `$courseId`"
+            )
+            Text(
+                text = "Average rating: $averageRating"
             )
 
             Spacer(modifier = Modifier.height(24.dp))

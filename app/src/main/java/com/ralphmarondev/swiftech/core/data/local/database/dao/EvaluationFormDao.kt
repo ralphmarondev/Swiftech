@@ -76,4 +76,16 @@ interface EvaluationFormDao {
         courseId: Int,
         evaluationFormId: Int
     ): Int
+
+
+    // NOTE: THIS IS FOR ADMIN
+    @Query(
+        """
+            SELECT evaluation_answer.* FROM evaluation_answer
+            INNER JOIN evaluation_response
+            ON evaluation_answer.evaluationResponseId = evaluation_response.id 
+            WHERE evaluation_response.courseId = :courseId
+        """
+    )
+    fun getEvaluationAnswersByCourse(courseId: Int): Flow<List<EvaluationAnswer>>
 }
