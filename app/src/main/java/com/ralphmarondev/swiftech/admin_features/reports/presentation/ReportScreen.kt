@@ -33,6 +33,7 @@ fun ReportScreen(
     val viewModel: ReportViewModel = koinViewModel(parameters = { parametersOf(courseId) })
     val averageRating = viewModel.averageRating.collectAsState().value
     val ratingCounts = viewModel.ratingCounts.collectAsState().value
+    val isLoading = viewModel.isLoading.collectAsState().value
 
     Scaffold(
         topBar = {
@@ -83,7 +84,12 @@ fun ReportScreen(
             Text(text = "Poor: ${ratingCounts.poor}")
 
             Spacer(modifier = Modifier.height(24.dp))
-            ReportBarChart(ratingCounts)
+
+            if (isLoading) {
+                Text(text = "Loading...")
+            } else {
+                ReportBarChart(ratingCounts)
+            }
         }
     }
 }

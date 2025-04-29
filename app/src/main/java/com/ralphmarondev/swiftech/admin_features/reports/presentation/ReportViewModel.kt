@@ -8,7 +8,7 @@ import com.ralphmarondev.swiftech.admin_features.reports.domain.usecase.ComputeA
 import com.ralphmarondev.swiftech.admin_features.reports.domain.usecase.ComputeRatingCountsUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class ReportViewModel(
@@ -23,21 +23,30 @@ class ReportViewModel(
     private val _ratingCounts = MutableStateFlow(RatingCounts())
     val ratingCounts = _ratingCounts.asStateFlow()
 
+    private val _isLoading = MutableStateFlow(true)
+    val isLoading = _isLoading.asStateFlow()
+
     init {
         viewModelScope.launch {
-            Log.d("App", "Getting average rating for course with id: `$courseId`")
-            launch {
-                computeAverageRatingUseCase(courseId).collectLatest { average ->
-                    _averageRating.value = average
-                    Log.d("App", "Average rating: ${_averageRating.value}")
-                }
+            Log.d("App", "Loading report data for courseId: $courseId")
+
+            val averageJob = launch {
+                val average = computeAverageRatingUseCase(courseId).first()
+                _averageRating.value = average
+                Log.d("App", "Average rating: $average")
             }
-            launch {
-                computeRatingCountsUseCase(courseId).collectLatest { counts ->
-                    _ratingCounts.value = counts
-                    Log.d("App", "Rating counts: `$counts`")
-                }
+
+            val countsJob = launch {
+                val counts = computeRatingCountsUseCase(courseId).first()
+                _ratingCounts.value = counts
+                Log.d("App", "Rating counts: $counts")
             }
+
+            // Wait for both to emit once
+            averageJob.join()
+            countsJob.join()
+
+            _isLoading.value = false
         }
     }
 }
