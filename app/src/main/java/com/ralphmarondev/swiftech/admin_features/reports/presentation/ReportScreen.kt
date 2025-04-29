@@ -31,6 +31,7 @@ fun ReportScreen(
 ) {
     val viewModel: ReportViewModel = koinViewModel(parameters = { parametersOf(courseId) })
     val averageRating = viewModel.averageRating.collectAsState().value
+    val ratingCounts = viewModel.ratingCounts.collectAsState().value
 
     Scaffold(
         topBar = {
@@ -73,6 +74,12 @@ fun ReportScreen(
             Text(
                 text = "Average rating: $averageRating"
             )
+
+            Text(text = "Excellent: ${ratingCounts.excellent}")
+            Text(text = "Very good: ${ratingCounts.veryGood}")
+            Text(text = "Good: ${ratingCounts.good}")
+            Text(text = "Fair: ${ratingCounts.fair}")
+            Text(text = "Poor: ${ratingCounts.poor}")
 
             Spacer(modifier = Modifier.height(24.dp))
         }
