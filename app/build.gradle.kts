@@ -63,7 +63,8 @@ dependencies {
     implementation(libs.bundles.room)
     kapt(libs.androidx.room.compiler)
 
-    implementation("co.yml:ycharts:2.1.0")
+//    implementation("co.yml:ycharts:2.1.0")
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

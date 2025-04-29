@@ -19,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.ralphmarondev.swiftech.admin_features.reports.presentation.components.ReportBarChart
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 
@@ -82,6 +83,7 @@ fun ReportScreen(
             Text(text = "Poor: ${ratingCounts.poor}")
 
             Spacer(modifier = Modifier.height(24.dp))
+            ReportBarChart()
         }
     }
 }
