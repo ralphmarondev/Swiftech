@@ -34,6 +34,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.ralphmarondev.swiftech.student_features.evaluate.presentation.components.EvaluationResultDialog
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 
@@ -47,8 +48,8 @@ fun EvaluateScreen(
     val courseName = viewModel.courseName.collectAsState().value
     val courseTeacher = viewModel.courseTeacher.collectAsState().value
     val questions = viewModel.questions.collectAsState().value
-    val answers = viewModel.answers.collectAsState().value
     val hasEvaluated = viewModel.hasEvaluated.collectAsState().value
+    val showEvaluationResultDialog = viewModel.showEvaluationResultDialog.collectAsState().value
 
     Scaffold(
         topBar = {
@@ -177,15 +178,16 @@ fun EvaluateScreen(
                     }
                 }
             }
-//            item {
-//                Column {
-//                    answers.forEach { (q, a) ->
-//                        Text(text = "Question: `$q`, Answer: `$a`")
-//                    }
-//                }
-//            }
             item { Spacer(modifier = Modifier.height(100.dp)) }
         }
+    }
+
+    if (showEvaluationResultDialog) {
+        EvaluationResultDialog(
+            resultText = "Evaluation submitted successfully.",
+            onDismiss = viewModel::showEvaluationResultDialogValueChange,
+            onConfirm = viewModel::showEvaluationResultDialogValueChange
+        )
     }
 }
 
