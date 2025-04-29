@@ -57,7 +57,7 @@ fun ReportBarChart(
 
     val labels = listOf(
         "Excellent",
-        "Very_Good",
+        "Very Good",
         "Good",
         "Fair",
         "Poor"
@@ -90,19 +90,20 @@ fun ReportBarChart(
                             com.github.mikephil.charting.components.XAxis.XAxisPosition.BOTTOM
 
                         // coz some label are missing :)
-                        labelRotationAngle = -45f
+//                        labelRotationAngle = -45f
                         granularity = 1f
                         isGranularityEnabled = true
                         setLabelCount(labels.size, false)
-                        setAvoidFirstLastClipping(true)
+//                        setAvoidFirstLastClipping(true)
                         xAxis.axisMinimum = -0.5f
                         xAxis.axisMaximum = 4.5f
                     }
+
                     axisLeft.axisMinimum = 0f
                     axisRight.isEnabled = false
                     legend.isEnabled = false
                     animateY(700)
-                    invalidate() // refresh the chart
+                    invalidate() // refresh the chart lol
                 }
             },
             modifier = Modifier
