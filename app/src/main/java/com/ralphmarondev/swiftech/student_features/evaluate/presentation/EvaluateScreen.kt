@@ -143,10 +143,10 @@ fun EvaluateScreen(
 
                         val ratings = listOf(
                             "Excellent",
-                            "Saks lang",
-                            "Meds",
-                            "Poor yan",
-                            "Very porrr"
+                            "Very Good",
+                            "Good",
+                            "Fair",
+                            "Poor"
                         )
 
                         ratings.forEach { rating ->
@@ -195,7 +195,7 @@ fun EvaluateScreen(
 }
 
 @Composable
-fun RatingBox(
+private fun RatingBox(
     label: String,
     value: Boolean,
     onValueChanged: (Boolean) -> Unit,
