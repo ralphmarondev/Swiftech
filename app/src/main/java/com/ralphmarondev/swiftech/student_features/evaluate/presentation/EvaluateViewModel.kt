@@ -45,7 +45,7 @@ class EvaluateViewModel(
 
     private val _teacherId = MutableStateFlow(0)
 
-    private val _hasEvaluated = MutableStateFlow(false)
+    private val _hasEvaluated = MutableStateFlow(true)
     val hasEvaluated = _hasEvaluated.asStateFlow()
 
     private val _showEvaluationResultDialog = MutableStateFlow(false)
