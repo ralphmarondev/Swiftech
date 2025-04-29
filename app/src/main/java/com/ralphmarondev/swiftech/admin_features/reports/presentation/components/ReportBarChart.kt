@@ -17,23 +17,35 @@ import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
+import com.ralphmarondev.swiftech.admin_features.reports.domain.model.RatingCounts
+
+fun safeValue(count: Int) = if (count == 0) 0.01f else count.toFloat()
 
 @Composable
-fun ReportBarChart() {
+fun ReportBarChart(
+    ratingCounts: RatingCounts
+) {
     val barEntries = listOf(
-        BarEntry(0f, 120f),
-        BarEntry(1f, 90f),
-        BarEntry(2f, 60f),
-        BarEntry(3f, 30f),
-        BarEntry(4f, 10f)
+        BarEntry(0f, safeValue(ratingCounts.excellent)),
+        BarEntry(1f, safeValue(ratingCounts.veryGood)),
+        BarEntry(2f, safeValue(ratingCounts.good)),
+        BarEntry(3f, safeValue(ratingCounts.fair)),
+        BarEntry(4f, safeValue(ratingCounts.poor))
     )
-    val barDataSet = BarDataSet(barEntries, "Ratings")
+    val barDataSet = BarDataSet(barEntries, "Rating Count")
     barDataSet.apply {
         color = Color.parseColor("#B388FF")
         valueTextColor = Color.BLACK
         valueTextSize = 12f
     }
 
+    val labels = listOf(
+        "Excellent",
+        "Very_Good",
+        "Good",
+        "Fair",
+        "Poor"
+    )
     val barData = BarData(barDataSet)
     Column(
         modifier = Modifier
@@ -42,7 +54,7 @@ fun ReportBarChart() {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "User Ratings",
+            text = "Teacher Evaluation",
             style = MaterialTheme.typography.titleMedium,
             modifier = Modifier.padding(bottom = 8.dp)
         )
@@ -53,16 +65,28 @@ fun ReportBarChart() {
                     this.data = barData
                     this.description.isEnabled = false // disable description text
                     this.setDrawValueAboveBar(true)
-                    this.xAxis.valueFormatter = IndexAxisValueFormatter(
-                        listOf(
-                            "Excellent",
-                            "Very Good",
-                            "Good",
-                            "Fair",
-                            "Poor"
-                        )
-                    )
-                    this.invalidate() // refresh the chart
+
+                    xAxis.apply {
+                        valueFormatter = IndexAxisValueFormatter(labels)
+                        setDrawGridLines(false)
+                        setDrawAxisLine(false)
+                        position =
+                            com.github.mikephil.charting.components.XAxis.XAxisPosition.BOTTOM
+
+                        // coz some label are missing :)
+                        labelRotationAngle = -15f
+                        granularity = 1f
+                        isGranularityEnabled = true
+                        setLabelCount(labels.size, false)
+                        setAvoidFirstLastClipping(true)
+                        xAxis.axisMinimum = -0.5f
+                        xAxis.axisMaximum = 4.5f
+                    }
+                    axisLeft.axisMinimum = 0f
+                    axisRight.isEnabled = false
+                    legend.isEnabled = false
+                    animateY(700)
+                    invalidate() // refresh the chart
                 }
             },
             modifier = Modifier

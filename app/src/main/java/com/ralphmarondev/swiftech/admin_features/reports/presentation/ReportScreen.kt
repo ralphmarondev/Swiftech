@@ -83,7 +83,7 @@ fun ReportScreen(
             Text(text = "Poor: ${ratingCounts.poor}")
 
             Spacer(modifier = Modifier.height(24.dp))
-            ReportBarChart()
+            ReportBarChart(ratingCounts)
         }
     }
 }
