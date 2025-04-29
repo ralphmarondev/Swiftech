@@ -62,8 +62,8 @@ fun DrawerContent(
                 )
                 Text(
                     text = "Swiftech",
-                    fontWeight = MaterialTheme.typography.titleMedium.fontWeight,
-                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                    fontWeight = MaterialTheme.typography.titleLarge.fontWeight,
+                    fontSize = MaterialTheme.typography.titleLarge.fontSize,
                     color = MaterialTheme.colorScheme.onSecondary,
                     modifier = Modifier.padding(8.dp)
                 )
