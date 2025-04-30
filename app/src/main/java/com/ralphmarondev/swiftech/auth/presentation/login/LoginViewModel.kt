@@ -46,8 +46,8 @@ class LoginViewModel(
             if (preferences.isFirstLaunch()) {
                 val imagePath = saveDrawableToInternalStorage(
                     context = context,
-                    drawableRes = R.drawable.profile,
-                    fileName = "profile.jpg"
+                    drawableRes = R.drawable.male_student,
+                    fileName = "default_image2.jpg"
                 )
                 preferences.setDefaultImage(imagePath)
 
@@ -60,6 +60,9 @@ class LoginViewModel(
                         image = imagePath
                     )
                 )
+
+                preferences.setUsernameToRemember("admin")
+                preferences.setPasswordToRemember("123")
                 preferences.setIsFirstLaunchDone()
             }
             val savedUsername = preferences.getRememberedUsername()
