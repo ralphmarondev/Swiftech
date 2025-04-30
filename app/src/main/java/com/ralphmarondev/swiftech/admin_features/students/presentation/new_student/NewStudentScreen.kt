@@ -225,11 +225,11 @@ fun NewStudentScreen(
             ResultDialog(
                 result = response,
                 onDismiss = {
-                    viewModel.onShowResultDialogValueChange(false)
+                    viewModel.setShowResultDialog(false)
                     navigateBack()
                 },
                 onConfirm = {
-                    viewModel.onShowResultDialogValueChange(false)
+                    viewModel.setShowResultDialog(false)
                     viewModel.clearResult()
                 },
                 dismissButtonText = "Cancel",
@@ -239,7 +239,7 @@ fun NewStudentScreen(
             FailedResultDialog(
                 result = response,
                 onDismiss = {
-                    viewModel.onShowResultDialogValueChange(false)
+                    viewModel.setShowResultDialog(false)
                 }
             )
         }

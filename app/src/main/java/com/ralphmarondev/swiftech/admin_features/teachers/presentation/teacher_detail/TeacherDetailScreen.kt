@@ -2,7 +2,9 @@ package com.ralphmarondev.swiftech.admin_features.teachers.presentation.teacher_
 
 import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -30,6 +32,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -97,14 +101,47 @@ fun TeacherDetailScreen(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    Image(
-                        painter = rememberAsyncImagePainter(teacherDetail?.image),
-                        contentDescription = teacherDetail?.username,
-                        modifier = Modifier
-                            .size(100.dp)
-                            .clip(CircleShape),
-                        contentScale = ContentScale.Crop
-                    )
+                    if (teacherDetail?.image.isNullOrBlank()) {
+                        val initials = teacherDetail?.fullName?.let { name ->
+                            val parts = name.split(" ")
+                                .filter { it.isNotBlank() }
+
+                            when {
+                                parts.size >= 2 -> "${
+                                    parts[0].first().uppercaseChar()
+                                }${parts[1].first().uppercaseChar()}"
+
+                                parts.size == 1 -> parts[0].first().uppercaseChar().toString()
+                                else -> "?"
+                            }
+                        } ?: "?"
+                        val fontSize = if (initials.length == 1) 28.sp else 20.sp
+
+                        Box(
+                            modifier = Modifier
+                                .size(100.dp)
+                                .clip(CircleShape)
+                                .background(MaterialTheme.colorScheme.primary),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = initials,
+                                color = MaterialTheme.colorScheme.onPrimary,
+                                fontSize = fontSize,
+                                fontWeight = FontWeight.Bold,
+                                textAlign = TextAlign.Center
+                            )
+                        }
+                    } else {
+                        Image(
+                            painter = rememberAsyncImagePainter(teacherDetail?.image),
+                            contentDescription = teacherDetail?.username,
+                            modifier = Modifier
+                                .size(100.dp)
+                                .clip(CircleShape),
+                            contentScale = ContentScale.Crop
+                        )
+                    }
 
                     Column(
                         verticalArrangement = Arrangement.spacedBy(8.dp)

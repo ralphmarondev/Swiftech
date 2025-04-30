@@ -110,13 +110,6 @@ class UpdateStudentViewModel(
                 )
                 return@launch
             }
-            if (gender.isEmpty()) {
-                _response.value = Result(
-                    success = false,
-                    message = "Gender cannot be empty!"
-                )
-                return@launch
-            }
 
             try {
                 updateUserUseCase(
@@ -140,7 +133,6 @@ class UpdateStudentViewModel(
                 _username.value = ""
                 _password.value = ""
                 _gender.value = Gender.MALE
-                _updateStudentDialog.value = true
             } catch (e: Exception) {
                 Log.e("App", "Error updating student. Error: ${e.message}")
                 _response.value = Result(
@@ -148,6 +140,7 @@ class UpdateStudentViewModel(
                     message = "Updating student failed."
                 )
             }
+            _updateStudentDialog.value = true
         }
     }
 

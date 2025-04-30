@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ralphmarondev.swiftech.core.data.local.preferences.AppPreferences
+import com.ralphmarondev.swiftech.core.domain.model.Gender
 import com.ralphmarondev.swiftech.core.domain.model.Result
 import com.ralphmarondev.swiftech.core.domain.model.Role
 import com.ralphmarondev.swiftech.core.domain.model.User
@@ -28,11 +29,17 @@ class NewTeacherViewModel(
     private val _password = MutableStateFlow("")
     val password = _password.asStateFlow()
 
+    private val _gender = MutableStateFlow(Gender.MALE)
+    val gender = _gender.asStateFlow()
+
     private val _imagePath = MutableStateFlow(defaultImage ?: "")
     val imagePath = _imagePath.asStateFlow()
 
     private val _response = MutableStateFlow<Result?>(null)
     val response = _response.asStateFlow()
+
+    private val _showResultDialog = MutableStateFlow(false)
+    val showResultDialog = _showResultDialog.asStateFlow()
 
 
     fun onFullNameChange(value: String) {
@@ -47,8 +54,16 @@ class NewTeacherViewModel(
         _password.value = value
     }
 
+    fun onGenderValueChange(value: String) {
+        _gender.value = value
+    }
+
     fun onImagePathChange(value: String) {
         _imagePath.value = value
+    }
+
+    fun setShowResultDialog(value: Boolean) {
+        _showResultDialog.value = value
     }
 
     fun register() {
@@ -56,11 +71,12 @@ class NewTeacherViewModel(
             val fullName = _fullName.value.trim()
             val username = _username.value.trim()
             val password = _password.value.trim()
+            val gender = _gender.value.trim()
 
             if (fullName.isEmpty() && username.isEmpty() && password.isEmpty()) {
                 _response.value = Result(
                     success = false,
-                    message = "All fields are required!"
+                    message = "Please fill in all fields."
                 )
                 return@launch
             }
@@ -86,23 +102,38 @@ class NewTeacherViewModel(
                 return@launch
             }
 
-            createUserUseCase(
-                user = User(
-                    username = username,
-                    password = password,
-                    fullName = fullName,
-                    role = Role.TEACHER,
-                    image = _imagePath.value.trim()
+            try {
+                createUserUseCase(
+                    user = User(
+                        username = username,
+                        password = password,
+                        fullName = fullName,
+                        role = Role.TEACHER,
+                        gender = gender
+                    )
                 )
-            )
-            _response.value = Result(
-                success = true,
-                message = "Registration successful."
-            )
-            Log.d("App", "Full name: $fullName, username: $username, password: $password")
-            _fullName.value = ""
-            _username.value = ""
-            _password.value = ""
+                _response.value = Result(
+                    success = true,
+                    message = "Registration successful. Confirm if you want to register new teacher."
+                )
+                Log.d("App", "Full name: $fullName, username: $username, password: $password")
+                _fullName.value = ""
+                _username.value = ""
+                _password.value = ""
+                _gender.value = Gender.MALE
+            } catch (e: Exception) {
+                Log.e("App", "Registering new teacher failed. Error: ${e.message}")
+                _response.value = Result(
+                    success = false,
+                    message = "Registration failed. Please try again."
+                )
+            }
+
+            _showResultDialog.value = true
         }
+    }
+
+    fun clearResult() {
+        _response.value = null
     }
 }

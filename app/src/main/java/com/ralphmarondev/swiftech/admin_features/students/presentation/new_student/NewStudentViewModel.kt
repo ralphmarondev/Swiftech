@@ -62,7 +62,7 @@ class NewStudentViewModel(
         _imagePath.value = value
     }
 
-    fun onShowResultDialogValueChange(value: Boolean = !_showResultDialog.value) {
+    fun setShowResultDialog(value: Boolean = !_showResultDialog.value) {
         _showResultDialog.value = value
     }
 
@@ -114,7 +114,7 @@ class NewStudentViewModel(
                 )
                 _response.value = Result(
                     success = true,
-                    message = "Registration successful. Confirm if you want to register new student?"
+                    message = "Registration successful. Confirm if you want to register new student."
                 )
                 Log.d(
                     "App",

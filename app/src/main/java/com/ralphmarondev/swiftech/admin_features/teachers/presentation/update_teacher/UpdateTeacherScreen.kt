@@ -3,8 +3,9 @@ package com.ralphmarondev.swiftech.admin_features.teachers.presentation.update_t
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -42,10 +43,11 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
+import com.ralphmarondev.swiftech.admin_features.teachers.presentation.components.UpdateTeacherResultDialog
+import com.ralphmarondev.swiftech.core.presentation.GenderDropdown
 import com.ralphmarondev.swiftech.core.presentation.NormalTextField
 import com.ralphmarondev.swiftech.core.presentation.PasswordTextField
 import com.ralphmarondev.swiftech.core.util.saveImageToAppFolder
@@ -63,8 +65,10 @@ fun UpdateTeacherScreen(
     val fullName = viewModel.fullName.collectAsState().value
     val username = viewModel.username.collectAsState().value
     val password = viewModel.password.collectAsState().value
+    val gender = viewModel.gender.collectAsState().value
     val imagePath = viewModel.imagePath.collectAsState().value
     val response = viewModel.response.collectAsState().value
+    val updateTeacherDialog = viewModel.updateTeacherDialog.collectAsState().value
 
     val context = LocalContext.current
     val focusManager = LocalFocusManager.current
@@ -112,14 +116,39 @@ fun UpdateTeacherScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(modifier = Modifier.height(8.dp))
-            Image(
-                painter = rememberAsyncImagePainter(imagePath),
-                contentDescription = "Profile",
-                modifier = Modifier
-                    .size(100.dp)
-                    .clip(CircleShape),
-                contentScale = ContentScale.Crop
-            )
+            if (imagePath.isNullOrBlank()) {
+                val initials = fullName
+                    .split(" ")
+                    .filter { it.isNotBlank() }
+                    .take(2)
+                    .map { it.first().uppercaseChar() }
+                    .joinToString("")
+                val fontSize = if (initials.length == 1) 38.sp else 30.sp
+                Box(
+                    modifier = Modifier
+                        .size(100.dp)
+                        .clip(CircleShape)
+                        .background(MaterialTheme.colorScheme.primary),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = initials,
+                        color = MaterialTheme.colorScheme.onPrimary,
+                        fontSize = fontSize,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center
+                    )
+                }
+            } else {
+                Image(
+                    painter = rememberAsyncImagePainter(imagePath),
+                    contentDescription = fullName,
+                    modifier = Modifier
+                        .size(100.dp)
+                        .clip(CircleShape),
+                    contentScale = ContentScale.Crop
+                )
+            }
             Spacer(modifier = Modifier.height(4.dp))
             TextButton(
                 onClick = {
@@ -141,7 +170,6 @@ fun UpdateTeacherScreen(
                     .fillMaxWidth()
                     .padding(horizontal = 8.dp, vertical = 4.dp),
                 label = "Full name",
-                placeholder = "Jamille Rivera",
                 leadingIcon = Icons.Outlined.PersonOutline,
                 keyboardOptions = KeyboardOptions(
                     imeAction = ImeAction.Next
@@ -160,7 +188,6 @@ fun UpdateTeacherScreen(
                     .fillMaxWidth()
                     .padding(horizontal = 8.dp, vertical = 4.dp),
                 label = "Username",
-                placeholder = "jami",
                 leadingIcon = Icons.Outlined.AccountBox,
                 keyboardOptions = KeyboardOptions(
                     imeAction = ImeAction.Next
@@ -179,7 +206,6 @@ fun UpdateTeacherScreen(
                     .fillMaxWidth()
                     .padding(horizontal = 8.dp, vertical = 4.dp),
                 label = "Password",
-                placeholder = "jami",
                 leadingIcon = Icons.Outlined.Password,
                 keyboardOptions = KeyboardOptions(
                     imeAction = ImeAction.Done
@@ -191,38 +217,15 @@ fun UpdateTeacherScreen(
                 )
             )
 
-            Spacer(modifier = Modifier.height(2.dp))
-            AnimatedVisibility(response?.success == false) {
-                if (response?.message != null) {
-                    Text(
-                        text = response.message,
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.W500,
-                        color = if (response.success) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.error,
-                        maxLines = 2,
-                        overflow = TextOverflow.Ellipsis,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 8.dp, vertical = 16.dp)
-                    )
-                }
-            }
-            AnimatedVisibility(response?.success == true) {
-                if (response?.message != null) {
-                    Text(
-                        text = response.message,
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.W500,
-                        color = if (response.success) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.error,
-                        maxLines = 2,
-                        overflow = TextOverflow.Ellipsis,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 8.dp, vertical = 16.dp)
-                    )
-                }
-            }
-            Spacer(modifier = Modifier.height(4.dp))
+            GenderDropdown(
+                gender = gender,
+                onGenderChange = viewModel::onGenderValueChange,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp, vertical = 4.dp)
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
 
             Button(
                 onClick = viewModel::updateStudent,
@@ -238,5 +241,18 @@ fun UpdateTeacherScreen(
                 )
             }
         }
+    }
+
+    if (updateTeacherDialog) {
+        UpdateTeacherResultDialog(
+            onDismiss = {
+                viewModel.setUpdateTeacherDialog(false)
+
+                if (response?.success == true) {
+                    navigateBack()
+                }
+            },
+            result = response
+        )
     }
 }
