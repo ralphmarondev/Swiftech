@@ -5,12 +5,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ralphmarondev.swiftech.core.data.local.preferences.AppPreferences
 import com.ralphmarondev.swiftech.core.domain.model.EvaluationAnswer
+import com.ralphmarondev.swiftech.core.domain.model.EvaluationForm
 import com.ralphmarondev.swiftech.core.domain.model.EvaluationResponse
 import com.ralphmarondev.swiftech.core.domain.model.Result
 import com.ralphmarondev.swiftech.core.domain.usecases.course.GetCourseDetailByIdUseCase
 import com.ralphmarondev.swiftech.core.domain.usecases.user.GetUserByIdUseCase
 import com.ralphmarondev.swiftech.student_features.evaluate.domain.model.QuestionRating
 import com.ralphmarondev.swiftech.student_features.evaluate.domain.model.SubmitEvaluationAnswer
+import com.ralphmarondev.swiftech.student_features.evaluate.domain.usecase.GetEvaluationFormDetailByIdUseCase
 import com.ralphmarondev.swiftech.student_features.evaluate.domain.usecase.GetEvaluationFormQuestionByIdUseCase
 import com.ralphmarondev.swiftech.student_features.evaluate.domain.usecase.HasEvaluatedUseCase
 import com.ralphmarondev.swiftech.student_features.evaluate.domain.usecase.SubmitEvaluationUseCase
@@ -19,13 +21,14 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class EvaluateViewModel(
-    private val formId: Int,
+    private val evaluationFormId: Int,
     private val preferences: AppPreferences,
     private val getCourseDetailByIdUseCase: GetCourseDetailByIdUseCase,
     private val getUserByIdUseCase: GetUserByIdUseCase,
     private val getEvaluationFormQuestionByIdUseCase: GetEvaluationFormQuestionByIdUseCase,
     private val submitEvaluationUseCase: SubmitEvaluationUseCase,
-    private val hasEvaluatedUseCase: HasEvaluatedUseCase
+    private val hasEvaluatedUseCase: HasEvaluatedUseCase,
+    private val getEvaluationFormDetailByIdUseCase: GetEvaluationFormDetailByIdUseCase
 ) : ViewModel() {
 
     private val _courseName = MutableStateFlow("")
@@ -33,6 +36,9 @@ class EvaluateViewModel(
 
     private val _courseTeacher = MutableStateFlow("")
     val courseTeacher = _courseTeacher.asStateFlow()
+
+    private val _evalutionFormDetail = MutableStateFlow<EvaluationForm?>(null)
+    val evaluationForm = _evalutionFormDetail.asStateFlow()
 
     private val _questions = MutableStateFlow<List<QuestionRating>>(emptyList())
     val questions = _questions.asStateFlow()
@@ -70,11 +76,12 @@ class EvaluateViewModel(
             )
             _courseTeacher.value = courseTeacher?.fullName ?: "Teacher name is not specified."
             _teacherId.value = courseTeacher?.id ?: 0
+            _evalutionFormDetail.value = getEvaluationFormDetailByIdUseCase(evaluationFormId)
 
             val hasEvaluated = hasEvaluatedUseCase(
                 courseId = courseId,
                 studentId = preferences.getStudentId(),
-                evaluationFormId = formId
+                evaluationFormId = evaluationFormId
             )
 
             _hasEvaluated.value = hasEvaluated
@@ -84,7 +91,7 @@ class EvaluateViewModel(
             }
 
             Log.d("App", "Student has not evaluated yet. Getting evaluation forms...")
-            getEvaluationFormQuestionByIdUseCase(formId).collect { questions ->
+            getEvaluationFormQuestionByIdUseCase(evaluationFormId).collect { questions ->
                 _questions.value = questions.map {
                     QuestionRating(
                         id = it.id,
@@ -147,7 +154,7 @@ class EvaluateViewModel(
                     studentId = studentId,
                     teacherId = _teacherId.value,
                     courseId = courseId,
-                    evaluationFormId = formId
+                    evaluationFormId = evaluationFormId
                 )
                 submitEvaluationUseCase(evaluationResponse, evaluationAnswerList)
                 _response.value = Result(

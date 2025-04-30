@@ -47,7 +47,7 @@ fun StudentNavigation(
         composable<StudentRoutes.Evaluate> {
             val id = it.arguments?.getInt("formId")
             EvaluateScreen(
-                id = id ?: 0,
+                evaluationFormId = id ?: 0,
                 navigateBack = {
                     navController.navigateUp()
                 }

@@ -34,9 +34,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import com.ralphmarondev.swiftech.R
 import com.ralphmarondev.swiftech.student_features.evaluate.presentation.components.EvaluationResultDialog
@@ -47,12 +45,15 @@ import org.koin.core.parameter.parametersOf
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EvaluateScreen(
-    id: Int,
+    evaluationFormId: Int,
     navigateBack: () -> Unit
 ) {
-    val viewModel: EvaluateViewModel = koinViewModel(parameters = { parametersOf(id) })
+    val viewModel: EvaluateViewModel = koinViewModel(
+        parameters = { parametersOf(evaluationFormId) }
+    )
     val courseName = viewModel.courseName.collectAsState().value
     val courseTeacher = viewModel.courseTeacher.collectAsState().value
+    val evaluationForm = viewModel.evaluationForm.collectAsState().value
     val questions = viewModel.questions.collectAsState().value
     val hasEvaluated = viewModel.hasEvaluated.collectAsState().value
     val showEvaluationResultDialog = viewModel.showEvaluationResultDialog.collectAsState().value
@@ -94,35 +95,60 @@ fun EvaluateScreen(
             item {
                 Column {
                     Text(
+                        text = "Title:",
+                        fontSize = MaterialTheme.typography.labelMedium.fontSize,
+                        fontWeight = MaterialTheme.typography.labelMedium.fontWeight,
+                        color = MaterialTheme.colorScheme.secondary
+                    )
+                    Text(
+                        text = evaluationForm?.title ?: "No title provided.",
+                        fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                        fontWeight = MaterialTheme.typography.titleMedium.fontWeight,
+                        color = MaterialTheme.colorScheme.secondary
+                    )
+                    Text(
+                        text = "Description:",
+                        fontSize = MaterialTheme.typography.labelMedium.fontSize,
+                        fontWeight = MaterialTheme.typography.labelMedium.fontWeight,
+                        color = MaterialTheme.colorScheme.secondary
+                    )
+                    Text(
+                        text = evaluationForm?.description ?: "No description provided.",
+                        fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                        fontWeight = MaterialTheme.typography.titleMedium.fontWeight,
+                        color = MaterialTheme.colorScheme.secondary
+                    )
+                    Text(
                         text = "Course Name:",
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.W300,
+                        fontSize = MaterialTheme.typography.labelMedium.fontSize,
+                        fontWeight = MaterialTheme.typography.labelMedium.fontWeight,
                         color = MaterialTheme.colorScheme.secondary
                     )
                     Text(
                         text = courseName,
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.W500,
+                        fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                        fontWeight = MaterialTheme.typography.titleMedium.fontWeight,
                         color = MaterialTheme.colorScheme.secondary
                     )
                     Text(
                         text = "Teacher:",
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.W300,
+                        fontSize = MaterialTheme.typography.labelMedium.fontSize,
+                        fontWeight = MaterialTheme.typography.labelMedium.fontWeight,
                         color = MaterialTheme.colorScheme.secondary
                     )
                     Text(
                         text = courseTeacher,
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.W500,
+                        fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                        fontWeight = MaterialTheme.typography.titleMedium.fontWeight,
                         color = MaterialTheme.colorScheme.secondary
                     )
-                    HorizontalDivider(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 16.dp)
-                    )
                 }
+
+                HorizontalDivider(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 16.dp)
+                )
             }
             item {
                 AnimatedVisibility(visible = hasEvaluated && questions.isEmpty()) {

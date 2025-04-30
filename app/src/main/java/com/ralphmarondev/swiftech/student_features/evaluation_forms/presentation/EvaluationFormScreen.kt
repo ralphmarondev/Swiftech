@@ -91,7 +91,7 @@ fun EvaluationFormScreen(
                         onEvaluationFormClick(evaluation.id)
                     },
                     title = evaluation.title,
-                    date = "2025-04-07"
+                    term = evaluation.term
                 )
             }
             item { Spacer(modifier = Modifier.height(100.dp)) }
@@ -104,7 +104,7 @@ fun EvaluationFormScreen(
 private fun EvaluationCard(
     onClick: () -> Unit,
     title: String,
-    date: String,
+    term: String,
     modifier: Modifier = Modifier
 ) {
     ElevatedCard(
@@ -144,7 +144,7 @@ private fun EvaluationCard(
                     overflow = TextOverflow.Ellipsis
                 )
                 Text(
-                    text = date,
+                    text = term,
                     fontSize = MaterialTheme.typography.titleSmall.fontSize,
                     fontWeight = MaterialTheme.typography.titleSmall.fontWeight,
                     color = MaterialTheme.colorScheme.secondary,
