@@ -64,11 +64,12 @@ class NewStudentViewModel(
             val fullName = _fullName.value.trim()
             val username = _username.value.trim()
             val password = _password.value.trim()
+            val gender = _gender.value.trim()
 
             if (fullName.isEmpty() && username.isEmpty() && password.isEmpty()) {
                 _response.value = Result(
                     success = false,
-                    message = "All fields are required!"
+                    message = "Please fill in all fields."
                 )
                 return@launch
             }
@@ -100,17 +101,21 @@ class NewStudentViewModel(
                     password = password,
                     fullName = fullName,
                     role = Role.STUDENT,
-                    image = _imagePath.value.trim()
+                    gender = gender
                 )
             )
             _response.value = Result(
                 success = true,
                 message = "Registration successful."
             )
-            Log.d("App", "Full name: $fullName, username: $username, password: $password")
+            Log.d(
+                "App",
+                "Full name: $fullName, username: $username, password: $password, gender: $gender"
+            )
             _fullName.value = ""
             _username.value = ""
             _password.value = ""
+            _gender.value = Gender.MALE
         }
     }
 }

@@ -91,6 +91,6 @@ fun NormalTextField(
         maxLines = maxLines,
         minLines = minLines,
         enabled = enabled,
-        readOnly = readOnly,
+        readOnly = readOnly
     )
 }

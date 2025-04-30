@@ -17,6 +17,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
@@ -27,14 +28,19 @@ import com.ralphmarondev.swiftech.core.domain.model.Gender
 fun GenderDropdown(
     gender: String,
     onGenderChange: (String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    singleLine: Boolean = true
 ) {
+    val focusManager = LocalFocusManager.current
     val genderOptions = listOf(Gender.MALE, Gender.FEMALE)
     var expanded by remember { mutableStateOf(false) }
 
     ExposedDropdownMenuBox(
         expanded = expanded,
-        onExpandedChange = { expanded = !expanded },
+        onExpandedChange = {
+            expanded = !expanded
+            focusManager.clearFocus()
+        },
         modifier = modifier
     ) {
         OutlinedTextField(
@@ -61,10 +67,14 @@ fun GenderDropdown(
                     tint = MaterialTheme.colorScheme.secondary
                 )
             },
+            singleLine = singleLine,
         )
         ExposedDropdownMenu(
             expanded = expanded,
-            onDismissRequest = { expanded = false }
+            onDismissRequest = {
+                expanded = false
+                focusManager.clearFocus()
+            }
         ) {
             genderOptions.forEach { option ->
                 DropdownMenuItem(
@@ -72,6 +82,7 @@ fun GenderDropdown(
                     onClick = {
                         onGenderChange(option)
                         expanded = false
+                        focusManager.clearFocus()
                     }
                 )
             }

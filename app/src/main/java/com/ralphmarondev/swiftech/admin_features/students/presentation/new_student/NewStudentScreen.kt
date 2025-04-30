@@ -112,7 +112,6 @@ fun NewStudentScreen(
                     .fillMaxWidth()
                     .padding(horizontal = 8.dp, vertical = 4.dp),
                 label = "Full name",
-                placeholder = "Jamille Rivera",
                 leadingIcon = Icons.Outlined.PersonOutline,
                 keyboardOptions = KeyboardOptions(
                     imeAction = ImeAction.Next
@@ -131,7 +130,6 @@ fun NewStudentScreen(
                     .fillMaxWidth()
                     .padding(horizontal = 8.dp, vertical = 4.dp),
                 label = "Username",
-                placeholder = "jami",
                 leadingIcon = Icons.Outlined.AccountBox,
                 keyboardOptions = KeyboardOptions(
                     imeAction = ImeAction.Next
@@ -150,7 +148,6 @@ fun NewStudentScreen(
                     .fillMaxWidth()
                     .padding(horizontal = 8.dp, vertical = 4.dp),
                 label = "Password",
-                placeholder = "jami",
                 leadingIcon = Icons.Outlined.Password,
                 keyboardOptions = KeyboardOptions(
                     imeAction = ImeAction.Done
