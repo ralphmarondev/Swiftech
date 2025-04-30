@@ -41,6 +41,11 @@ class NewEvaluationViewModel(
     private val _questionResponse = MutableStateFlow<Result?>(null)
     val questionResponse = _questionResponse.asStateFlow()
 
+    private val _showSaveEvaluationDialog = MutableStateFlow(false)
+    val showSaveEvaluationDialog = _showSaveEvaluationDialog.asStateFlow()
+
+    private val _showEvaluationResultDialog = MutableStateFlow(false)
+    val showEvaluationResultDialog = _showEvaluationResultDialog.asStateFlow()
 
     fun onTitleValueChange(value: String) {
         _title.value = value
@@ -152,5 +157,13 @@ class NewEvaluationViewModel(
                 )
             }
         }
+    }
+
+    fun setShowSaveEvaluationDialog(value: Boolean) {
+        _showSaveEvaluationDialog.value = value
+    }
+
+    fun setShowEvaluationResultDialog(value: Boolean) {
+        _showEvaluationResultDialog.value = value
     }
 }

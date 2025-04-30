@@ -32,8 +32,10 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.ralphmarondev.swiftech.core.presentation.NormalTextField
+import com.ralphmarondev.swiftech.admin_features.evaluation.presentation.components.EvaluationResultDialog
 import com.ralphmarondev.swiftech.admin_features.evaluation.presentation.components.NewQuestionDialog
+import com.ralphmarondev.swiftech.admin_features.evaluation.presentation.components.SaveEvaluationDialog
+import com.ralphmarondev.swiftech.core.presentation.NormalTextField
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -48,6 +50,9 @@ fun NewEvaluationScreen(
     val term = viewModel.term.collectAsState().value
     val questions = viewModel.questions.collectAsState().value
     val formResponse = viewModel.formResponse.collectAsState().value
+
+    val showSaveEvaluationDialog = viewModel.showSaveEvaluationDialog.collectAsState().value
+    val showEvaluationResultDialog = viewModel.showEvaluationResultDialog.collectAsState().value
 
     LaunchedEffect(formResponse) {
         if (formResponse?.success == true) {
@@ -185,6 +190,27 @@ fun NewEvaluationScreen(
             onDismiss = viewModel::setShowNewQuestionDialog,
             value = viewModel.newQuestion.collectAsState().value,
             onValueChange = viewModel::onNewQuestionValueChange
+        )
+    }
+
+    if (showSaveEvaluationDialog) {
+        SaveEvaluationDialog(
+            onDismiss = {
+
+            },
+            onConfirm = {
+
+            },
+            text = "Save you evaluation form now? Press cancel to add more questions."
+        )
+    }
+
+    if (showEvaluationResultDialog) {
+        EvaluationResultDialog(
+            onDismiss = {
+
+            },
+            result = formResponse
         )
     }
 }
