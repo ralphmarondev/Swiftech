@@ -1,4 +1,4 @@
-package com.ralphmarondev.swiftech.admin_features.students.presentation.components
+package com.ralphmarondev.swiftech.core.presentation
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons

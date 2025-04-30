@@ -40,7 +40,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.ralphmarondev.swiftech.admin_features.students.presentation.components.GenderDropdown
+import com.ralphmarondev.swiftech.core.presentation.GenderDropdown
 import com.ralphmarondev.swiftech.core.presentation.FailedResultDialog
 import com.ralphmarondev.swiftech.core.presentation.NormalTextField
 import com.ralphmarondev.swiftech.core.presentation.PasswordTextField
