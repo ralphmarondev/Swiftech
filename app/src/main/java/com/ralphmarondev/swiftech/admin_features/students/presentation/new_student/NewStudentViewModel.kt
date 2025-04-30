@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ralphmarondev.swiftech.core.data.local.preferences.AppPreferences
+import com.ralphmarondev.swiftech.core.domain.model.Gender
 import com.ralphmarondev.swiftech.core.domain.model.Result
 import com.ralphmarondev.swiftech.core.domain.model.Role
 import com.ralphmarondev.swiftech.core.domain.model.User
@@ -28,6 +29,9 @@ class NewStudentViewModel(
     private val _password = MutableStateFlow("")
     val password = _password.asStateFlow()
 
+    private val _gender = MutableStateFlow(Gender.MALE)
+    val gender = _gender.asStateFlow()
+
     private val _imagePath = MutableStateFlow(defaultImage ?: "")
     val imagePath = _imagePath.asStateFlow()
 
@@ -45,6 +49,10 @@ class NewStudentViewModel(
 
     fun onPasswordChange(value: String) {
         _password.value = value
+    }
+
+    fun onGenderValueChange(value: String) {
+        _gender.value = value
     }
 
     fun onImagePathChange(value: String) {
