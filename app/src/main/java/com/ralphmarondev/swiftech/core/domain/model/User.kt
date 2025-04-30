@@ -10,7 +10,7 @@ data class User(
     val username: String,
     val password: String,
     val gender: String = Gender.MALE, // Male, Female; [Default: Male]
-    val fullName: String? = null,
+    val fullName: String,
     val role: String = Role.STUDENT, // Student, Teacher, Administrator; [Default Student]
     val email: String? = null,
     val phoneNumber: String? = null,
