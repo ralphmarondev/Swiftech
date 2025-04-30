@@ -34,7 +34,10 @@ fun EnrollStudentDialog(
     AlertDialog(
         onDismissRequest = onDismiss,
         title = {
-            Text(text = "Enroll Student")
+            Text(
+                text = "Enroll Student",
+                color = MaterialTheme.colorScheme.primary
+            )
         },
         text = {
             Column {
@@ -45,8 +48,7 @@ fun EnrollStudentDialog(
                     leadingIcon = Icons.Outlined.AccountBox,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(8.dp),
-                    placeholder = "jamille"
+                        .padding(8.dp)
                 )
 
                 Spacer(modifier = Modifier.height(2.dp))
