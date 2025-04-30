@@ -114,7 +114,7 @@ fun EvaluationListScreen(
                         onEvaluationClick(evaluation.id)
                     },
                     title = evaluation.title,
-                    date = "2025-04-07"
+                    term = evaluation.term
                 )
             }
             item { Spacer(modifier = Modifier.height(100.dp)) }

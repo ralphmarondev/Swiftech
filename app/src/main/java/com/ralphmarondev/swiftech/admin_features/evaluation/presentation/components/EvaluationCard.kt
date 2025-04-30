@@ -16,14 +16,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 @Composable
 fun EvaluationCard(
     onClick: () -> Unit,
     title: String,
-    date: String,
+    term: String,
     modifier: Modifier = Modifier
 ) {
     ElevatedCard(
@@ -37,7 +40,13 @@ fun EvaluationCard(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            val firstLetter = title[0]
+            val initials = title
+                .split(" ")
+                .filter { it.isNotBlank() }
+                .take(2)
+                .map { it.first().uppercaseChar() }
+                .joinToString("")
+            val fontSize = if (initials.length == 1) 28.sp else 20.sp
             Box(
                 modifier = Modifier
                     .size(60.dp)
@@ -46,10 +55,11 @@ fun EvaluationCard(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = "$firstLetter",
-                    fontSize = MaterialTheme.typography.titleLarge.fontSize,
-                    fontWeight = MaterialTheme.typography.titleLarge.fontWeight,
-                    color = MaterialTheme.colorScheme.onSecondary
+                    text = initials,
+                    color = MaterialTheme.colorScheme.onSecondary,
+                    fontSize = fontSize,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center
                 )
             }
 
@@ -63,7 +73,7 @@ fun EvaluationCard(
                     overflow = TextOverflow.Ellipsis
                 )
                 Text(
-                    text = date,
+                    text = term,
                     fontSize = MaterialTheme.typography.titleSmall.fontSize,
                     fontWeight = MaterialTheme.typography.titleSmall.fontWeight,
                     color = MaterialTheme.colorScheme.secondary,
