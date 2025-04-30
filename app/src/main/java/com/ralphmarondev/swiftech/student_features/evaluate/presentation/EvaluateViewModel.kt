@@ -60,8 +60,12 @@ class EvaluateViewModel(
     private val _showSubmitConfirmationDialog = MutableStateFlow(false)
     val showSubmitConfirmationDialog = _showSubmitConfirmationDialog.asStateFlow()
 
+    private val _isLoading = MutableStateFlow(true)
+    val isLoading = _isLoading.asStateFlow()
+
     init {
         viewModelScope.launch {
+            _isLoading.value = true
             // NOTE: THIS IS SET ON `EVALUATION_FORMS`
             val courseId = preferences.getCourseId()
 
@@ -87,6 +91,7 @@ class EvaluateViewModel(
             _hasEvaluated.value = hasEvaluated
             if (hasEvaluated) {
                 Log.d("App", "Student has already evaluated. Returning...")
+                _isLoading.value = false
                 return@launch
             }
 
@@ -98,8 +103,9 @@ class EvaluateViewModel(
                         question = it.questionText
                     )
                 }
+                Log.d("App", "Form count: ${_questions.value.size}")
+                _isLoading.value = false
             }
-            Log.d("App", "Form count: ${_questions.value.size}")
         }
     }
 

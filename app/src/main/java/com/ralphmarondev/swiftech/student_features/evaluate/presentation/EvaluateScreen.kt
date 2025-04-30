@@ -59,6 +59,7 @@ fun EvaluateScreen(
     val showEvaluationResultDialog = viewModel.showEvaluationResultDialog.collectAsState().value
     val showSubmitConfirmationDialog = viewModel.showSubmitConfirmationDialog.collectAsState().value
     val response = viewModel.response.collectAsState().value
+    val isLoading = viewModel.isLoading.collectAsState().value
 
     Scaffold(
         topBar = {
@@ -151,7 +152,19 @@ fun EvaluateScreen(
                 )
             }
             item {
-                AnimatedVisibility(visible = hasEvaluated && questions.isEmpty()) {
+                AnimatedVisibility(
+                    visible = isLoading
+                ) {
+                    Text(
+                        text = "Loading...",
+                        fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                        fontWeight = MaterialTheme.typography.titleMedium.fontWeight,
+                        color = MaterialTheme.colorScheme.secondary
+                    )
+                }
+            }
+            item {
+                AnimatedVisibility(visible = hasEvaluated && questions.isEmpty() && !isLoading) {
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -217,12 +230,12 @@ fun EvaluateScreen(
                 }
             }
             item {
-                AnimatedVisibility(!hasEvaluated) {
+                AnimatedVisibility(visible = !hasEvaluated && !isLoading) {
                     Button(
                         onClick = viewModel::showSubmitConfirmationDialogValueChange,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(vertical = 16.dp, horizontal = 6.dp),
+                            .padding(vertical = 16.dp),
                         shape = RoundedCornerShape(8.dp)
                     ) {
                         Text(
@@ -248,7 +261,7 @@ fun EvaluateScreen(
     }
     if (showEvaluationResultDialog) {
         EvaluationResultDialog(
-            resultText = response?.message ?: "Empty response message.",
+            result = response,
             onDismiss = viewModel::showEvaluationResultDialogValueChange,
             onConfirm = {
                 if (response?.success == true) {

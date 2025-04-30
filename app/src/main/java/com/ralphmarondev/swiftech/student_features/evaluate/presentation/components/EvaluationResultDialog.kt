@@ -6,10 +6,11 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.ralphmarondev.swiftech.core.domain.model.Result
 
 @Composable
 fun EvaluationResultDialog(
-    resultText: String,
+    result: Result?,
     onDismiss: () -> Unit,
     onConfirm: () -> Unit,
     modifier: Modifier = Modifier
@@ -28,8 +29,12 @@ fun EvaluationResultDialog(
         },
         text = {
             Text(
-                text = resultText,
-                color = MaterialTheme.colorScheme.secondary
+                text = result?.message ?: "Empty response message.",
+                color = if (result?.success == false) {
+                    MaterialTheme.colorScheme.error
+                } else {
+                    MaterialTheme.colorScheme.secondary
+                }
             )
         },
         title = {
