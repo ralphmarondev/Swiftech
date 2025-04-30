@@ -1,7 +1,9 @@
 package com.ralphmarondev.swiftech.admin_features.courses.navigation
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -59,12 +61,20 @@ fun CourseNavigation(
         composable<CourseRoutes.CourseDetail> {
             val courseId = it.arguments?.getInt("id")
             Log.d("App", "Course navigation - course detail, retrieved id: `$courseId`")
+            val context = LocalContext.current
             CourseDetailScreen(
                 courseId = courseId ?: -1,
                 navigateBack = {
                     navController.navigateUp()
                 },
-                updateCourse = {},
+                updateCourse = { id ->
+                    Log.d("App", "Updating course with id: $id")
+                    Toast.makeText(
+                        context,
+                        "Updating course with id: $id",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                },
                 navigateToReports = { id ->
                     navigateToReports(id)
                 }

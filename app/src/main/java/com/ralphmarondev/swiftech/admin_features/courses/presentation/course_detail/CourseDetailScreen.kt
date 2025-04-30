@@ -2,7 +2,9 @@ package com.ralphmarondev.swiftech.admin_features.courses.presentation.course_de
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -35,6 +37,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -48,7 +52,7 @@ import org.koin.core.parameter.parametersOf
 fun CourseDetailScreen(
     courseId: Int,
     navigateBack: () -> Unit,
-    updateCourse: () -> Unit,
+    updateCourse: (Int) -> Unit,
     navigateToReports: (Int) -> Unit
 ) {
     val viewModel: CourseDetailViewModel = koinViewModel(parameters = { parametersOf(courseId) })
@@ -113,7 +117,10 @@ fun CourseDetailScreen(
                 ElevatedCard(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(8.dp)
+                        .padding(8.dp),
+                    onClick = {
+                        updateCourse(courseId)
+                    }
                 ) {
                     Row(
                         modifier = Modifier
@@ -122,14 +129,47 @@ fun CourseDetailScreen(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
-                        Image(
-                            painter = rememberAsyncImagePainter(courseDetail?.image),
-                            contentDescription = courseDetail?.name,
-                            modifier = Modifier
-                                .size(100.dp)
-                                .clip(CircleShape),
-                            contentScale = ContentScale.Crop
-                        )
+                        if (courseDetail?.image.isNullOrBlank()) {
+                            val initials = courseDetail?.name?.let { name ->
+                                val parts = name.split(" ")
+                                    .filter { it.isNotBlank() }
+
+                                when {
+                                    parts.size >= 2 -> "${
+                                        parts[0].first().uppercaseChar()
+                                    }${parts[1].first().uppercaseChar()}"
+
+                                    parts.size == 1 -> parts[0].first().uppercaseChar().toString()
+                                    else -> "?"
+                                }
+                            } ?: "?"
+                            val fontSize = if (initials.length == 1) 28.sp else 20.sp
+
+                            Box(
+                                modifier = Modifier
+                                    .size(100.dp)
+                                    .clip(CircleShape)
+                                    .background(MaterialTheme.colorScheme.primary),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text(
+                                    text = initials,
+                                    color = MaterialTheme.colorScheme.onPrimary,
+                                    fontSize = fontSize,
+                                    fontWeight = FontWeight.Bold,
+                                    textAlign = TextAlign.Center
+                                )
+                            }
+                        } else {
+                            Image(
+                                painter = rememberAsyncImagePainter(courseDetail?.image),
+                                contentDescription = courseDetail?.name,
+                                modifier = Modifier
+                                    .size(100.dp)
+                                    .clip(CircleShape),
+                                contentScale = ContentScale.Crop
+                            )
+                        }
 
                         Column(
                             verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -170,22 +210,50 @@ fun CourseDetailScreen(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
-                        Image(
-                            painter = rememberAsyncImagePainter(teacherDetail?.image),
-                            contentDescription = teacherDetail?.username,
-                            modifier = Modifier
-                                .size(60.dp)
-                                .clip(CircleShape),
-                            contentScale = ContentScale.Crop
-                        )
+                        if (teacherDetail?.image.isNullOrBlank()) {
+                            val initials = teacherDetail?.fullName?.let { name ->
+                                val parts = name.split(" ")
+                                    .filter { it.isNotBlank() }
 
-                        val fullName = if (teacherDetail?.fullName.isNullOrEmpty()) {
-                            teacherDetail?.username
+                                when {
+                                    parts.size >= 2 -> "${
+                                        parts[0].first().uppercaseChar()
+                                    }${parts[1].first().uppercaseChar()}"
+
+                                    parts.size == 1 -> parts[0].first().uppercaseChar().toString()
+                                    else -> "?"
+                                }
+                            } ?: "?"
+                            val fontSize = if (initials.length == 1) 28.sp else 20.sp
+
+                            Box(
+                                modifier = Modifier
+                                    .size(60.dp)
+                                    .clip(CircleShape)
+                                    .background(MaterialTheme.colorScheme.primary),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text(
+                                    text = initials,
+                                    color = MaterialTheme.colorScheme.onPrimary,
+                                    fontSize = fontSize,
+                                    fontWeight = FontWeight.Bold,
+                                    textAlign = TextAlign.Center
+                                )
+                            }
                         } else {
-                            teacherDetail?.fullName
+                            Image(
+                                painter = rememberAsyncImagePainter(teacherDetail?.image),
+                                contentDescription = teacherDetail?.username,
+                                modifier = Modifier
+                                    .size(60.dp)
+                                    .clip(CircleShape),
+                                contentScale = ContentScale.Crop
+                            )
                         }
+
                         Text(
-                            text = fullName ?: "No full name provided.",
+                            text = teacherDetail?.fullName ?: "No full name provided.",
                             fontSize = MaterialTheme.typography.titleMedium.fontSize,
                             fontWeight = MaterialTheme.typography.titleMedium.fontWeight,
                             color = MaterialTheme.colorScheme.primary,
@@ -224,22 +292,50 @@ fun CourseDetailScreen(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
-                        Image(
-                            painter = rememberAsyncImagePainter(student.image),
-                            contentDescription = teacherDetail?.username,
-                            modifier = Modifier
-                                .size(60.dp)
-                                .clip(CircleShape),
-                            contentScale = ContentScale.Crop
-                        )
+                        if (student.image.isNullOrBlank()) {
+                            val initials = student.fullName.let { name ->
+                                val parts = name.split(" ")
+                                    .filter { it.isNotBlank() }
 
-                        val fullName = if (student.fullName.isNullOrEmpty()) {
-                            student.username
+                                when {
+                                    parts.size >= 2 -> "${
+                                        parts[0].first().uppercaseChar()
+                                    }${parts[1].first().uppercaseChar()}"
+
+                                    parts.size == 1 -> parts[0].first().uppercaseChar().toString()
+                                    else -> "?"
+                                }
+                            }
+                            val fontSize = if (initials.length == 1) 28.sp else 20.sp
+
+                            Box(
+                                modifier = Modifier
+                                    .size(60.dp)
+                                    .clip(CircleShape)
+                                    .background(MaterialTheme.colorScheme.primary),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text(
+                                    text = initials,
+                                    color = MaterialTheme.colorScheme.onPrimary,
+                                    fontSize = fontSize,
+                                    fontWeight = FontWeight.Bold,
+                                    textAlign = TextAlign.Center
+                                )
+                            }
                         } else {
-                            student.fullName
+                            Image(
+                                painter = rememberAsyncImagePainter(student.image),
+                                contentDescription = student.username,
+                                modifier = Modifier
+                                    .size(60.dp)
+                                    .clip(CircleShape),
+                                contentScale = ContentScale.Crop
+                            )
                         }
+
                         Text(
-                            text = fullName,
+                            text = student.fullName,
                             fontSize = MaterialTheme.typography.titleMedium.fontSize,
                             fontWeight = MaterialTheme.typography.titleMedium.fontWeight,
                             color = MaterialTheme.colorScheme.primary,
