@@ -20,13 +20,15 @@ import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.ralphmarondev.swiftech.admin_features.reports.domain.model.RatingCounts
+import androidx.core.graphics.toColorInt
 
 fun safeValue(count: Int, hasNonZero: Boolean) =
     if (count == 0 && !hasNonZero) 0.01f else count.toFloat()
 
 @Composable
 fun ReportBarChart(
-    ratingCounts: RatingCounts
+    ratingCounts: RatingCounts,
+    modifier: Modifier = Modifier
 ) {
     val allCounts = listOf(
         ratingCounts.excellent,
@@ -50,7 +52,7 @@ fun ReportBarChart(
     )
     val barDataSet = BarDataSet(barEntries, "Rating Count")
     barDataSet.apply {
-        color = Color.parseColor("#B388FF")
+        color = "#B388FF".toColorInt()
         valueTextColor = Color.BLACK
         valueTextSize = 12f
     }
@@ -64,9 +66,7 @@ fun ReportBarChart(
     )
     val barData = BarData(barDataSet)
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
+        modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(

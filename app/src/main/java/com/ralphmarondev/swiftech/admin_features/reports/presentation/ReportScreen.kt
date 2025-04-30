@@ -1,13 +1,13 @@
 package com.ralphmarondev.swiftech.admin_features.reports.presentation
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBackIosNew
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -68,39 +68,60 @@ fun ReportScreen(
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
-            Text(
-                text = "Course Name:",
-                style = MaterialTheme.typography.titleSmall
-            )
-            Text(
-                text = courseName,
-                style = MaterialTheme.typography.titleMedium
-            )
-            Text(
-                text = "Teacher Name:",
-                style = MaterialTheme.typography.titleSmall
-            )
-            Text(
-                text = teacherName,
-                style = MaterialTheme.typography.titleMedium
-            )
+            Column(
+                modifier = Modifier
+                    .padding(16.dp)
+            ) {
+                Text(
+                    text = "Course Name:",
+                    fontWeight = MaterialTheme.typography.labelMedium.fontWeight,
+                    fontSize = MaterialTheme.typography.labelMedium.fontSize,
+                    color = MaterialTheme.colorScheme.secondary
+                )
+                Text(
+                    text = courseName,
+                    fontWeight = MaterialTheme.typography.titleMedium.fontWeight,
+                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                )
+                Text(
+                    text = "Teacher Name:",
+                    fontWeight = MaterialTheme.typography.labelMedium.fontWeight,
+                    fontSize = MaterialTheme.typography.labelMedium.fontSize,
+                    color = MaterialTheme.colorScheme.secondary
+                )
+                Text(
+                    text = teacherName,
+                    fontWeight = MaterialTheme.typography.titleMedium.fontWeight,
+                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                )
 
-            Text(
-                text = "Average rating: $averageRating"
+                Text(
+                    text = "Average rating:",
+                    fontWeight = MaterialTheme.typography.labelMedium.fontWeight,
+                    fontSize = MaterialTheme.typography.labelMedium.fontSize,
+                    color = MaterialTheme.colorScheme.secondary
+                )
+                Text(
+                    text = averageRating.toString(),
+                    fontWeight = MaterialTheme.typography.titleMedium.fontWeight,
+                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                )
+            }
+            HorizontalDivider(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp)
             )
-
-            Text(text = "Excellent: ${ratingCounts.excellent}")
-            Text(text = "Very good: ${ratingCounts.veryGood}")
-            Text(text = "Good: ${ratingCounts.good}")
-            Text(text = "Fair: ${ratingCounts.fair}")
-            Text(text = "Poor: ${ratingCounts.poor}")
-
-            Spacer(modifier = Modifier.height(24.dp))
 
             if (isLoading) {
                 Text(text = "Loading...")
             } else {
-                ReportBarChart(ratingCounts)
+                ReportBarChart(
+                    ratingCounts = ratingCounts,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)
+                )
             }
         }
     }
