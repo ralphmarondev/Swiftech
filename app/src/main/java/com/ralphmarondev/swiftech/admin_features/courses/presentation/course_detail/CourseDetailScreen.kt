@@ -1,5 +1,6 @@
 package com.ralphmarondev.swiftech.admin_features.courses.presentation.course_detail
 
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -32,6 +33,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -60,6 +62,11 @@ fun CourseDetailScreen(
     val teacherDetail = viewModel.teacherDetail.collectAsState().value
     val students = viewModel.students.collectAsState().value
     val showEnrollStudentDialog = viewModel.showEnrollStudentDialog.collectAsState().value
+
+    LaunchedEffect(Unit) {
+        Log.d("App", "Refreshing course details...")
+        viewModel.refreshCourse()
+    }
 
     Scaffold(
         topBar = {

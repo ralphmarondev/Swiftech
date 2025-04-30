@@ -1,9 +1,7 @@
 package com.ralphmarondev.swiftech.admin_features.courses.navigation
 
 import android.util.Log
-import android.widget.Toast
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -11,6 +9,7 @@ import androidx.navigation.compose.rememberNavController
 import com.ralphmarondev.swiftech.admin_features.courses.presentation.course_detail.CourseDetailScreen
 import com.ralphmarondev.swiftech.admin_features.courses.presentation.course_list.CourseListScreen
 import com.ralphmarondev.swiftech.admin_features.courses.presentation.new_course.NewCourseScreen
+import com.ralphmarondev.swiftech.admin_features.courses.presentation.update_course.UpdateCourseScreen
 import kotlinx.serialization.Serializable
 
 object CourseRoutes {
@@ -23,6 +22,9 @@ object CourseRoutes {
 
     @Serializable
     data class CourseDetail(val id: Int)
+
+    @Serializable
+    data class UpdateCourse(val id: Int)
 }
 
 @Composable
@@ -61,22 +63,27 @@ fun CourseNavigation(
         composable<CourseRoutes.CourseDetail> {
             val courseId = it.arguments?.getInt("id")
             Log.d("App", "Course navigation - course detail, retrieved id: `$courseId`")
-            val context = LocalContext.current
             CourseDetailScreen(
                 courseId = courseId ?: -1,
                 navigateBack = {
                     navController.navigateUp()
                 },
                 updateCourse = { id ->
-                    Log.d("App", "Updating course with id: $id")
-                    Toast.makeText(
-                        context,
-                        "Updating course with id: $id",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    navController.navigate(CourseRoutes.UpdateCourse(id)) {
+                        launchSingleTop = true
+                    }
                 },
                 navigateToReports = { id ->
                     navigateToReports(id)
+                }
+            )
+        }
+        composable<CourseRoutes.UpdateCourse> {
+            val courseId = it.arguments?.getInt("id")
+            UpdateCourseScreen(
+                courseId = courseId ?: 0,
+                navigateBack = {
+                    navController.navigateUp()
                 }
             )
         }

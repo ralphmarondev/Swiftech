@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import androidx.room.Upsert
 import com.ralphmarondev.swiftech.core.domain.model.Course
 import com.ralphmarondev.swiftech.core.domain.model.StudentCourseCrossRef
@@ -15,6 +16,9 @@ interface CourseDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun createCourse(course: Course)
+
+    @Update
+    suspend fun updateCourse(course: Course)
 
     @Query("UPDATE course SET isDeleted = 1 WHERE id = :id")
     suspend fun deleteCourse(id: Int)

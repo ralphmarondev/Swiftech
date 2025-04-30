@@ -56,8 +56,18 @@ class CourseDetailViewModel(
     }
 
     private suspend fun getStudentsInCourse() {
+        _students.value = emptyList()
         getStudentInCourseUseCase(courseId).collect { students ->
             _students.value = students
+        }
+    }
+
+    fun refreshCourse() {
+        viewModelScope.launch {
+            val course = getCourseDetailByIdUseCase(courseId)
+            _courseDetail.value = course
+            val teacher = getUserByIdUseCase(course?.teacherId ?: 0)
+            _teacherDetail.value = teacher
         }
     }
 

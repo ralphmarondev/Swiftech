@@ -1,3 +1,14 @@
+[2025-04-30]
+- crud student
+- crud teacher
+- crud course
+- cr evaluation forms
+
+- student can now evaluate
+- we can now generate report
+
+
+
 [2025-04-07]
 # CRUD student
 # CRUD teacher

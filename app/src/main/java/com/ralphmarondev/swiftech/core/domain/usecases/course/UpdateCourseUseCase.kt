@@ -1,9 +1,10 @@
 package com.ralphmarondev.swiftech.core.domain.usecases.course
 
+import com.ralphmarondev.swiftech.core.domain.model.Course
 import com.ralphmarondev.swiftech.core.domain.repositories.CourseRepository
 
-class GetCourseByStudentIdUseCase(
+class UpdateCourseUseCase(
     private val repository: CourseRepository
 ) {
-    operator fun invoke(studentId: Int) = repository.getCoursesForStudent(studentId)
+    suspend operator fun invoke(course: Course) = repository.updateCourse(course)
 }

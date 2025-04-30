@@ -15,6 +15,10 @@ class CourseRepositoryImpl(
         courseDao.createCourse(course)
     }
 
+    override suspend fun updateCourse(course: Course) {
+        courseDao.updateCourse(course)
+    }
+
     override suspend fun getCourseDetailById(id: Int): Course? {
         return courseDao.getCourseDetailById(id)
     }
@@ -31,7 +35,7 @@ class CourseRepositoryImpl(
         return courseDao.getStudentsInCourse(id)
     }
 
-    override fun getCousesForStudent(studentId: Int): Flow<List<Course>> {
+    override fun getCoursesForStudent(studentId: Int): Flow<List<Course>> {
         return courseDao.getCoursesForStudent(studentId)
     }
 }

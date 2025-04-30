@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface CourseRepository {
     suspend fun createCourse(course: Course)
+    suspend fun updateCourse(course: Course)
     suspend fun getCourseDetailById(id: Int): Course?
 
     fun getAllCourses(): Flow<List<Course>>
@@ -14,5 +15,5 @@ interface CourseRepository {
     suspend fun insertStudentToCourse(crossRef: StudentCourseCrossRef)
     fun getStudentInCourse(id: Int): Flow<List<User>>
 
-    fun getCousesForStudent(studentId: Int): Flow<List<Course>>
+    fun getCoursesForStudent(studentId: Int): Flow<List<Course>>
 }
