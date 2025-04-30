@@ -35,9 +35,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.ralphmarondev.swiftech.core.presentation.AccountCard
 import com.ralphmarondev.swiftech.core.presentation.ConfirmExitDialog
+import com.ralphmarondev.swiftech.core.presentation.CourseCard
 import com.ralphmarondev.swiftech.core.presentation.DrawerContent
 import com.ralphmarondev.swiftech.core.util.LocalThemeState
-import com.ralphmarondev.swiftech.core.presentation.CourseCard
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
@@ -131,7 +131,8 @@ fun HomeScreen(
                     image = currentUser?.image ?: "No image",
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(16.dp)
+                        .padding(16.dp),
+                    onClick = {}
                 )
 
                 Text(

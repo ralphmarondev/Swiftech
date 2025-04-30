@@ -26,10 +26,12 @@ fun AccountCard(
     name: String,
     role: String,
     image: String,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     ElevatedCard(
-        modifier = modifier
+        modifier = modifier,
+        onClick = onClick
     ) {
         Row(
             modifier = Modifier

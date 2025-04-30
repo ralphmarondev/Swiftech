@@ -158,7 +158,8 @@ fun HomeScreen(
                     image = currentUser?.image ?: "No image",
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(16.dp)
+                        .padding(16.dp),
+                    onClick = {}
                 )
 
                 Text(
