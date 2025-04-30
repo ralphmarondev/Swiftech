@@ -1,6 +1,7 @@
 package com.ralphmarondev.swiftech.student_features.evaluate.presentation
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -31,9 +33,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.rememberAsyncImagePainter
+import com.ralphmarondev.swiftech.R
 import com.ralphmarondev.swiftech.student_features.evaluate.presentation.components.EvaluationResultDialog
 import com.ralphmarondev.swiftech.student_features.evaluate.presentation.components.SubmitConfirmationDialog
 import org.koin.androidx.compose.koinViewModel
@@ -121,9 +126,28 @@ fun EvaluateScreen(
             }
             item {
                 AnimatedVisibility(visible = hasEvaluated && questions.isEmpty()) {
-                    Text(
-                        text = "You evaluated already."
-                    )
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Image(
+                            painter = rememberAsyncImagePainter(R.drawable.like),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(120.dp),
+                            contentScale = ContentScale.Crop
+                        )
+
+                        Spacer(modifier = Modifier.height(16.dp))
+                        Text(
+                            text = "You evaluated already!",
+                            fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                            fontWeight = MaterialTheme.typography.titleMedium.fontWeight,
+                            color = MaterialTheme.colorScheme.secondary
+                        )
+                    }
                 }
             }
             items(questions) { questionRating ->
