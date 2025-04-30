@@ -46,6 +46,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import com.ralphmarondev.swiftech.admin_features.courses.presentation.components.EnrollStudentDialog
+import com.ralphmarondev.swiftech.admin_features.courses.presentation.components.RemoveStudentDialog
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 
@@ -62,6 +63,9 @@ fun CourseDetailScreen(
     val teacherDetail = viewModel.teacherDetail.collectAsState().value
     val students = viewModel.students.collectAsState().value
     val showEnrollStudentDialog = viewModel.showEnrollStudentDialog.collectAsState().value
+    val showRemoveStudentDialog = viewModel.removeStudentDialog.collectAsState().value
+    val selectedStudent = viewModel.selectedStudent.collectAsState().value
+    val removeStudentResponse = viewModel.removeStudentResponse.collectAsState().value
 
     LaunchedEffect(Unit) {
         Log.d("App", "Refreshing course details...")
@@ -290,7 +294,11 @@ fun CourseDetailScreen(
             items(students) { student ->
                 ElevatedCard(
                     modifier = Modifier
-                        .padding(horizontal = 8.dp, vertical = 4.dp)
+                        .padding(horizontal = 8.dp, vertical = 4.dp),
+                    onClick = {
+                        viewModel.onStudentClick(student)
+                        viewModel.setRemoveStudentDialog(true)
+                    }
                 ) {
                     Row(
                         modifier = Modifier
@@ -363,6 +371,21 @@ fun CourseDetailScreen(
                 viewModel.enrollStudent()
             },
             viewModel = viewModel
+        )
+    }
+
+    if (showRemoveStudentDialog) {
+        RemoveStudentDialog(
+            text = "Are you sure you want to remove ${selectedStudent?.fullName} from the class?",
+            onDismiss = {
+                viewModel.setRemoveStudentDialog(false)
+            },
+            onConfirm = {
+                viewModel.removeStudentInClass()
+                if (removeStudentResponse?.success == true) {
+                    viewModel.setRemoveStudentDialog(false)
+                }
+            }
         )
     }
 }

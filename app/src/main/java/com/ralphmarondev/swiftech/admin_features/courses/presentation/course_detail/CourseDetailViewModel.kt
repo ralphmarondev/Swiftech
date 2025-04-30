@@ -45,6 +45,15 @@ class CourseDetailViewModel(
     private val _response = MutableStateFlow<Result?>(null)
     val response = _response.asStateFlow()
 
+    private val _selectedStudent = MutableStateFlow<User?>(null)
+    val selectedStudent = _selectedStudent.asStateFlow()
+
+    private val _removeStudentDialog = MutableStateFlow(false)
+    val removeStudentDialog = _removeStudentDialog.asStateFlow()
+
+    private val _removeStudentResponse = MutableStateFlow<Result?>(null)
+    val removeStudentResponse = _removeStudentResponse
+
     init {
         viewModelScope.launch {
             val course = getCourseDetailByIdUseCase(courseId)
@@ -116,6 +125,26 @@ class CourseDetailViewModel(
             delay(1500)
             setShowEnrollStudentDialog()
             getStudentsInCourse()
+        }
+    }
+
+    fun onStudentClick(student: User) {
+        _selectedStudent.value = student
+    }
+
+    fun setRemoveStudentDialog(value: Boolean) {
+        _removeStudentDialog.value = value
+    }
+
+    fun removeStudentInClass() {
+        viewModelScope.launch {
+            val student = _selectedStudent.value
+            Log.d("App", "Removing ${student?.fullName} from the class...")
+
+            _removeStudentResponse.value = Result(
+                success = true,
+                message = "Successfully removed student."
+            )
         }
     }
 }
