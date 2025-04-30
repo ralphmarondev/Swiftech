@@ -38,6 +38,9 @@ class NewStudentViewModel(
     private val _response = MutableStateFlow<Result?>(null)
     val response = _response.asStateFlow()
 
+    private val _showResultDialog = MutableStateFlow(false)
+    val showResultDialog = _showResultDialog.asStateFlow()
+
 
     fun onFullNameChange(value: String) {
         _fullName.value = value
@@ -57,6 +60,10 @@ class NewStudentViewModel(
 
     fun onImagePathChange(value: String) {
         _imagePath.value = value
+    }
+
+    fun onShowResultDialogValueChange(value: Boolean = !_showResultDialog.value) {
+        _showResultDialog.value = value
     }
 
     fun register() {
@@ -95,27 +102,39 @@ class NewStudentViewModel(
                 return@launch
             }
 
-            createUserUseCase(
-                user = User(
-                    username = username,
-                    password = password,
-                    fullName = fullName,
-                    role = Role.STUDENT,
-                    gender = gender
+            try {
+                createUserUseCase(
+                    user = User(
+                        username = username,
+                        password = password,
+                        fullName = fullName,
+                        role = Role.STUDENT,
+                        gender = gender
+                    )
                 )
-            )
-            _response.value = Result(
-                success = true,
-                message = "Registration successful."
-            )
-            Log.d(
-                "App",
-                "Full name: $fullName, username: $username, password: $password, gender: $gender"
-            )
-            _fullName.value = ""
-            _username.value = ""
-            _password.value = ""
-            _gender.value = Gender.MALE
+                _response.value = Result(
+                    success = true,
+                    message = "Registration successful. Confirm if you want to register new student?"
+                )
+                Log.d(
+                    "App",
+                    "Full name: $fullName, username: $username, password: $password, gender: $gender"
+                )
+                _fullName.value = ""
+                _username.value = ""
+                _password.value = ""
+                _gender.value = Gender.MALE
+            } catch (e: Exception) {
+                _response.value = Result(
+                    success = false,
+                    message = "Registration failed. Please try again."
+                )
+            }
+            _showResultDialog.value = !_showResultDialog.value
         }
+    }
+
+    fun clearResult() {
+        _response.value = null
     }
 }

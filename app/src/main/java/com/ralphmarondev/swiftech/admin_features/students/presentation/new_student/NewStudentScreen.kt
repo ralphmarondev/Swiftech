@@ -41,8 +41,10 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ralphmarondev.swiftech.admin_features.students.presentation.components.GenderDropdown
+import com.ralphmarondev.swiftech.core.presentation.FailedResultDialog
 import com.ralphmarondev.swiftech.core.presentation.NormalTextField
 import com.ralphmarondev.swiftech.core.presentation.PasswordTextField
+import com.ralphmarondev.swiftech.core.presentation.ResultDialog
 import com.ralphmarondev.swiftech.core.util.saveImageToAppFolder
 import org.koin.androidx.compose.koinViewModel
 
@@ -58,6 +60,7 @@ fun NewStudentScreen(
     val gender = viewModel.gender.collectAsState().value
     val imagePath = viewModel.imagePath.collectAsState().value
     val response = viewModel.response.collectAsState().value
+    val showResultDialog = viewModel.showResultDialog.collectAsState().value
 
     val context = LocalContext.current
     val focusManager = LocalFocusManager.current
@@ -214,6 +217,31 @@ fun NewStudentScreen(
                     fontSize = 16.sp
                 )
             }
+        }
+    }
+
+    if (showResultDialog) {
+        if (response?.success == true) {
+            ResultDialog(
+                result = response,
+                onDismiss = {
+                    viewModel.onShowResultDialogValueChange(false)
+                    navigateBack()
+                },
+                onConfirm = {
+                    viewModel.onShowResultDialogValueChange(false)
+                    viewModel.clearResult()
+                },
+                dismissButtonText = "Cancel",
+                confirmButtonText = "Confirm"
+            )
+        } else {
+            FailedResultDialog(
+                result = response,
+                onDismiss = {
+                    viewModel.onShowResultDialogValueChange(false)
+                }
+            )
         }
     }
 }
