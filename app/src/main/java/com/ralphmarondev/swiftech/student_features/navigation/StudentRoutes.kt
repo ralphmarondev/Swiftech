@@ -12,4 +12,7 @@ object StudentRoutes {
 
     @Serializable
     data class Evaluate(val formId: Int)
+
+    @Serializable
+    data class StudentDetails(val username: String)
 }

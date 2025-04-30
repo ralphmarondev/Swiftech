@@ -48,6 +48,7 @@ import org.koin.core.parameter.parametersOf
 fun HomeScreen(
     username: String,
     onCourseClick: (Int) -> Unit,
+    onAccountCardClick: (String) -> Unit,
     onLogout: () -> Unit
 ) {
     val themeState = LocalThemeState.current
@@ -132,7 +133,7 @@ fun HomeScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(16.dp),
-                    onClick = {}
+                    onClick = { onAccountCardClick(username) }
                 )
 
                 Text(

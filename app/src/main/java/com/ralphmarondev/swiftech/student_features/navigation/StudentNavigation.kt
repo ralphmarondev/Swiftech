@@ -8,6 +8,7 @@ import androidx.navigation.compose.rememberNavController
 import com.ralphmarondev.swiftech.student_features.evaluate.presentation.EvaluateScreen
 import com.ralphmarondev.swiftech.student_features.evaluation_forms.presentation.EvaluationFormScreen
 import com.ralphmarondev.swiftech.student_features.home.presentation.HomeScreen
+import com.ralphmarondev.swiftech.student_features.student_details.presentation.StudentDetailScreen
 
 @Composable
 fun StudentNavigation(
@@ -27,7 +28,12 @@ fun StudentNavigation(
                         launchSingleTop = true
                     }
                 },
-                onLogout = onLogout
+                onLogout = onLogout,
+                onAccountCardClick = { username ->
+                    navController.navigate(StudentRoutes.StudentDetails(username)) {
+                        launchSingleTop = true
+                    }
+                }
             )
         }
         composable<StudentRoutes.EvaluationForms> {
@@ -48,6 +54,15 @@ fun StudentNavigation(
             val id = it.arguments?.getInt("formId")
             EvaluateScreen(
                 evaluationFormId = id ?: 0,
+                navigateBack = {
+                    navController.navigateUp()
+                }
+            )
+        }
+        composable<StudentRoutes.StudentDetails> {
+            val usernameArgs = it.arguments?.getString("username")
+            StudentDetailScreen(
+                username = usernameArgs ?: "No username provided.",
                 navigateBack = {
                     navController.navigateUp()
                 }
