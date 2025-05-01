@@ -42,6 +42,9 @@ import com.ralphmarondev.swiftech.admin_features.teachers.presentation.component
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 
+// TODO:
+//  - We should not allow deleting the teacher if he/she is assigned on a class
+//  - 'Cannot delete this teacher. They are currently assigned to classes. Please reassign or remove them from classes first'
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TeacherDetailScreen(
@@ -202,8 +205,8 @@ fun TeacherDetailScreen(
 
     if (showDeleteDialog) {
         DeleteTeacherDialog(
-            username = teacherDetail?.fullName ?: teacherDetail?.username
-            ?: "No username provided.",
+            username = teacherDetail?.fullName
+                ?: "No username provided.",
             onConfirm = {
                 viewModel.deleteUser()
                 viewModel.setDeleteDialog()
