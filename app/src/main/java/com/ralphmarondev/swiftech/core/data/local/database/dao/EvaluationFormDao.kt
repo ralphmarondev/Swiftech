@@ -84,12 +84,21 @@ interface EvaluationFormDao {
 
 
     // NOTE: THIS IS FOR ADMIN
+    //
+    //      QUERY IF YOU WANT TO INCLUDE ALL EVALUATION RESPONSES EVEN FROM DELETED FORMS.
+    //          SELECT evaluation_answer.* FROM evaluation_answer
+    //            INNER JOIN evaluation_response
+    //            ON evaluation_answer.evaluationResponseId = evaluation_response.id
+    //            WHERE evaluation_response.courseId = :courseId
     @Query(
         """
             SELECT evaluation_answer.* FROM evaluation_answer
             INNER JOIN evaluation_response
-            ON evaluation_answer.evaluationResponseId = evaluation_response.id 
+                ON evaluation_answer.evaluationResponseId = evaluation_response.id 
+            INNER JOIN evaluation_form
+                ON evaluation_response.evaluationFormId = evaluation_form.id
             WHERE evaluation_response.courseId = :courseId
+            AND evaluation_form.isDeleted = 0
         """
     )
     fun getEvaluationAnswersByCourse(courseId: Int): Flow<List<EvaluationAnswer>>
