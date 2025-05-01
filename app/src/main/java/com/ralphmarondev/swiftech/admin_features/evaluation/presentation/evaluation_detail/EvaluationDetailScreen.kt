@@ -26,6 +26,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.ralphmarondev.swiftech.admin_features.evaluation.presentation.components.DeleteEvaluationDialog
 import com.ralphmarondev.swiftech.admin_features.evaluation.presentation.components.NewQuestionDialog
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
@@ -43,6 +44,7 @@ fun EvaluationDetailScreen(
     val isLoading = viewModel.isLoading.collectAsState().value
     val evaluationForm = viewModel.evaluationForm.collectAsState().value
     val questions = viewModel.questions.collectAsState().value
+    val showDeleteEvaluationDialog = viewModel.showDeleteEvaluationDialog.collectAsState().value
 
     Scaffold(
         topBar = {
@@ -72,7 +74,7 @@ fun EvaluationDetailScreen(
                         )
                     }
                     IconButton(
-                        onClick = {}
+                        onClick = { viewModel.setShowDeleteEvaluationDialog(true) }
                     ) {
                         Icon(
                             imageVector = Icons.Outlined.DeleteOutline,
@@ -87,17 +89,7 @@ fun EvaluationDetailScreen(
                     actionIconContentColor = MaterialTheme.colorScheme.onPrimary
                 )
             )
-        },
-//        floatingActionButton = {
-//            FloatingActionButton(
-//                onClick = viewModel::setShowNewQuestionDialog
-//            ) {
-//                Icon(
-//                    imageVector = Icons.Outlined.Add,
-//                    contentDescription = "New Question"
-//                )
-//            }
-//        }
+        }
     ) { innerPadding ->
         LazyColumn(
             modifier = Modifier
@@ -164,7 +156,6 @@ fun EvaluationDetailScreen(
             }
             items(questions) { question ->
                 ElevatedCard(
-//                    onClick = {},
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 4.dp)
@@ -187,6 +178,18 @@ fun EvaluationDetailScreen(
             onConfirm = viewModel::onConfirm,
             value = viewModel.newQuestion.collectAsState().value,
             onValueChange = viewModel::onNewQuestionValueChange
+        )
+    }
+    if (showDeleteEvaluationDialog) {
+        DeleteEvaluationDialog(
+            text = "Are you sure you want to delete this evaluation form and all associated questions? This action cannot be undone.",
+            onConfirm = {
+                viewModel.deleteEvaluation()
+                navigateBack()
+            },
+            onDismiss = {
+                viewModel.setShowDeleteEvaluationDialog(false)
+            }
         )
     }
 }

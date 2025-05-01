@@ -1,5 +1,6 @@
 package com.ralphmarondev.swiftech.admin_features.evaluation.presentation.evaluation_detail
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ralphmarondev.swiftech.core.domain.model.EvaluationForm
@@ -30,6 +31,9 @@ class EvaluationDetailViewModel(
 
     private val _showNewQuestionDialog = MutableStateFlow(false)
     val showNewQuestionDialog = _showNewQuestionDialog.asStateFlow()
+
+    private val _showDeleteEvaluationDialog = MutableStateFlow(false)
+    val showDeleteEvaluationDialog = _showDeleteEvaluationDialog.asStateFlow()
 
     private val _response = MutableStateFlow<Result?>(null)
     val response = _response.asStateFlow()
@@ -75,5 +79,16 @@ class EvaluationDetailViewModel(
             )
             setShowNewQuestionDialog()
         }
+    }
+
+    fun setShowDeleteEvaluationDialog(value: Boolean) {
+        _showDeleteEvaluationDialog.value = value
+    }
+
+    fun deleteEvaluation() {
+        Log.d(
+            "App",
+            "Deleting evaluation with id: `$evaluationId`, title: `${evaluationForm.value?.title}`"
+        )
     }
 }

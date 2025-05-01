@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 @Composable
-fun SaveEvaluationDialog(
+fun DeleteEvaluationDialog(
     text: String,
     onDismiss: () -> Unit,
     onConfirm: () -> Unit,
@@ -22,7 +22,7 @@ fun SaveEvaluationDialog(
                 onClick = onConfirm
             ) {
                 Text(
-                    text = "Save"
+                    text = "Delete"
                 )
             }
         },
@@ -43,7 +43,7 @@ fun SaveEvaluationDialog(
         },
         title = {
             Text(
-                text = "Save Evaluation",
+                text = "Delete Evaluation",
                 color = MaterialTheme.colorScheme.primary
             )
         }
