@@ -6,35 +6,35 @@ import androidx.compose.ui.text.font.FontFamily
 import com.ralphmarondev.swiftech.R
 
 // Define different font families for different weights
-val robotoMonoRegular = FontFamily(
-    Font(R.font.roboto_mono_regular)
+val robotoRegular = FontFamily(
+    Font(R.font.roboto_regular)
 )
 
-val robotoMonoBold = FontFamily(
-    Font(R.font.roboto_mono_bold)
+val robotoBold = FontFamily(
+    Font(R.font.roboto_bold)
 )
 
-val robotoMonoThin = FontFamily(
-    Font(R.font.roboto_mono_thin)
+val robotoThin = FontFamily(
+    Font(R.font.roboto_thin)
 )
 
 // Default Material 3 typography values
 val baseline = Typography()
 
 val Typography = Typography(
-    displayLarge = baseline.displayLarge.copy(fontFamily = robotoMonoBold),
-    displayMedium = baseline.displayMedium.copy(fontFamily = robotoMonoBold),
-    displaySmall = baseline.displaySmall.copy(fontFamily = robotoMonoBold),
-    headlineLarge = baseline.headlineLarge.copy(fontFamily = robotoMonoBold),
-    headlineMedium = baseline.headlineMedium.copy(fontFamily = robotoMonoBold),
-    headlineSmall = baseline.headlineSmall.copy(fontFamily = robotoMonoBold),
-    titleLarge = baseline.titleLarge.copy(fontFamily = robotoMonoRegular),
-    titleMedium = baseline.titleMedium.copy(fontFamily = robotoMonoRegular),
-    titleSmall = baseline.titleSmall.copy(fontFamily = robotoMonoRegular),
-    bodyLarge = baseline.bodyLarge.copy(fontFamily = robotoMonoRegular),
-    bodyMedium = baseline.bodyMedium.copy(fontFamily = robotoMonoRegular),
-    bodySmall = baseline.bodySmall.copy(fontFamily = robotoMonoRegular),
-    labelLarge = baseline.labelLarge.copy(fontFamily = robotoMonoRegular),
-    labelMedium = baseline.labelMedium.copy(fontFamily = robotoMonoRegular),
-    labelSmall = baseline.labelSmall.copy(fontFamily = robotoMonoRegular),
+    displayLarge = baseline.displayLarge.copy(fontFamily = robotoBold),
+    displayMedium = baseline.displayMedium.copy(fontFamily = robotoBold),
+    displaySmall = baseline.displaySmall.copy(fontFamily = robotoBold),
+    headlineLarge = baseline.headlineLarge.copy(fontFamily = robotoBold),
+    headlineMedium = baseline.headlineMedium.copy(fontFamily = robotoBold),
+    headlineSmall = baseline.headlineSmall.copy(fontFamily = robotoBold),
+    titleLarge = baseline.titleLarge.copy(fontFamily = robotoRegular),
+    titleMedium = baseline.titleMedium.copy(fontFamily = robotoRegular),
+    titleSmall = baseline.titleSmall.copy(fontFamily = robotoRegular),
+    bodyLarge = baseline.bodyLarge.copy(fontFamily = robotoRegular),
+    bodyMedium = baseline.bodyMedium.copy(fontFamily = robotoRegular),
+    bodySmall = baseline.bodySmall.copy(fontFamily = robotoRegular),
+    labelLarge = baseline.labelLarge.copy(fontFamily = robotoRegular),
+    labelMedium = baseline.labelMedium.copy(fontFamily = robotoRegular),
+    labelSmall = baseline.labelSmall.copy(fontFamily = robotoRegular),
 )
