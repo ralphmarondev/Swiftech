@@ -39,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import com.ralphmarondev.swiftech.admin_features.teachers.presentation.components.DeleteTeacherDialog
+import com.ralphmarondev.swiftech.admin_features.teachers.presentation.components.TeacherResultDialog
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 
@@ -55,6 +56,8 @@ fun TeacherDetailScreen(
     val viewModel: TeacherDetailViewModel = koinViewModel(parameters = { parametersOf(username) })
     val teacherDetail = viewModel.userDetail.collectAsState().value
     val showDeleteDialog = viewModel.showDeleteDialog.collectAsState().value
+    val showResultDialog = viewModel.showResultDialog.collectAsState().value
+    val response = viewModel.response.collectAsState().value
 
     LaunchedEffect(username) {
         viewModel.refreshDetails()
@@ -209,10 +212,22 @@ fun TeacherDetailScreen(
                 ?: "No username provided.",
             onConfirm = {
                 viewModel.deleteUser()
-                viewModel.setDeleteDialog()
-                navigateBack()
             },
             onDismiss = viewModel::setDeleteDialog
+        )
+    }
+    if (showResultDialog) {
+        TeacherResultDialog(
+            result = response,
+            onDismiss = {
+                viewModel.setShowResultDialog(false)
+            },
+            onConfirm = {
+                viewModel.setShowResultDialog(false)
+                if (response?.success == true) {
+                    navigateBack()
+                }
+            }
         )
     }
 }
