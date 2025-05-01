@@ -23,6 +23,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -48,6 +49,10 @@ fun EvaluationDetailScreen(
     val showDeleteEvaluationDialog = viewModel.showDeleteEvaluationDialog.collectAsState().value
     val showResultDialog = viewModel.showResultDialog.collectAsState().value
     val deleteResponse = viewModel.deleteResponse.collectAsState().value
+
+    LaunchedEffect(Unit) {
+        viewModel.refreshData()
+    }
 
     Scaffold(
         topBar = {

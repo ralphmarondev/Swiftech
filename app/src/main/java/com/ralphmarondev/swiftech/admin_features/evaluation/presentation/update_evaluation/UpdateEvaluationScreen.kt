@@ -34,7 +34,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.ralphmarondev.swiftech.admin_features.evaluation.presentation.components.EvaluationResultDialog
 import com.ralphmarondev.swiftech.admin_features.evaluation.presentation.components.NewQuestionDialog
-import com.ralphmarondev.swiftech.admin_features.evaluation.presentation.components.SaveEvaluationDialog
+import com.ralphmarondev.swiftech.admin_features.evaluation.presentation.components.UpdateEvaluationDialog
 import com.ralphmarondev.swiftech.core.presentation.NormalTextField
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
@@ -52,6 +52,8 @@ fun UpdateEvaluationScreen(
     val term = viewModel.term.collectAsState().value
     val questions = viewModel.questions.collectAsState().value
     val formResponse = viewModel.formResponse.collectAsState().value
+
+    val newlyAddedQuestions = viewModel.questionsToAdd.collectAsState().value
 
     val showSaveEvaluationDialog = viewModel.showSaveEvaluationDialog.collectAsState().value
     val showEvaluationResultDialog = viewModel.showEvaluationResultDialog.collectAsState().value
@@ -168,6 +170,23 @@ fun UpdateEvaluationScreen(
                     )
                 }
             }
+            items(newlyAddedQuestions) { question ->
+                ElevatedCard(
+                    onClick = {},
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 8.dp, vertical = 4.dp)
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .padding(16.dp)
+                    ) {
+                        Text(
+                            text = question
+                        )
+                    }
+                }
+            }
             items(questions) { question ->
                 ElevatedCard(
                     onClick = {},
@@ -199,13 +218,13 @@ fun UpdateEvaluationScreen(
     }
 
     if (showSaveEvaluationDialog) {
-        SaveEvaluationDialog(
+        UpdateEvaluationDialog(
             onDismiss = {
                 viewModel.setShowSaveEvaluationDialog(false)
             },
             onConfirm = {
                 viewModel.setShowSaveEvaluationDialog(false)
-                viewModel.onSave()
+                viewModel.onUpdate()
                 viewModel.setShowEvaluationResultDialog(true)
             },
             text = "Save the evaluation form now? Press cancel to add more questions."

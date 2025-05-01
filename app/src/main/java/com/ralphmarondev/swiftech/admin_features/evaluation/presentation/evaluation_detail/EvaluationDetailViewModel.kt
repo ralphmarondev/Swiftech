@@ -60,6 +60,13 @@ class EvaluationDetailViewModel(
         }
     }
 
+    fun refreshData(){
+        viewModelScope.launch {
+            val evaluationForm = getEvaluationFormByIdUseCase(evaluationId)
+            _evaluationForm.value = evaluationForm
+        }
+    }
+
     fun onNewQuestionValueChange(value: String) {
         _newQuestion.value = value
     }

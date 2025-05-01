@@ -1,6 +1,5 @@
 package com.ralphmarondev.swiftech.admin_features.evaluation.presentation.update_evaluation
 
-
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,6 +10,7 @@ import com.ralphmarondev.swiftech.core.domain.usecases.evaluation.CreateEvaluati
 import com.ralphmarondev.swiftech.core.domain.usecases.evaluation.GetEvaluationFormByIdUseCase
 import com.ralphmarondev.swiftech.core.domain.usecases.evaluation.GetQuestionsByEvaluationIdUseCase
 import com.ralphmarondev.swiftech.core.domain.usecases.evaluation.SaveQuestionToEvaluationFormUseCase
+import com.ralphmarondev.swiftech.core.domain.usecases.evaluation.UpdateEvaluationFormUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -19,7 +19,7 @@ class UpdateEvaluationViewModel(
     private val evaluationId: Int,
     private val getEvaluationFormByIdUseCase: GetEvaluationFormByIdUseCase,
     private val getQuestionsByEvaluationIdUseCase: GetQuestionsByEvaluationIdUseCase,
-    private val createEvaluationFormUseCase: CreateEvaluationFormUseCase,
+    private val updateEvaluationFormUseCase: UpdateEvaluationFormUseCase,
     private val saveQuestionToEvaluationFormUseCase: SaveQuestionToEvaluationFormUseCase
 ) : ViewModel() {
 
@@ -58,6 +58,9 @@ class UpdateEvaluationViewModel(
 
     private val _isLoading = MutableStateFlow(false)
     val isLoading = _isLoading.asStateFlow()
+
+    private val _questionsToAdd = MutableStateFlow<List<String>>(emptyList())
+    val questionsToAdd = _questionsToAdd.asStateFlow()
 
 
     init {
@@ -110,13 +113,13 @@ class UpdateEvaluationViewModel(
                 success = true,
                 message = "Question added"
             )
-//            _questions.value += question
+            _questionsToAdd.value += question
             _newQuestion.value = ""
             setShowNewQuestionDialog()
         }
     }
 
-    fun onSave() {
+    fun onUpdate() {
         viewModelScope.launch {
             val title = _title.value.trim()
             val term = _term.value.trim()
@@ -155,30 +158,22 @@ class UpdateEvaluationViewModel(
             }
 
             try {
-                val id = createEvaluationFormUseCase(
+                updateEvaluationFormUseCase(
                     EvaluationForm(
+                        id = evaluationId,
                         title = title,
+                        description = description,
                         term = term,
-                        description = description
                     )
                 )
 
-                if (id == 0) {
-                    _formResponse.value = Result(
-                        success = false,
-                        message = "Error: Failed to create evaluation form."
+                _questionsToAdd.value.forEach {
+                    saveQuestionToEvaluationFormUseCase(
+                        question = EvaluationQuestion(
+                            questionText = it,
+                            evaluationFormId = evaluationId
+                        )
                     )
-                    Log.e("App", "Error: Failed to create evaluation form.")
-                    return@launch
-                }
-
-                _questions.value.forEach {
-//                    saveQuestionToEvaluationFormUseCase(
-//                        question = EvaluationQuestion(
-//                            questionText = it,
-//                            evaluationFormId = id
-//                        )
-//                    )
                 }
 
                 _formResponse.value = Result(

@@ -18,6 +18,9 @@ interface EvaluationFormDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun createEvaluationForm(evaluationForm: EvaluationForm): Long
 
+    @Update
+    suspend fun updateEvaluationForm(evaluationForm: EvaluationForm)
+
     @Query("SELECT * FROM evaluation_form WHERE isDeleted = 0")
     fun getAllEvaluationForms(): Flow<List<EvaluationForm>>
 

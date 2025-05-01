@@ -14,6 +14,10 @@ class EvaluationFormRepositoryImpl(
         return evaluationFormDao.createEvaluationForm(evaluationForm).toInt()
     }
 
+    override suspend fun updateEvaluationForm(evaluationForm: EvaluationForm) {
+        evaluationFormDao.updateEvaluationForm(evaluationForm)
+    }
+
     override suspend fun deleteEvaluationForm(evaluationFormId: Int) {
         evaluationFormDao.deleteEvaluationForm(evaluationFormId)
     }
