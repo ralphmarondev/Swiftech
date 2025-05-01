@@ -18,10 +18,10 @@ interface EvaluationFormDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun createEvaluationForm(evaluationForm: EvaluationForm): Long
 
-    @Query("SELECT * FROM evaluation_form")
+    @Query("SELECT * FROM evaluation_form WHERE isDeleted = 0")
     fun getAllEvaluationForms(): Flow<List<EvaluationForm>>
 
-    @Query("SELECT * FROM evaluation_form WHERE id = :id LIMIT 1")
+    @Query("SELECT * FROM evaluation_form WHERE id = :id AND isDeleted = 0 LIMIT 1")
     suspend fun getEvaluationFormById(id: Int): EvaluationForm?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -42,10 +42,10 @@ interface EvaluationFormDao {
 
 
     // NOTE: FUNCTIONS FOR STUDENT FEATURE
-    @Query("SELECT * FROM evaluation_form WHERE term = :term")
+    @Query("SELECT * FROM evaluation_form WHERE term = :term AND isDeleted = 0")
     fun getEvaluationFormsByTerm(term: String): Flow<List<EvaluationForm>>
 
-    @Query("SELECT * FROM evaluation_form WHERE id = :id LIMIT 1")
+    @Query("SELECT * FROM evaluation_form WHERE id = :id AND isDeleted = 0 LIMIT 1")
     suspend fun getEvaluationFormDetailById(id: Int): EvaluationForm
 
     @Query("SELECT * FROM evaluation_question WHERE evaluationFormId = :id")

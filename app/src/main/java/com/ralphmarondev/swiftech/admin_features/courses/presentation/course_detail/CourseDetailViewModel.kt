@@ -8,6 +8,7 @@ import com.ralphmarondev.swiftech.core.domain.model.Result
 import com.ralphmarondev.swiftech.core.domain.model.Role
 import com.ralphmarondev.swiftech.core.domain.model.StudentCourseCrossRef
 import com.ralphmarondev.swiftech.core.domain.model.User
+import com.ralphmarondev.swiftech.core.domain.usecases.course.DeleteCourseUseCase
 import com.ralphmarondev.swiftech.core.domain.usecases.course.GetCourseDetailByIdUseCase
 import com.ralphmarondev.swiftech.core.domain.usecases.course.GetStudentInCourseUseCase
 import com.ralphmarondev.swiftech.core.domain.usecases.course.InsertStudentToCourseUseCase
@@ -24,7 +25,8 @@ class CourseDetailViewModel(
     private val getUserByIdUseCase: GetUserByIdUseCase,
     private val getUserDetailByUsername: GetUserDetailByUsername,
     private val insertStudentToCourseUseCase: InsertStudentToCourseUseCase,
-    private val getStudentInCourseUseCase: GetStudentInCourseUseCase
+    private val getStudentInCourseUseCase: GetStudentInCourseUseCase,
+    private val deleteCourseUseCase: DeleteCourseUseCase
 ) : ViewModel() {
 
     private val _courseDetail = MutableStateFlow<Course?>(null)
@@ -56,6 +58,12 @@ class CourseDetailViewModel(
 
     private val _showDeleteCourseDialog = MutableStateFlow(false)
     val showDeleteCourseDialog = _showDeleteCourseDialog.asStateFlow()
+
+    private val _showResultDialog = MutableStateFlow(false)
+    val showResultDialog = _showResultDialog.asStateFlow()
+
+    private val _deleteResponse = MutableStateFlow<Result?>(null)
+    val deleteResponse = _deleteResponse.asStateFlow()
 
     init {
         viewModelScope.launch {
@@ -139,6 +147,7 @@ class CourseDetailViewModel(
         _removeStudentDialog.value = value
     }
 
+    // TODO: IMPLEMENT THIS!
     fun removeStudentInClass() {
         viewModelScope.launch {
             val student = _selectedStudent.value
@@ -155,7 +164,28 @@ class CourseDetailViewModel(
         _showDeleteCourseDialog.value = value
     }
 
+    fun setShowResultDialog(value: Boolean) {
+        _showResultDialog.value = value
+    }
+
     fun deleteCourse() {
         Log.d("App", "Deleting course with id: `$courseId`, name: `${_courseDetail.value?.name}`")
+        viewModelScope.launch {
+            try {
+                _showDeleteCourseDialog.value = false
+                deleteCourseUseCase(courseId)
+                _deleteResponse.value = Result(
+                    success = true,
+                    message = "Successfully deleted course."
+                )
+            } catch (e: Exception) {
+                Log.e("App", "Error deleting course: ${e.message}")
+                _deleteResponse.value = Result(
+                    success = false,
+                    message = "Error deleting course."
+                )
+            }
+            _showResultDialog.value = true
+        }
     }
 }

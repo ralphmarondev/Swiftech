@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.Flow
 interface CourseRepository {
     suspend fun createCourse(course: Course)
     suspend fun updateCourse(course: Course)
+    suspend fun deleteCourse(id: Int)
     suspend fun getCourseDetailById(id: Int): Course?
 
     fun getAllCourses(): Flow<List<Course>>

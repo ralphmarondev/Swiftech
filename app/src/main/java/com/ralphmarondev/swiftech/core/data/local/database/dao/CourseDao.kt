@@ -23,10 +23,10 @@ interface CourseDao {
     @Query("UPDATE course SET isDeleted = 1 WHERE id = :id")
     suspend fun deleteCourse(id: Int)
 
-    @Query("SELECT * FROM course WHERE id = :id")
+    @Query("SELECT * FROM course WHERE id = :id AND isDeleted = 0")
     suspend fun getCourseDetailById(id: Int): Course?
 
-    @Query("SELECT * FROM course")
+    @Query("SELECT * FROM course WHERE isDeleted = 0")
     fun getAllCourses(): Flow<List<Course>>
 
     // enroll student in a course

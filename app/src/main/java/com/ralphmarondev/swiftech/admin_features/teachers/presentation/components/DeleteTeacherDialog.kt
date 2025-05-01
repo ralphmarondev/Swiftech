@@ -41,7 +41,7 @@ fun DeleteTeacherDialog(
         },
         title = {
             Text(
-                text = "Confirm Delete",
+                text = "Delete Teacher",
                 color = MaterialTheme.colorScheme.primary
             )
         }

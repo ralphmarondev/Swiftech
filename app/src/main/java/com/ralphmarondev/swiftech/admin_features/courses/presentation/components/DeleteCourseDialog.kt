@@ -43,7 +43,7 @@ fun DeleteCourseDialog(
         },
         title = {
             Text(
-                text = "Delete Evaluation",
+                text = "Delete Course",
                 color = MaterialTheme.colorScheme.primary
             )
         }

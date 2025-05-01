@@ -46,6 +46,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
+import com.ralphmarondev.swiftech.admin_features.courses.presentation.components.CourseResultDialog
 import com.ralphmarondev.swiftech.admin_features.courses.presentation.components.DeleteCourseDialog
 import com.ralphmarondev.swiftech.admin_features.courses.presentation.components.EnrollStudentDialog
 import com.ralphmarondev.swiftech.admin_features.courses.presentation.components.RemoveStudentDialog
@@ -69,6 +70,8 @@ fun CourseDetailScreen(
     val selectedStudent = viewModel.selectedStudent.collectAsState().value
     val removeStudentResponse = viewModel.removeStudentResponse.collectAsState().value
     val showDeleteCourseDialog = viewModel.showDeleteCourseDialog.collectAsState().value
+    val showResultDialog = viewModel.showResultDialog.collectAsState().value
+    val deleteResponse = viewModel.deleteResponse.collectAsState().value
 
     LaunchedEffect(Unit) {
         Log.d("App", "Refreshing course details...")
@@ -401,13 +404,27 @@ fun CourseDetailScreen(
     }
     if (showDeleteCourseDialog) {
         DeleteCourseDialog(
-            text = "Are you sure you want to delete this course and all associated evaluations reports?",
+            text = "Are you sure you want to delete this course and all associated data like evaluations reports?",
             onDismiss = {
                 viewModel.setShowDeleteCourseDialog(false)
             },
             onConfirm = {
                 viewModel.deleteCourse()
             }
+        )
+    }
+    if (showResultDialog) {
+        CourseResultDialog(
+            onDismiss = {
+                viewModel.setShowResultDialog(false)
+            },
+            onConfirm = {
+                viewModel.setShowResultDialog(false)
+                if (deleteResponse?.success == true) {
+                    navigateBack()
+                }
+            },
+            result = deleteResponse
         )
     }
 }

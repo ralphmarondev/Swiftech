@@ -292,6 +292,9 @@ fun UpdateCourseScreen(
             result = response,
             onDismiss = {
                 viewModel.setShowResultDialog(false)
+            },
+            onConfirm = {
+                viewModel.setShowResultDialog(false)
 
                 if (response?.success == true) {
                     navigateBack()

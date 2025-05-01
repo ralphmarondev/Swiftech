@@ -19,6 +19,10 @@ class CourseRepositoryImpl(
         courseDao.updateCourse(course)
     }
 
+    override suspend fun deleteCourse(id: Int) {
+        courseDao.deleteCourse(id)
+    }
+
     override suspend fun getCourseDetailById(id: Int): Course? {
         return courseDao.getCourseDetailById(id)
     }
