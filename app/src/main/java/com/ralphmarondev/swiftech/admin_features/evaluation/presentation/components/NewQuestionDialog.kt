@@ -38,7 +38,6 @@ fun NewQuestionDialog(
                     .padding(8.dp),
                 leadingIcon = Icons.Outlined.QuestionAnswer,
                 label = "Question",
-                placeholder = "Cuteness level"
             )
         },
         confirmButton = {

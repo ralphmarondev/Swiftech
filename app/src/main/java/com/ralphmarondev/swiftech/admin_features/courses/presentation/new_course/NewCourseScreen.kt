@@ -115,7 +115,7 @@ fun NewCourseScreen(
                     .fillMaxWidth()
                     .padding(horizontal = 8.dp, vertical = 4.dp),
                 label = "Code",
-                placeholder = "T2025",
+                placeholder = "Tech24251",
                 leadingIcon = Icons.Outlined.QrCode,
                 keyboardOptions = KeyboardOptions(
                     imeAction = ImeAction.Next
@@ -153,7 +153,7 @@ fun NewCourseScreen(
                     .fillMaxWidth()
                     .padding(horizontal = 8.dp, vertical = 4.dp),
                 label = "Teacher",
-                placeholder = "Jamille",
+                placeholder = "Teacher username",
                 leadingIcon = Icons.Outlined.AccountBox,
                 keyboardOptions = KeyboardOptions(
                     imeAction = ImeAction.Done
