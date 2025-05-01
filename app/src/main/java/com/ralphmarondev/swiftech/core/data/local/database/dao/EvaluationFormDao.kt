@@ -30,6 +30,8 @@ interface EvaluationFormDao {
     @Query("SELECT last_insert_rowid()")
     suspend fun getLastInsertedId(): Long
 
+    @Query("UPDATE evaluation_form SET isDeleted = 1 where id = :evalutionFormId")
+    suspend fun deleteEvaluationForm(evalutionFormId: Int)
 
     @Query("SELECT * FROM evaluation_question WHERE evaluationFormId = :id")
     fun getQuestionsByEvaluationId(id: Int): Flow<List<EvaluationQuestion>>

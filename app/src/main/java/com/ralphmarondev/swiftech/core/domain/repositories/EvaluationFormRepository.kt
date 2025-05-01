@@ -8,6 +8,8 @@ interface EvaluationFormRepository {
 
     suspend fun createEvaluationForm(evaluationForm: EvaluationForm): Int
 
+    suspend fun deleteEvaluationForm(evaluationFormId: Int)
+
     fun getAllEvaluationForms(): Flow<List<EvaluationForm>>
 
     suspend fun getEvaluationFormById(id: Int): EvaluationForm?

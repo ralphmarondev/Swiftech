@@ -6,9 +6,9 @@ import androidx.lifecycle.viewModelScope
 import com.ralphmarondev.swiftech.core.domain.model.EvaluationForm
 import com.ralphmarondev.swiftech.core.domain.model.EvaluationQuestion
 import com.ralphmarondev.swiftech.core.domain.model.Result
+import com.ralphmarondev.swiftech.core.domain.usecases.evaluation.DeleteEvaluationFormByIdUseCase
 import com.ralphmarondev.swiftech.core.domain.usecases.evaluation.GetEvaluationFormByIdUseCase
 import com.ralphmarondev.swiftech.core.domain.usecases.evaluation.GetQuestionsByEvaluationIdUseCase
-import com.ralphmarondev.swiftech.core.domain.usecases.evaluation.SaveQuestionToEvaluationFormUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -17,7 +17,7 @@ class EvaluationDetailViewModel(
     private val evaluationId: Int,
     private val getEvaluationFormByIdUseCase: GetEvaluationFormByIdUseCase,
     private val getQuestionsByEvaluationIdUseCase: GetQuestionsByEvaluationIdUseCase,
-    private val saveQuestionToEvaluationFormUseCase: SaveQuestionToEvaluationFormUseCase
+    private val deleteEvaluationFormByIdUseCase: DeleteEvaluationFormByIdUseCase
 ) : ViewModel() {
 
     private val _evaluationForm = MutableStateFlow<EvaluationForm?>(null)
@@ -35,11 +35,17 @@ class EvaluationDetailViewModel(
     private val _showDeleteEvaluationDialog = MutableStateFlow(false)
     val showDeleteEvaluationDialog = _showDeleteEvaluationDialog.asStateFlow()
 
+    private val _showResultDialog = MutableStateFlow(false)
+    val showResultDialog = _showResultDialog.asStateFlow()
+
     private val _response = MutableStateFlow<Result?>(null)
     val response = _response.asStateFlow()
 
     private val _isLoading = MutableStateFlow(false)
     val isLoading = _isLoading.asStateFlow()
+
+    private val _deleteResponse = MutableStateFlow<Result?>(null)
+    val deleteResponse = _deleteResponse.asStateFlow()
 
 
     init {
@@ -85,10 +91,31 @@ class EvaluationDetailViewModel(
         _showDeleteEvaluationDialog.value = value
     }
 
+    fun setShowResultDialog(value: Boolean) {
+        _showResultDialog.value = value
+    }
+
     fun deleteEvaluation() {
-        Log.d(
-            "App",
-            "Deleting evaluation with id: `$evaluationId`, title: `${evaluationForm.value?.title}`"
-        )
+        viewModelScope.launch {
+            _showDeleteEvaluationDialog.value = false
+            Log.d(
+                "App",
+                "Deleting evaluation with id: `$evaluationId`, title: `${evaluationForm.value?.title}`"
+            )
+            try {
+                deleteEvaluationFormByIdUseCase(evaluationId)
+                _deleteResponse.value = Result(
+                    success = true,
+                    message = "Evaluation deleted"
+                )
+            } catch (e: Exception) {
+                Log.e("App", "Error deleting evaluation form: ${e.message}")
+                _deleteResponse.value = Result(
+                    success = false,
+                    message = "Error deleting evaluation form"
+                )
+            }
+            _showResultDialog.value = true
+        }
     }
 }

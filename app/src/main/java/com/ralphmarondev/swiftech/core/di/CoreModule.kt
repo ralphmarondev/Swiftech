@@ -17,6 +17,7 @@ import com.ralphmarondev.swiftech.core.domain.usecases.course.GetStudentInCourse
 import com.ralphmarondev.swiftech.core.domain.usecases.course.InsertStudentToCourseUseCase
 import com.ralphmarondev.swiftech.core.domain.usecases.course.UpdateCourseUseCase
 import com.ralphmarondev.swiftech.core.domain.usecases.evaluation.CreateEvaluationFormUseCase
+import com.ralphmarondev.swiftech.core.domain.usecases.evaluation.DeleteEvaluationFormByIdUseCase
 import com.ralphmarondev.swiftech.core.domain.usecases.evaluation.DeleteQuestionByIdUseCase
 import com.ralphmarondev.swiftech.core.domain.usecases.evaluation.GetAllEvaluationFormsUseCase
 import com.ralphmarondev.swiftech.core.domain.usecases.evaluation.GetEvaluationFormByIdUseCase
@@ -68,6 +69,7 @@ val coreModule = module {
     factoryOf(::DeleteCourseUseCase)
 
     factoryOf(::CreateEvaluationFormUseCase)
+    factoryOf(::DeleteEvaluationFormByIdUseCase)
     factoryOf(::GetAllEvaluationFormsUseCase)
     factoryOf(::GetEvaluationFormByIdUseCase)
     factoryOf(::SaveQuestionToEvaluationFormUseCase)
