@@ -160,12 +160,12 @@ fun CourseDetailScreen(
                                 modifier = Modifier
                                     .size(100.dp)
                                     .clip(CircleShape)
-                                    .background(MaterialTheme.colorScheme.primary),
+                                    .background(MaterialTheme.colorScheme.secondary),
                                 contentAlignment = Alignment.Center
                             ) {
                                 Text(
                                     text = initials,
-                                    color = MaterialTheme.colorScheme.onPrimary,
+                                    color = MaterialTheme.colorScheme.onSecondary,
                                     fontSize = fontSize,
                                     fontWeight = FontWeight.Bold,
                                     textAlign = TextAlign.Center
@@ -241,12 +241,12 @@ fun CourseDetailScreen(
                                 modifier = Modifier
                                     .size(60.dp)
                                     .clip(CircleShape)
-                                    .background(MaterialTheme.colorScheme.primary),
+                                    .background(MaterialTheme.colorScheme.secondary),
                                 contentAlignment = Alignment.Center
                             ) {
                                 Text(
                                     text = initials,
-                                    color = MaterialTheme.colorScheme.onPrimary,
+                                    color = MaterialTheme.colorScheme.onSecondary,
                                     fontSize = fontSize,
                                     fontWeight = FontWeight.Bold,
                                     textAlign = TextAlign.Center
@@ -327,12 +327,12 @@ fun CourseDetailScreen(
                                 modifier = Modifier
                                     .size(60.dp)
                                     .clip(CircleShape)
-                                    .background(MaterialTheme.colorScheme.primary),
+                                    .background(MaterialTheme.colorScheme.secondary),
                                 contentAlignment = Alignment.Center
                             ) {
                                 Text(
                                     text = initials,
-                                    color = MaterialTheme.colorScheme.onPrimary,
+                                    color = MaterialTheme.colorScheme.onSecondary,
                                     fontSize = fontSize,
                                     fontWeight = FontWeight.Bold,
                                     textAlign = TextAlign.Center

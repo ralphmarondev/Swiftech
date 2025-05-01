@@ -1,6 +1,5 @@
 package com.ralphmarondev.swiftech.admin_features.reports.presentation.components
 
-import android.graphics.Color
 import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.github.mikephil.charting.charts.BarChart
@@ -20,7 +20,6 @@ import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.ralphmarondev.swiftech.admin_features.reports.domain.model.RatingCounts
-import androidx.core.graphics.toColorInt
 
 fun safeValue(count: Int, hasNonZero: Boolean) =
     if (count == 0 && !hasNonZero) 0.01f else count.toFloat()
@@ -52,8 +51,8 @@ fun ReportBarChart(
     )
     val barDataSet = BarDataSet(barEntries, "Rating Count")
     barDataSet.apply {
-        color = "#B388FF".toColorInt()
-        valueTextColor = Color.BLACK
+        color = MaterialTheme.colorScheme.primary.toArgb()
+        valueTextColor = MaterialTheme.colorScheme.onPrimary.toArgb()
         valueTextSize = 12f
     }
 
