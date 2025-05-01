@@ -12,9 +12,9 @@ import com.ralphmarondev.swiftech.core.domain.usecases.course.DeleteCourseUseCas
 import com.ralphmarondev.swiftech.core.domain.usecases.course.GetCourseDetailByIdUseCase
 import com.ralphmarondev.swiftech.core.domain.usecases.course.GetStudentInCourseUseCase
 import com.ralphmarondev.swiftech.core.domain.usecases.course.InsertStudentToCourseUseCase
+import com.ralphmarondev.swiftech.core.domain.usecases.course.RemoveStudentInCourseUseCase
 import com.ralphmarondev.swiftech.core.domain.usecases.user.GetUserByIdUseCase
 import com.ralphmarondev.swiftech.core.domain.usecases.user.GetUserDetailByUsername
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -26,7 +26,8 @@ class CourseDetailViewModel(
     private val getUserDetailByUsername: GetUserDetailByUsername,
     private val insertStudentToCourseUseCase: InsertStudentToCourseUseCase,
     private val getStudentInCourseUseCase: GetStudentInCourseUseCase,
-    private val deleteCourseUseCase: DeleteCourseUseCase
+    private val deleteCourseUseCase: DeleteCourseUseCase,
+    private val removeStudentInCourseUseCase: RemoveStudentInCourseUseCase
 ) : ViewModel() {
 
     private val _courseDetail = MutableStateFlow<Course?>(null)
@@ -133,7 +134,7 @@ class CourseDetailViewModel(
             )
             Log.d("App", "Enrolling student with username: $username")
             _studentToEnroll.value = ""
-            delay(1500)
+//            delay(1500)
             setShowEnrollStudentDialog()
             getStudentsInCourse()
         }
@@ -147,16 +148,29 @@ class CourseDetailViewModel(
         _removeStudentDialog.value = value
     }
 
-    // TODO: IMPLEMENT THIS!
     fun removeStudentInClass() {
         viewModelScope.launch {
-            val student = _selectedStudent.value
-            Log.d("App", "Removing ${student?.fullName} from the class...")
+            try {
+                val student = _selectedStudent.value
+                Log.d("App", "Removing ${student?.fullName} from the class...")
 
-            _removeStudentResponse.value = Result(
-                success = true,
-                message = "Successfully removed student."
-            )
+                removeStudentInCourseUseCase(
+                    studentId = student?.id ?: 0,
+                    courseId = courseId
+                )
+                _removeStudentResponse.value = Result(
+                    success = true,
+                    message = "Successfully removed student."
+                )
+                _removeStudentDialog.value = false
+                Log.d("App", "Student with id: ${student?.id} removed from class successfully.")
+            } catch (e: Exception) {
+                Log.e("App", "Error removing student in class. Error: ${e.message}")
+                _removeStudentResponse.value = Result(
+                    success = false,
+                    message = "Error removing student in class."
+                )
+            }
         }
     }
 

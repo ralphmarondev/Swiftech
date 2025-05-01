@@ -35,6 +35,10 @@ class CourseRepositoryImpl(
         courseDao.insertStudentToCourse(crossRef)
     }
 
+    override suspend fun removeStudentInCourse(courseId: Int, studentId: Int) {
+        courseDao.removeStudentFromCourse(courseId = courseId, studentId = studentId)
+    }
+
     override fun getStudentInCourse(id: Int): Flow<List<User>> {
         return courseDao.getStudentsInCourse(id)
     }

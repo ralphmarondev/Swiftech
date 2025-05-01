@@ -29,6 +29,9 @@ interface CourseDao {
     @Query("SELECT * FROM course WHERE isDeleted = 0")
     fun getAllCourses(): Flow<List<Course>>
 
+    @Query("DELETE FROM student_course WHERE studentId = :studentId AND courseId = :courseId")
+    suspend fun removeStudentFromCourse(studentId: Int, courseId: Int)
+
     // enroll student in a course
     @Upsert
     suspend fun insertStudentToCourse(crossRef: StudentCourseCrossRef)
