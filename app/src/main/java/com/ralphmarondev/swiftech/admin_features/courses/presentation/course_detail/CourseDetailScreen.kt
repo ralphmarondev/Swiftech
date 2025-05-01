@@ -22,6 +22,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.ArrowBackIosNew
 import androidx.compose.material.icons.outlined.DatasetLinked
+import androidx.compose.material.icons.outlined.DeleteOutline
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -45,6 +46,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
+import com.ralphmarondev.swiftech.admin_features.courses.presentation.components.DeleteCourseDialog
 import com.ralphmarondev.swiftech.admin_features.courses.presentation.components.EnrollStudentDialog
 import com.ralphmarondev.swiftech.admin_features.courses.presentation.components.RemoveStudentDialog
 import org.koin.androidx.compose.koinViewModel
@@ -66,6 +68,7 @@ fun CourseDetailScreen(
     val showRemoveStudentDialog = viewModel.removeStudentDialog.collectAsState().value
     val selectedStudent = viewModel.selectedStudent.collectAsState().value
     val removeStudentResponse = viewModel.removeStudentResponse.collectAsState().value
+    val showDeleteCourseDialog = viewModel.showDeleteCourseDialog.collectAsState().value
 
     LaunchedEffect(Unit) {
         Log.d("App", "Refreshing course details...")
@@ -91,6 +94,14 @@ fun CourseDetailScreen(
                     }
                 },
                 actions = {
+                    IconButton(
+                        onClick = { viewModel.setShowDeleteCourseDialog(true) }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Outlined.DeleteOutline,
+                            contentDescription = "Delete"
+                        )
+                    }
                     IconButton(onClick = { navigateToReports(courseId) }) {
                         Icon(
                             imageVector = Icons.Outlined.DatasetLinked,
@@ -385,6 +396,17 @@ fun CourseDetailScreen(
                 if (removeStudentResponse?.success == true) {
                     viewModel.setRemoveStudentDialog(false)
                 }
+            }
+        )
+    }
+    if (showDeleteCourseDialog) {
+        DeleteCourseDialog(
+            text = "Are you sure you want to delete this course and all associated evaluations reports?",
+            onDismiss = {
+                viewModel.setShowDeleteCourseDialog(false)
+            },
+            onConfirm = {
+                viewModel.deleteCourse()
             }
         )
     }

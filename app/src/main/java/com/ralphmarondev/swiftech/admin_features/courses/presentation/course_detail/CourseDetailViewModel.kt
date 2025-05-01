@@ -54,6 +54,9 @@ class CourseDetailViewModel(
     private val _removeStudentResponse = MutableStateFlow<Result?>(null)
     val removeStudentResponse = _removeStudentResponse
 
+    private val _showDeleteCourseDialog = MutableStateFlow(false)
+    val showDeleteCourseDialog = _showDeleteCourseDialog.asStateFlow()
+
     init {
         viewModelScope.launch {
             val course = getCourseDetailByIdUseCase(courseId)
@@ -146,5 +149,13 @@ class CourseDetailViewModel(
                 message = "Successfully removed student."
             )
         }
+    }
+
+    fun setShowDeleteCourseDialog(value: Boolean) {
+        _showDeleteCourseDialog.value = value
+    }
+
+    fun deleteCourse() {
+        Log.d("App", "Deleting course with id: `$courseId`, name: `${_courseDetail.value?.name}`")
     }
 }
