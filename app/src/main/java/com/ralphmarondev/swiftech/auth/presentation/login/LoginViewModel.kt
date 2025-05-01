@@ -1,10 +1,8 @@
 package com.ralphmarondev.swiftech.auth.presentation.login
 
-import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ralphmarondev.swiftech.R
 import com.ralphmarondev.swiftech.core.data.local.preferences.AppPreferences
 import com.ralphmarondev.swiftech.core.domain.model.Result
 import com.ralphmarondev.swiftech.core.domain.model.Role
@@ -12,12 +10,10 @@ import com.ralphmarondev.swiftech.core.domain.model.User
 import com.ralphmarondev.swiftech.core.domain.usecases.user.CreateUserUseCase
 import com.ralphmarondev.swiftech.core.domain.usecases.user.GetUserDetailByUsername
 import com.ralphmarondev.swiftech.core.domain.usecases.user.IsUserExistsUseCase
-import com.ralphmarondev.swiftech.core.util.saveDrawableToInternalStorage
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 
 class LoginViewModel(
     private val preferences: AppPreferences,
@@ -25,8 +21,6 @@ class LoginViewModel(
     private val isUserExistsUseCase: IsUserExistsUseCase,
     private val getUserDetailByUsername: GetUserDetailByUsername
 ) : ViewModel(), KoinComponent {
-
-    private val context: Context by inject()
 
     private val _username = MutableStateFlow("")
     val username: StateFlow<String> get() = _username
@@ -44,25 +38,21 @@ class LoginViewModel(
         viewModelScope.launch {
             // creating default user on first launch
             if (preferences.isFirstLaunch()) {
-                val imagePath = saveDrawableToInternalStorage(
-                    context = context,
-                    drawableRes = R.drawable.male_student,
-                    fileName = "default_image2.jpg"
-                )
-                preferences.setDefaultImage(imagePath)
+                val fullName = "Administrator :)"
+                val username = "admin"
+                val password = "123"
 
                 createUserUseCase(
                     user = User(
-                        username = "admin",
-                        password = "123",
-                        fullName = "Administrator :)",
-                        role = Role.ADMINISTRATOR,
-                        image = imagePath
+                        username = username,
+                        password = password,
+                        fullName = fullName,
+                        role = Role.ADMINISTRATOR
                     )
                 )
 
-                preferences.setUsernameToRemember("admin")
-                preferences.setPasswordToRemember("123")
+                preferences.setUsernameToRemember(username)
+                preferences.setPasswordToRemember(password)
                 preferences.setIsFirstLaunchDone()
             }
             val savedUsername = preferences.getRememberedUsername()
