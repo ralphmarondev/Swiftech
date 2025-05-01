@@ -26,7 +26,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.ralphmarondev.swiftech.admin_features.evaluation.presentation.components.EvaluationCard
+import com.ralphmarondev.swiftech.core.presentation.EvaluationCard
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)

@@ -155,7 +155,7 @@ fun HomeScreen(
                 AccountCard(
                     name = currentUser?.fullName ?: "No Name",
                     role = currentUser?.role ?: "No role",
-                    image = currentUser?.image ?: "No image",
+                    image = currentUser?.image,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(16.dp),
