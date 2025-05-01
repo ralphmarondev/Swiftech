@@ -47,6 +47,10 @@ class NewEvaluationViewModel(
     private val _showEvaluationResultDialog = MutableStateFlow(false)
     val showEvaluationResultDialog = _showEvaluationResultDialog.asStateFlow()
 
+    private val _shouldNavigateBack = MutableStateFlow(false)
+    val shouldNavigateBack = _shouldNavigateBack.asStateFlow()
+
+
     fun onTitleValueChange(value: String) {
         _title.value = value
     }
@@ -94,10 +98,10 @@ class NewEvaluationViewModel(
             val term = _term.value.trim()
             val description = _description.value.trim()
 
-            if (title.isEmpty() && description.isEmpty()) {
+            if (title.isEmpty() && description.isEmpty() && term.isEmpty()) {
                 _formResponse.value = Result(
                     success = false,
-                    message = "Title and description cannot be empty"
+                    message = "Please fill in all fields."
                 )
                 return@launch
             }
@@ -105,7 +109,7 @@ class NewEvaluationViewModel(
             if (title.isEmpty()) {
                 _formResponse.value = Result(
                     success = false,
-                    message = "Title cannot be empty"
+                    message = "Title cannot be empty."
                 )
                 return@launch
             }
@@ -113,7 +117,15 @@ class NewEvaluationViewModel(
             if (description.isEmpty()) {
                 _formResponse.value = Result(
                     success = false,
-                    message = "Description cannot be empty"
+                    message = "Description cannot be empty."
+                )
+                return@launch
+            }
+
+            if (term.isEmpty()) {
+                _formResponse.value = Result(
+                    success = false,
+                    message = "Term cannot be empty."
                 )
                 return@launch
             }
@@ -147,8 +159,9 @@ class NewEvaluationViewModel(
 
                 _formResponse.value = Result(
                     success = true,
-                    message = "Evaluation form created"
+                    message = "Evaluation form created successfully."
                 )
+                _shouldNavigateBack.value = true
             } catch (e: Exception) {
                 Log.e("App", "Error creating evaluation form: ${e.message}")
                 _formResponse.value = Result(

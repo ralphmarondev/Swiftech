@@ -53,6 +53,7 @@ fun NewEvaluationScreen(
 
     val showSaveEvaluationDialog = viewModel.showSaveEvaluationDialog.collectAsState().value
     val showEvaluationResultDialog = viewModel.showEvaluationResultDialog.collectAsState().value
+    val shouldNavigateBack = viewModel.shouldNavigateBack.collectAsState().value
 
     LaunchedEffect(formResponse) {
         if (formResponse?.success == true) {
@@ -80,7 +81,9 @@ fun NewEvaluationScreen(
                 },
                 actions = {
                     IconButton(
-                        onClick = viewModel::onSave
+                        onClick = {
+                            viewModel.setShowSaveEvaluationDialog(true)
+                        }
                     ) {
                         Icon(
                             imageVector = Icons.Outlined.SaveAlt,
@@ -119,7 +122,7 @@ fun NewEvaluationScreen(
                     value = title,
                     onValueChange = viewModel::onTitleValueChange,
                     label = "Title",
-                    placeholder = "Evaluation for cuties.",
+                    placeholder = "Enter title",
                     leadingIcon = Icons.Outlined.Title,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -129,7 +132,7 @@ fun NewEvaluationScreen(
                     value = description,
                     onValueChange = viewModel::onDescriptionValueChange,
                     label = "Description",
-                    placeholder = "For cuties only.",
+                    placeholder = "Enter description",
                     leadingIcon = Icons.Outlined.Description,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -196,19 +199,27 @@ fun NewEvaluationScreen(
     if (showSaveEvaluationDialog) {
         SaveEvaluationDialog(
             onDismiss = {
-
+                viewModel.setShowSaveEvaluationDialog(false)
             },
             onConfirm = {
-
+                viewModel.setShowSaveEvaluationDialog(false)
+                viewModel.onSave()
+                viewModel.setShowEvaluationResultDialog(true)
             },
-            text = "Save you evaluation form now? Press cancel to add more questions."
+            text = "Save the evaluation form now? Press cancel to add more questions."
         )
     }
 
     if (showEvaluationResultDialog) {
         EvaluationResultDialog(
             onDismiss = {
-
+                viewModel.setShowEvaluationResultDialog(false)
+            },
+            onConfirm = {
+                viewModel.setShowEvaluationResultDialog(false)
+                if (shouldNavigateBack) {
+                    navigateBack()
+                }
             },
             result = formResponse
         )

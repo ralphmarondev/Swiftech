@@ -12,6 +12,7 @@ import com.ralphmarondev.swiftech.core.domain.model.Result
 fun EvaluationResultDialog(
     result: Result?,
     onDismiss: () -> Unit,
+    onConfirm: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     AlertDialog(
@@ -19,7 +20,7 @@ fun EvaluationResultDialog(
         onDismissRequest = onDismiss,
         confirmButton = {
             TextButton(
-                onClick = onDismiss
+                onClick = onConfirm
             ) {
                 Text(
                     text = "Close"
