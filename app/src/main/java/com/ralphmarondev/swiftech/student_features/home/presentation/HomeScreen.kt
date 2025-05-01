@@ -27,6 +27,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -54,12 +55,16 @@ fun HomeScreen(
     val themeState = LocalThemeState.current
     val viewModel: HomeViewModel = koinViewModel(parameters = { parametersOf(username) })
     val currentUser = viewModel.currentUser.collectAsState().value
-    val showConfirmExitDiloag = viewModel.showConfirmExitDialog.collectAsState().value
+    val showConfirmExitDialog = viewModel.showConfirmExitDialog.collectAsState().value
     val courses = viewModel.courses.collectAsState().value
 
     val activity = LocalContext.current as? Activity
     val scope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+
+    LaunchedEffect(Unit) {
+        viewModel.refreshAccountDetails()
+    }
 
     BackHandler(enabled = true) {
         viewModel.setShowConfirmExitDialog()
@@ -164,7 +169,7 @@ fun HomeScreen(
         }
     }
 
-    if (showConfirmExitDiloag) {
+    if (showConfirmExitDialog) {
         ConfirmExitDialog(
             onDismiss = {
                 viewModel.setShowConfirmExitDialog()

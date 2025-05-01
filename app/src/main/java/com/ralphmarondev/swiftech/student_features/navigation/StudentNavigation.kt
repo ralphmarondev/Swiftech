@@ -62,7 +62,7 @@ fun StudentNavigation(
         composable<StudentRoutes.StudentDetails> {
             val usernameArgs = it.arguments?.getString("username")
             StudentDetailScreen(
-                username = usernameArgs ?: "No username provided.",
+                usernameArgs = usernameArgs ?: "No username provided.",
                 navigateBack = {
                     navController.navigateUp()
                 }
