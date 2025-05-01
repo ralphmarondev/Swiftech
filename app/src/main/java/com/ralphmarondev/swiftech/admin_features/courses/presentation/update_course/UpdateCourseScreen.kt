@@ -87,7 +87,7 @@ fun UpdateCourseScreen(
             TopAppBar(
                 title = {
                     Text(
-                        text = "New Course"
+                        text = "Update"
                     )
                 },
                 navigationIcon = {

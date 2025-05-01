@@ -8,6 +8,7 @@ import androidx.navigation.compose.rememberNavController
 import com.ralphmarondev.swiftech.admin_features.evaluation.presentation.evaluation_detail.EvaluationDetailScreen
 import com.ralphmarondev.swiftech.admin_features.evaluation.presentation.evaluation_list.EvaluationListScreen
 import com.ralphmarondev.swiftech.admin_features.evaluation.presentation.new_evaluation.NewEvaluationScreen
+import com.ralphmarondev.swiftech.admin_features.evaluation.presentation.update_evaluation.UpdateEvaluationScreen
 import kotlinx.serialization.Serializable
 
 object EvaluationRoutes {
@@ -19,6 +20,9 @@ object EvaluationRoutes {
 
     @Serializable
     data class EvaluationDetail(val id: Int)
+
+    @Serializable
+    data class UpdateEvaluation(val id: Int)
 }
 
 @Composable
@@ -55,6 +59,20 @@ fun EvaluationNavigation(
         composable<EvaluationRoutes.EvaluationDetail> {
             val id = it.arguments?.getInt("id")
             EvaluationDetailScreen(
+                id = id ?: 0,
+                navigateBack = {
+                    navController.navigateUp()
+                },
+                onUpdateEvaluationDetailClick = { formId ->
+                    navController.navigate(EvaluationRoutes.UpdateEvaluation(formId)) {
+                        launchSingleTop = true
+                    }
+                }
+            )
+        }
+        composable<EvaluationRoutes.UpdateEvaluation> {
+            val id = it.arguments?.getInt("id")
+            UpdateEvaluationScreen(
                 id = id ?: 0,
                 navigateBack = {
                     navController.navigateUp()

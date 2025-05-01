@@ -1,17 +1,20 @@
 package com.ralphmarondev.swiftech.admin_features.evaluation.presentation.evaluation_detail
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.ArrowBackIosNew
-import androidx.compose.material3.Card
+import androidx.compose.material.icons.outlined.DeleteOutline
+import androidx.compose.material.icons.outlined.Update
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -31,6 +34,7 @@ import org.koin.core.parameter.parametersOf
 @Composable
 fun EvaluationDetailScreen(
     id: Int,
+    onUpdateEvaluationDetailClick: (Int) -> Unit,
     navigateBack: () -> Unit
 ) {
     val viewModel: EvaluationDetailViewModel = koinViewModel(parameters = { parametersOf(id) })
@@ -45,7 +49,7 @@ fun EvaluationDetailScreen(
             TopAppBar(
                 title = {
                     Text(
-                        text = "Evaluation Detail"
+                        text = "Evaluation Details"
                     )
                 },
                 navigationIcon = {
@@ -58,46 +62,119 @@ fun EvaluationDetailScreen(
                         )
                     }
                 },
+                actions = {
+                    IconButton(
+                        onClick = { onUpdateEvaluationDetailClick(id) }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Outlined.Update,
+                            contentDescription = "Update"
+                        )
+                    }
+                    IconButton(
+                        onClick = {}
+                    ) {
+                        Icon(
+                            imageVector = Icons.Outlined.DeleteOutline,
+                            contentDescription = "Delete"
+                        )
+                    }
+                },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primary,
                     titleContentColor = MaterialTheme.colorScheme.onPrimary,
-                    navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
+                    navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,
+                    actionIconContentColor = MaterialTheme.colorScheme.onPrimary
                 )
             )
         },
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = viewModel::setShowNewQuestionDialog
-            ) {
-                Icon(
-                    imageVector = Icons.Outlined.Add,
-                    contentDescription = "New Question"
-                )
-            }
-        }
+//        floatingActionButton = {
+//            FloatingActionButton(
+//                onClick = viewModel::setShowNewQuestionDialog
+//            ) {
+//                Icon(
+//                    imageVector = Icons.Outlined.Add,
+//                    contentDescription = "New Question"
+//                )
+//            }
+//        }
     ) { innerPadding ->
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding)
+                .padding(innerPadding),
+            contentPadding = PaddingValues(16.dp)
         ) {
             item {
-                Text(
-                    text = "Evaluation detail for id: $id, title: ${evaluationForm?.title}, description: ${evaluationForm?.description}"
+                Column {
+                    Text(
+                        text = "Title:",
+                        fontSize = MaterialTheme.typography.labelMedium.fontSize,
+                        fontWeight = MaterialTheme.typography.labelMedium.fontWeight,
+                        color = MaterialTheme.colorScheme.secondary
+                    )
+                    Text(
+                        text = evaluationForm?.title ?: "No title provided.",
+                        fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                        fontWeight = MaterialTheme.typography.titleMedium.fontWeight,
+                        color = MaterialTheme.colorScheme.secondary
+                    )
+                    Text(
+                        text = "Description:",
+                        fontSize = MaterialTheme.typography.labelMedium.fontSize,
+                        fontWeight = MaterialTheme.typography.labelMedium.fontWeight,
+                        color = MaterialTheme.colorScheme.secondary
+                    )
+                    Text(
+                        text = evaluationForm?.description ?: "No description provided.",
+                        fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                        fontWeight = MaterialTheme.typography.titleMedium.fontWeight,
+                        color = MaterialTheme.colorScheme.secondary
+                    )
+                    Text(
+                        text = "Term:",
+                        fontSize = MaterialTheme.typography.labelMedium.fontSize,
+                        fontWeight = MaterialTheme.typography.labelMedium.fontWeight,
+                        color = MaterialTheme.colorScheme.secondary
+                    )
+                    Text(
+                        text = evaluationForm?.term ?: "No term provided.",
+                        fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                        fontWeight = MaterialTheme.typography.titleMedium.fontWeight,
+                        color = MaterialTheme.colorScheme.secondary
+                    )
+                }
+                HorizontalDivider(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 16.dp)
                 )
             }
-            items(questions) {
-                Card(
+            item {
+                AnimatedVisibility(
+                    visible = isLoading
+                ) {
+                    Text(
+                        text = "Loading...",
+                        fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                        fontWeight = MaterialTheme.typography.titleMedium.fontWeight,
+                        color = MaterialTheme.colorScheme.secondary
+                    )
+                }
+            }
+            items(questions) { question ->
+                ElevatedCard(
+//                    onClick = {},
                     modifier = Modifier
-                        .padding(16.dp)
+                        .fillMaxWidth()
+                        .padding(vertical = 4.dp)
                 ) {
                     Column(
                         modifier = Modifier
-                            .fillMaxWidth()
                             .padding(16.dp)
                     ) {
                         Text(
-                            text = it.questionText
+                            text = question.questionText
                         )
                     }
                 }
