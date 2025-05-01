@@ -27,6 +27,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -48,6 +49,7 @@ import org.koin.core.parameter.parametersOf
 fun HomeScreen(
     username: String,
     onCourseClick: (Int) -> Unit,
+    onAccountCardClick: (String) -> Unit,
     onLogout: () -> Unit
 ) {
     val themeState = LocalThemeState.current
@@ -59,6 +61,10 @@ fun HomeScreen(
     val activity = LocalContext.current as? Activity
     val scope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+
+    LaunchedEffect(Unit) {
+        viewModel.refreshData()
+    }
 
     BackHandler(enabled = true) {
         viewModel.setShowConfirmExitDialog()
@@ -128,11 +134,11 @@ fun HomeScreen(
                 AccountCard(
                     name = currentUser?.fullName ?: "No Name",
                     role = currentUser?.role ?: "No role",
-                    image = currentUser?.image ?: "No image",
+                    image = currentUser?.image,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(16.dp),
-                    onClick = {}
+                    onClick = { onAccountCardClick(username) }
                 )
 
                 Text(

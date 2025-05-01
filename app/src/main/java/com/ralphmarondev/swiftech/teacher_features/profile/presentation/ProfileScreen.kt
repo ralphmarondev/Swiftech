@@ -1,4 +1,4 @@
-package com.ralphmarondev.swiftech.student_features.student_details.presentation
+package com.ralphmarondev.swiftech.teacher_features.profile.presentation
 
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -50,17 +50,17 @@ import com.ralphmarondev.swiftech.core.presentation.GenderDropdown
 import com.ralphmarondev.swiftech.core.presentation.NormalTextField
 import com.ralphmarondev.swiftech.core.presentation.PasswordTextField
 import com.ralphmarondev.swiftech.core.util.saveImageToAppFolder
-import com.ralphmarondev.swiftech.student_features.student_details.presentation.components.ProfileUpdatedSuccessfullyDialog
+import com.ralphmarondev.swiftech.teacher_features.profile.presentation.components.ProfileUpdatedSuccessfullyDialog
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun StudentDetailScreen(
+fun ProfileScreen(
     usernameArgs: String,
     navigateBack: () -> Unit
 ) {
-    val viewModel: StudentDetailViewModel =
+    val viewModel: ProfileViewModel =
         koinViewModel(parameters = { parametersOf(usernameArgs) })
     val fullName = viewModel.fullName.collectAsState().value
     val username = viewModel.username.collectAsState().value

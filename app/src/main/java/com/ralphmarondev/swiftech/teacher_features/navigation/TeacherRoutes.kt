@@ -9,4 +9,7 @@ object TeacherRoutes {
 
     @Serializable
     data class Reports(val courseId: Int)
+
+    @Serializable
+    data class Profile(val username: String)
 }

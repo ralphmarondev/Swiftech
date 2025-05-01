@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.ralphmarondev.swiftech.admin_features.reports.presentation.ReportScreen
 import com.ralphmarondev.swiftech.teacher_features.home.presentation.HomeScreen
+import com.ralphmarondev.swiftech.teacher_features.profile.presentation.ProfileScreen
 
 @Composable
 fun TeacherNavigation(
@@ -27,7 +28,12 @@ fun TeacherNavigation(
                         launchSingleTop = true
                     }
                 },
-                onLogout = onLogout
+                onLogout = onLogout,
+                onAccountCardClick = { username ->
+                    navController.navigate(TeacherRoutes.Profile(username)) {
+                        launchSingleTop = true
+                    }
+                }
             )
         }
         composable<TeacherRoutes.Reports> {
@@ -35,6 +41,15 @@ fun TeacherNavigation(
             Log.d("App", "AdminNavigation, courseId: `$courseId`")
             ReportScreen(
                 courseId = courseId ?: 0,
+                navigateBack = {
+                    navController.navigateUp()
+                }
+            )
+        }
+        composable<TeacherRoutes.Profile> {
+            val usernameArgs = it.arguments?.getString("username")
+            ProfileScreen(
+                usernameArgs = usernameArgs ?: "No username provided.",
                 navigateBack = {
                     navController.navigateUp()
                 }

@@ -37,6 +37,13 @@ class HomeViewModel(
         }
     }
 
+    fun refreshData() {
+        viewModelScope.launch {
+            _currentUser.value = getUserDetailByUsername(username)
+            preferences.setStudentId(_currentUser.value?.id ?: 0)
+        }
+    }
+
     fun setShowConfirmExitDialog() {
         _showConfirmExitDialog.value = !_showConfirmExitDialog.value
     }
