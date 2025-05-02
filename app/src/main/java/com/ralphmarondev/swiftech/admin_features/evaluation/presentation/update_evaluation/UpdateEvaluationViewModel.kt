@@ -14,9 +14,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-// TODO:
-//      - IMPLEMENT UPDATING QUESTIONS TOO
-//      - ADD A CHECK, WE ONLY ALLOW UPDATE WHEN THE EVALUATION IS NOT STARTED [NO STUDENT HAS EVALUATED YET]
 class UpdateEvaluationViewModel(
     private val evaluationId: Int,
     private val getEvaluationFormByIdUseCase: GetEvaluationFormByIdUseCase,
@@ -180,14 +177,14 @@ class UpdateEvaluationViewModel(
 
                 _formResponse.value = Result(
                     success = true,
-                    message = "Evaluation form created successfully."
+                    message = "Evaluation form updated successfully."
                 )
                 _shouldNavigateBack.value = true
             } catch (e: Exception) {
-                Log.e("App", "Error creating evaluation form: ${e.message}")
+                Log.e("App", "Error updating evaluation form: ${e.message}")
                 _formResponse.value = Result(
                     success = false,
-                    message = "Error creating evaluation form"
+                    message = "Error updating evaluation form"
                 )
             }
         }
