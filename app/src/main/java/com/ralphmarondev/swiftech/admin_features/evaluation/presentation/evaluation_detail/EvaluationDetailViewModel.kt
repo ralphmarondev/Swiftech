@@ -10,6 +10,7 @@ import com.ralphmarondev.swiftech.core.domain.usecases.evaluation.DeleteEvaluati
 import com.ralphmarondev.swiftech.core.domain.usecases.evaluation.DeleteQuestionByIdUseCase
 import com.ralphmarondev.swiftech.core.domain.usecases.evaluation.GetEvaluationFormByIdUseCase
 import com.ralphmarondev.swiftech.core.domain.usecases.evaluation.GetQuestionsByEvaluationIdUseCase
+import com.ralphmarondev.swiftech.core.domain.usecases.evaluation.HasAnyoneAnsweredUseCase
 import com.ralphmarondev.swiftech.core.domain.usecases.evaluation.SaveQuestionToEvaluationFormUseCase
 import com.ralphmarondev.swiftech.core.domain.usecases.evaluation.UpdateQuestionByIdUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,7 +24,8 @@ class EvaluationDetailViewModel(
     private val deleteEvaluationFormByIdUseCase: DeleteEvaluationFormByIdUseCase,
     private val updateQuestionByIdUseCase: UpdateQuestionByIdUseCase,
     private val deleteQuestionByIdUseCase: DeleteQuestionByIdUseCase,
-    private val saveQuestionToEvaluationFormUseCase: SaveQuestionToEvaluationFormUseCase
+    private val saveQuestionToEvaluationFormUseCase: SaveQuestionToEvaluationFormUseCase,
+    private val hasAnyoneAnsweredUseCase: HasAnyoneAnsweredUseCase
 ) : ViewModel() {
 
     private val _evaluationForm = MutableStateFlow<EvaluationForm?>(null)
@@ -62,12 +64,16 @@ class EvaluationDetailViewModel(
     private val _deleteResponse = MutableStateFlow<Result?>(null)
     val deleteResponse = _deleteResponse.asStateFlow()
 
+    private val _hasAnyoneAnswered = MutableStateFlow(false)
+    val hasAnyoneAnswered = _hasAnyoneAnswered.asStateFlow()
+
 
     init {
         viewModelScope.launch {
             _isLoading.value = true
             val evaluationForm = getEvaluationFormByIdUseCase(evaluationId)
             _evaluationForm.value = evaluationForm
+            _hasAnyoneAnswered.value = hasAnyoneAnsweredUseCase(evaluationId)
             getQuestionsByEvaluationIdUseCase(evaluationId).collect {
                 _questions.value = it
                 _isLoading.value = false
@@ -98,16 +104,25 @@ class EvaluationDetailViewModel(
 
     fun onConfirm() {
         viewModelScope.launch {
-            val question = newQuestion.value
-
-            if (question.isEmpty()) {
-                _response.value = Result(
-                    success = false,
-                    message = "Question cannot be empty"
-                )
-                return@launch
-            }
             try {
+                if (_hasAnyoneAnswered.value) {
+                    _response.value = Result(
+                        success = false,
+                        message = "You cannot add a question to an evaluation form that has already been answered."
+                    )
+                    return@launch
+                }
+
+                val question = newQuestion.value
+
+                if (question.isEmpty()) {
+                    _response.value = Result(
+                        success = false,
+                        message = "Question cannot be empty"
+                    )
+                    return@launch
+                }
+
                 saveQuestionToEvaluationFormUseCase(
                     question = EvaluationQuestion(
                         questionText = question,
@@ -157,6 +172,13 @@ class EvaluationDetailViewModel(
         )
         viewModelScope.launch {
             try {
+                if (_hasAnyoneAnswered.value) {
+                    _response.value = Result(
+                        success = false,
+                        message = "You cannot add a question to an evaluation form that has already been answered."
+                    )
+                    return@launch
+                }
                 updateQuestionByIdUseCase(updateQuestion)
                 _showUpdateQuestionDialog.value = false
                 _selectedQuestion.value = null
@@ -171,6 +193,13 @@ class EvaluationDetailViewModel(
     fun deleteSelectedQuestion() {
         viewModelScope.launch {
             try {
+                if (_hasAnyoneAnswered.value) {
+                    _response.value = Result(
+                        success = false,
+                        message = "You cannot add a question to an evaluation form that has already been answered."
+                    )
+                    return@launch
+                }
                 Log.d("App", "Deleting selected question: ${_selectedQuestion.value}")
                 deleteQuestionByIdUseCase(_selectedQuestion.value?.id ?: 0)
                 _showDeleteQuestionDialog.value = false

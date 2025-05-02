@@ -25,4 +25,6 @@ interface EvaluationFormRepository {
     suspend fun deleteQuestionById(id: Int)
 
     suspend fun updateQuestionById(question: EvaluationQuestion)
+
+    suspend fun hasAnyoneAnsweredTheEvaluationForm(evaluationFormId: Int): Boolean
 }

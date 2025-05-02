@@ -18,6 +18,7 @@ import androidx.compose.material.icons.outlined.ArrowBackIosNew
 import androidx.compose.material.icons.outlined.Clear
 import androidx.compose.material.icons.outlined.DeleteOutline
 import androidx.compose.material.icons.outlined.Update
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -63,6 +64,7 @@ fun EvaluationDetailScreen(
     val selectedQuestion = viewModel.selectedQuestion.collectAsState().value
     val showUpdateQuestionDialog = viewModel.showUpdateQuestionDialog.collectAsState().value
     val showDeleteQuestionDialog = viewModel.showDeleteQuestionDialog.collectAsState().value
+    val hasAnyoneAnswered = viewModel.hasAnyoneAnswered.collectAsState().value
 
     LaunchedEffect(Unit) {
         viewModel.refreshData()
@@ -87,13 +89,17 @@ fun EvaluationDetailScreen(
                     }
                 },
                 actions = {
-                    IconButton(
-                        onClick = { onUpdateEvaluationDetailClick(id) }
+                    AnimatedVisibility(
+                        visible = !hasAnyoneAnswered
                     ) {
-                        Icon(
-                            imageVector = Icons.Outlined.Update,
-                            contentDescription = "Update"
-                        )
+                        IconButton(
+                            onClick = { onUpdateEvaluationDetailClick(id) }
+                        ) {
+                            Icon(
+                                imageVector = Icons.Outlined.Update,
+                                contentDescription = "Update"
+                            )
+                        }
                     }
                     IconButton(
                         onClick = { viewModel.setShowDeleteEvaluationDialog(true) }
@@ -113,13 +119,15 @@ fun EvaluationDetailScreen(
             )
         },
         floatingActionButton = {
-            FloatingActionButton(
-                onClick = viewModel::setShowNewQuestionDialog
-            ) {
-                Icon(
-                    imageVector = Icons.Outlined.Add,
-                    contentDescription = "New question"
-                )
+            AnimatedVisibility(!hasAnyoneAnswered) {
+                FloatingActionButton(
+                    onClick = viewModel::setShowNewQuestionDialog
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.Add,
+                        contentDescription = "New question"
+                    )
+                }
             }
         }
     ) { innerPadding ->
@@ -131,6 +139,26 @@ fun EvaluationDetailScreen(
         ) {
             item {
                 Column {
+                    AnimatedVisibility(
+                        visible = hasAnyoneAnswered
+                    ) {
+                        ElevatedCard(
+                            modifier = Modifier
+                                .padding(bottom = 8.dp),
+                            colors = CardDefaults.elevatedCardColors(
+                                containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                                contentColor = MaterialTheme.colorScheme.onTertiaryContainer
+                            )
+                        ) {
+                            Text(
+                                text = "Updating evaluation form, adding, deleting and updating question is locked since someone already answered the form.",
+                                fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                                fontWeight = MaterialTheme.typography.titleMedium.fontWeight,
+                                modifier = Modifier
+                                    .padding(16.dp)
+                            )
+                        }
+                    }
                     Text(
                         text = "Title:",
                         fontSize = MaterialTheme.typography.labelMedium.fontSize,
@@ -194,37 +222,57 @@ fun EvaluationDetailScreen(
                 }
             }
             items(questions) { question ->
-                ElevatedCard(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 4.dp),
-                    onClick = {
-                        viewModel.setSelectedQuestion(question)
-                        viewModel.setShowUpdateQuestionDialog(true)
-                    }
-                ) {
-                    Row(
+                if (hasAnyoneAnswered) {
+                    ElevatedCard(
                         modifier = Modifier
-                            .padding(16.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween
+                            .fillMaxWidth()
+                            .padding(vertical = 4.dp)
                     ) {
-                        Text(
-                            text = question.questionText,
+                        Row(
                             modifier = Modifier
-                                .weight(0.9f)
-                        )
-                        IconButton(
-                            onClick = {
-                                viewModel.setSelectedQuestion(question)
-                                viewModel.setShowDeleteQuestionDIalog(true)
-                            },
-                            modifier = Modifier
-                                .weight(0.2f)
+                                .padding(16.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween
                         ) {
-                            Icon(
-                                imageVector = Icons.Outlined.Clear,
-                                contentDescription = "Delete"
+                            Text(
+                                text = question.questionText,
+                                modifier = Modifier
+                                    .weight(0.9f)
                             )
+                        }
+                    }
+                } else {
+                    ElevatedCard(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 4.dp),
+                        onClick = {
+                            viewModel.setSelectedQuestion(question)
+                            viewModel.setShowUpdateQuestionDialog(true)
+                        }
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .padding(16.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text(
+                                text = question.questionText,
+                                modifier = Modifier
+                                    .weight(0.9f)
+                            )
+                            IconButton(
+                                onClick = {
+                                    viewModel.setSelectedQuestion(question)
+                                    viewModel.setShowDeleteQuestionDIalog(true)
+                                },
+                                modifier = Modifier
+                                    .weight(0.2f)
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Outlined.Clear,
+                                    contentDescription = "Delete"
+                                )
+                            }
                         }
                     }
                 }

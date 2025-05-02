@@ -45,6 +45,8 @@ interface EvaluationFormDao {
     @Update
     suspend fun updateQuestionById(question: EvaluationQuestion)
 
+    @Query("SELECT COUNT(*) FROM evaluation_response WHERE evaluationFormId = :evaluationFormId")
+    suspend fun hasAnyoneAnsweredTheEvaluationFormById(evaluationFormId: Int): Int
 
     // NOTE: FUNCTIONS FOR STUDENT FEATURE
     @Query("SELECT * FROM evaluation_form WHERE term = :term AND isDeleted = 0")

@@ -23,6 +23,7 @@ import com.ralphmarondev.swiftech.core.domain.usecases.evaluation.DeleteQuestion
 import com.ralphmarondev.swiftech.core.domain.usecases.evaluation.GetAllEvaluationFormsUseCase
 import com.ralphmarondev.swiftech.core.domain.usecases.evaluation.GetEvaluationFormByIdUseCase
 import com.ralphmarondev.swiftech.core.domain.usecases.evaluation.GetQuestionsByEvaluationIdUseCase
+import com.ralphmarondev.swiftech.core.domain.usecases.evaluation.HasAnyoneAnsweredUseCase
 import com.ralphmarondev.swiftech.core.domain.usecases.evaluation.SaveQuestionToEvaluationFormUseCase
 import com.ralphmarondev.swiftech.core.domain.usecases.evaluation.UpdateEvaluationFormUseCase
 import com.ralphmarondev.swiftech.core.domain.usecases.evaluation.UpdateQuestionByIdUseCase
@@ -80,4 +81,5 @@ val coreModule = module {
     factoryOf(::GetQuestionsByEvaluationIdUseCase)
     factoryOf(::UpdateQuestionByIdUseCase)
     factoryOf(::DeleteQuestionByIdUseCase)
+    factoryOf(::HasAnyoneAnsweredUseCase)
 }

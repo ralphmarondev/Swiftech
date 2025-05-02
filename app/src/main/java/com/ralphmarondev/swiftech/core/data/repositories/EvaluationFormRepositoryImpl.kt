@@ -50,4 +50,8 @@ class EvaluationFormRepositoryImpl(
     override suspend fun updateQuestionById(question: EvaluationQuestion) {
         evaluationFormDao.updateQuestionById(question)
     }
+
+    override suspend fun hasAnyoneAnsweredTheEvaluationForm(evaluationFormId: Int): Boolean {
+        return evaluationFormDao.hasAnyoneAnsweredTheEvaluationFormById(evaluationFormId) > 0
+    }
 }
