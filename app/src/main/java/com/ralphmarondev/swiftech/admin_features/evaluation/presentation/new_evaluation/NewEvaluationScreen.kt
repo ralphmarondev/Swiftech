@@ -1,8 +1,9 @@
 package com.ralphmarondev.swiftech.admin_features.evaluation.presentation.new_evaluation
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,6 +14,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.ArrowBackIosNew
+import androidx.compose.material.icons.outlined.Clear
 import androidx.compose.material.icons.outlined.Description
 import androidx.compose.material.icons.outlined.SaveAlt
 import androidx.compose.material.icons.outlined.Timeline
@@ -32,9 +34,11 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.ralphmarondev.swiftech.admin_features.evaluation.presentation.components.DeleteQuestionDialog
 import com.ralphmarondev.swiftech.admin_features.evaluation.presentation.components.EvaluationResultDialog
 import com.ralphmarondev.swiftech.admin_features.evaluation.presentation.components.NewQuestionDialog
 import com.ralphmarondev.swiftech.admin_features.evaluation.presentation.components.SaveEvaluationDialog
+import com.ralphmarondev.swiftech.admin_features.evaluation.presentation.components.UpdateQuestionDialog
 import com.ralphmarondev.swiftech.core.presentation.NormalTextField
 import org.koin.androidx.compose.koinViewModel
 
@@ -54,6 +58,10 @@ fun NewEvaluationScreen(
     val showSaveEvaluationDialog = viewModel.showSaveEvaluationDialog.collectAsState().value
     val showEvaluationResultDialog = viewModel.showEvaluationResultDialog.collectAsState().value
     val shouldNavigateBack = viewModel.shouldNavigateBack.collectAsState().value
+
+    val showUpdateQuestionDialog = viewModel.showUpdateQuestionDialog.collectAsState().value
+    val showDeleteQuestionDialog = viewModel.showDeleteQuestionDialog.collectAsState().value
+    val selectedQuestion = viewModel.selectedQuestion.collectAsState().value
 
     LaunchedEffect(formResponse) {
         if (formResponse?.success == true) {
@@ -168,18 +176,37 @@ fun NewEvaluationScreen(
             }
             items(questions) { question ->
                 ElevatedCard(
-                    onClick = {},
+                    onClick = {
+                        viewModel.setSelectedQuestion(question)
+                        viewModel.setShowUpdateQuestionDialog(true)
+                    },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 8.dp, vertical = 4.dp)
                 ) {
-                    Column(
+                    Row(
                         modifier = Modifier
-                            .padding(16.dp)
+                            .padding(16.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Text(
-                            text = question
+                            text = question,
+                            modifier = Modifier
+                                .weight(0.9f)
                         )
+                        IconButton(
+                            onClick = {
+                                viewModel.setSelectedQuestion(question)
+                                viewModel.setShowDeleteQuestionDIalog(true)
+                            },
+                            modifier = Modifier
+                                .weight(0.2f)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Outlined.Clear,
+                                contentDescription = "Delete"
+                            )
+                        }
                     }
                 }
             }
@@ -193,6 +220,30 @@ fun NewEvaluationScreen(
             onDismiss = viewModel::setShowNewQuestionDialog,
             value = viewModel.newQuestion.collectAsState().value,
             onValueChange = viewModel::onNewQuestionValueChange
+        )
+    }
+
+    if (showUpdateQuestionDialog) {
+        UpdateQuestionDialog(
+            onConfirm = { questionText ->
+                viewModel.updateSelectedQuestion(questionText)
+            },
+            onDismiss = {
+                viewModel.setShowUpdateQuestionDialog(false)
+            },
+            question = selectedQuestion
+        )
+    }
+
+    if (showDeleteQuestionDialog) {
+        DeleteQuestionDialog(
+            question = "Are you sure you want to remove question:\n'$selectedQuestion'",
+            onDismiss = {
+                viewModel.setShowDeleteQuestionDIalog(false)
+            },
+            onConfirm = {
+                viewModel.deleteSelectedQuestion()
+            }
         )
     }
 

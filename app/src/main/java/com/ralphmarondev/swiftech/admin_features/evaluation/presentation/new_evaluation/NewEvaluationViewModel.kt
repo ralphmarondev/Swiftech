@@ -35,6 +35,15 @@ class NewEvaluationViewModel(
     private val _showNewQuestionDialog = MutableStateFlow(false)
     val showNewQuestionDialog = _showNewQuestionDialog.asStateFlow()
 
+    private val _showUpdateQuestionDialog = MutableStateFlow(false)
+    val showUpdateQuestionDialog = _showUpdateQuestionDialog.asStateFlow()
+
+    private val _showDeleteQuestionDialog = MutableStateFlow(false)
+    val showDeleteQuestionDialog = _showDeleteQuestionDialog.asStateFlow()
+
+    private val _selectedQuestion = MutableStateFlow("")
+    val selectedQuestion = _selectedQuestion.asStateFlow()
+
     private val _formResponse = MutableStateFlow<Result?>(null)
     val formResponse = _formResponse.asStateFlow()
 
@@ -73,7 +82,7 @@ class NewEvaluationViewModel(
 
     fun onConfirm() {
         viewModelScope.launch {
-            val question = newQuestion.value
+            val question = newQuestion.value.trim()
 
             if (question.isEmpty()) {
                 _questionResponse.value = Result(
@@ -82,13 +91,14 @@ class NewEvaluationViewModel(
                 )
                 return@launch
             }
+            _questions.value += question
+            _newQuestion.value = ""
+
+            setShowNewQuestionDialog()
             _questionResponse.value = Result(
                 success = true,
                 message = "Question added"
             )
-            _questions.value += question
-            _newQuestion.value = ""
-            setShowNewQuestionDialog()
         }
     }
 
@@ -178,5 +188,42 @@ class NewEvaluationViewModel(
 
     fun setShowEvaluationResultDialog(value: Boolean) {
         _showEvaluationResultDialog.value = value
+    }
+
+    fun setShowUpdateQuestionDialog(value: Boolean) {
+        _showUpdateQuestionDialog.value = value
+    }
+
+    fun setShowDeleteQuestionDIalog(value: Boolean) {
+        _showDeleteQuestionDialog.value = value
+    }
+
+    fun setSelectedQuestion(value: String) {
+        _selectedQuestion.value = value
+    }
+
+    fun updateSelectedQuestion(value: String) {
+        val currentQuestions = _questions.value.toMutableList()
+        val selected = _selectedQuestion.value.trim()
+
+        val index = currentQuestions.indexOf(selected)
+        if (index != -1) {
+            currentQuestions[index] = value
+            _questions.value = currentQuestions
+            _selectedQuestion.value = value
+        }
+        setShowUpdateQuestionDialog(false)
+    }
+
+    fun deleteSelectedQuestion() {
+        val currentQuestions = _questions.value.toMutableList()
+        val selected = _selectedQuestion.value
+
+        if (currentQuestions.remove(selected)) {
+            _questions.value = currentQuestions
+            _selectedQuestion.value = ""
+
+            setShowDeleteQuestionDIalog(false)
+        }
     }
 }
