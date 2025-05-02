@@ -42,6 +42,7 @@ import com.ralphmarondev.swiftech.admin_features.evaluation.presentation.compone
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 
+// TODO: ADD RESULT DIALOGS AND RESPONSE ON EVERY ACTIONS [DELETE, UPDATE, CREATE]
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EvaluationDetailScreen(

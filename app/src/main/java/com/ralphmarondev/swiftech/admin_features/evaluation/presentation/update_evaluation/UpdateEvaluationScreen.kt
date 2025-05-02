@@ -10,9 +10,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBackIosNew
 import androidx.compose.material.icons.outlined.Description
-import androidx.compose.material.icons.outlined.SaveAlt
 import androidx.compose.material.icons.outlined.Timeline
 import androidx.compose.material.icons.outlined.Title
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -25,7 +25,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.ralphmarondev.swiftech.admin_features.evaluation.presentation.components.EvaluationResultDialog
 import com.ralphmarondev.swiftech.admin_features.evaluation.presentation.components.NewQuestionDialog
 import com.ralphmarondev.swiftech.admin_features.evaluation.presentation.components.UpdateEvaluationDialog
@@ -77,18 +80,6 @@ fun UpdateEvaluationScreen(
                         )
                     }
                 },
-                actions = {
-                    IconButton(
-                        onClick = {
-                            viewModel.setShowSaveEvaluationDialog(true)
-                        }
-                    ) {
-                        Icon(
-                            imageVector = Icons.Outlined.SaveAlt,
-                            contentDescription = "Save"
-                        )
-                    }
-                },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primary,
                     titleContentColor = MaterialTheme.colorScheme.onPrimary,
@@ -136,6 +127,24 @@ fun UpdateEvaluationScreen(
                         .fillMaxWidth()
                         .padding(horizontal = 8.dp, vertical = 4.dp)
                 )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Button(
+                    onClick = {
+                        viewModel.setShowSaveEvaluationDialog(true)
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp)
+                ) {
+                    Text(
+                        text = "UPDATE",
+                        textAlign = TextAlign.Center,
+                        fontWeight = FontWeight.W500,
+                        fontSize = 16.sp
+                    )
+                }
             }
             item { Spacer(modifier = Modifier.height(100.dp)) }
         }
