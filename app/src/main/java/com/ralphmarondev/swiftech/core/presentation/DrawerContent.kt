@@ -33,7 +33,9 @@ import com.ralphmarondev.swiftech.R
 @Composable
 fun DrawerContent(
     modifier: Modifier = Modifier,
-    onLogout: () -> Unit
+    onLogout: () -> Unit,
+    navigateToHome: () -> Unit = {},
+    navigateToSettings: () -> Unit = {}
 ) {
     ModalDrawerSheet(
         modifier = modifier
@@ -71,7 +73,7 @@ fun DrawerContent(
             Spacer(modifier = Modifier.height(8.dp))
 
             NavigationDrawerItem(
-                onClick = {},
+                onClick = { navigateToHome() },
                 selected = false,
                 label = {
                     Text(
@@ -90,7 +92,7 @@ fun DrawerContent(
                 shape = RoundedCornerShape(8.dp)
             )
             NavigationDrawerItem(
-                onClick = {},
+                onClick = { navigateToSettings() },
                 selected = false,
                 label = {
                     Text(

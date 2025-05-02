@@ -14,6 +14,7 @@ import com.ralphmarondev.swiftech.student_features.student_details.presentation.
 fun StudentNavigation(
     username: String,
     onLogout: () -> Unit,
+    navigateToSettings: () -> Unit,
     navController: NavHostController = rememberNavController()
 ) {
     NavHost(
@@ -33,7 +34,8 @@ fun StudentNavigation(
                     navController.navigate(StudentRoutes.StudentDetails(username)) {
                         launchSingleTop = true
                     }
-                }
+                },
+                navigateToSettings = navigateToSettings
             )
         }
         composable<StudentRoutes.EvaluationForms> {

@@ -15,4 +15,7 @@ object Routes {
 
     @Serializable
     data class Teacher(val username: String)
+
+    @Serializable
+    data object Settings
 }

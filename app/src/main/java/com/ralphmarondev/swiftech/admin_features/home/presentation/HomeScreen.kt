@@ -55,7 +55,8 @@ fun HomeScreen(
     onCourseClick: () -> Unit,
     onEvaluationClick: () -> Unit,
     onAccountCardClick: (String) -> Unit,
-    onLogout: () -> Unit
+    onLogout: () -> Unit,
+    navigateToSettings: () -> Unit,
 ) {
     val themeState = LocalThemeState.current
     val viewModel: HomeViewModel = koinViewModel(parameters = { parametersOf(username) })
@@ -103,7 +104,18 @@ fun HomeScreen(
                 onLogout = onLogout,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(end = 24.dp)
+                    .padding(end = 24.dp),
+                navigateToSettings = {
+                    scope.launch {
+                        drawerState.close()
+                    }
+                    navigateToSettings()
+                },
+                navigateToHome = {
+                    scope.launch {
+                        drawerState.close()
+                    }
+                }
             )
         },
         drawerState = drawerState

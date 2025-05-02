@@ -12,6 +12,7 @@ import com.ralphmarondev.swiftech.auth.presentation.login.LoginScreen
 import com.ralphmarondev.swiftech.core.data.local.preferences.AppPreferences
 import com.ralphmarondev.swiftech.core.domain.model.Role
 import com.ralphmarondev.swiftech.core.util.LocalThemeState
+import com.ralphmarondev.swiftech.settings.presentation.SettingScreen
 import com.ralphmarondev.swiftech.student_features.navigation.StudentNavigation
 import com.ralphmarondev.swiftech.teacher_features.navigation.TeacherNavigation
 import com.ralphmarondev.swiftech.ui.theme.SwiftechTheme
@@ -73,6 +74,11 @@ fun AppNavigation(
                             popUpTo(0) { inclusive = true }
                             launchSingleTop = true
                         }
+                    },
+                    navigateToSettings = {
+                        navController.navigate(Routes.Settings) {
+                            launchSingleTop = true
+                        }
                     }
                 )
             }
@@ -83,6 +89,11 @@ fun AppNavigation(
                     onLogout = {
                         navController.navigate(Routes.Login) {
                             popUpTo(0) { inclusive = true }
+                            launchSingleTop = true
+                        }
+                    },
+                    navigateToSettings = {
+                        navController.navigate(Routes.Settings) {
                             launchSingleTop = true
                         }
                     }
@@ -97,6 +108,18 @@ fun AppNavigation(
                             popUpTo(0) { inclusive = true }
                             launchSingleTop = true
                         }
+                    },
+                    navigateToSettings = {
+                        navController.navigate(Routes.Settings) {
+                            launchSingleTop = true
+                        }
+                    }
+                )
+            }
+            composable<Routes.Settings> {
+                SettingScreen(
+                    navigateBack = {
+                        navController.navigateUp()
                     }
                 )
             }

@@ -24,6 +24,7 @@ import com.ralphmarondev.swiftech.admin_features.teachers.presentation.update_te
 fun AdminNavigation(
     username: String,
     onLogout: () -> Unit,
+    navigateToSettings: () -> Unit,
     navController: NavHostController = rememberNavController()
 ) {
     NavHost(
@@ -58,7 +59,8 @@ fun AdminNavigation(
                         launchSingleTop = true
                     }
                 },
-                onLogout = onLogout
+                onLogout = onLogout,
+                navigateToSettings = navigateToSettings
             )
         }
         composable<AdminRoutes.StudentList> {

@@ -14,6 +14,7 @@ import com.ralphmarondev.swiftech.teacher_features.profile.presentation.ProfileS
 fun TeacherNavigation(
     username: String,
     onLogout: () -> Unit,
+    navigateToSettings: () -> Unit,
     navController: NavHostController = rememberNavController()
 ) {
     NavHost(
@@ -33,7 +34,8 @@ fun TeacherNavigation(
                     navController.navigate(TeacherRoutes.Profile(username)) {
                         launchSingleTop = true
                     }
-                }
+                },
+                navigateToSettings = navigateToSettings
             )
         }
         composable<TeacherRoutes.Reports> {
