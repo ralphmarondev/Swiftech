@@ -25,6 +25,12 @@ class HomeViewModel(
         }
     }
 
+    fun refreshData() {
+        viewModelScope.launch {
+            _currentUser.value = getUserDetailByUsername(username)
+        }
+    }
+
     fun setShowConfirmExitDialog() {
         _showConfirmExitDialog.value = !_showConfirmExitDialog.value
     }

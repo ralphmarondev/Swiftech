@@ -9,6 +9,7 @@ import androidx.navigation.compose.rememberNavController
 import com.ralphmarondev.swiftech.admin_features.courses.navigation.CourseNavigation
 import com.ralphmarondev.swiftech.admin_features.evaluation.navigation.EvaluationNavigation
 import com.ralphmarondev.swiftech.admin_features.home.presentation.HomeScreen
+import com.ralphmarondev.swiftech.admin_features.profile.presentation.ProfileScreen
 import com.ralphmarondev.swiftech.admin_features.reports.presentation.ReportScreen
 import com.ralphmarondev.swiftech.admin_features.students.presentation.new_student.NewStudentScreen
 import com.ralphmarondev.swiftech.admin_features.students.presentation.student_detail.StudentDetailScreen
@@ -49,6 +50,11 @@ fun AdminNavigation(
                 },
                 onEvaluationClick = {
                     navController.navigate(AdminRoutes.EvaluationNavigation) {
+                        launchSingleTop = true
+                    }
+                },
+                onAccountCardClick = { username ->
+                    navController.navigate(AdminRoutes.Profile(username)) {
                         launchSingleTop = true
                     }
                 },
@@ -181,6 +187,15 @@ fun AdminNavigation(
             Log.d("App", "AdminNavigation, courseId: `$courseId`")
             ReportScreen(
                 courseId = courseId ?: 0,
+                navigateBack = {
+                    navController.navigateUp()
+                }
+            )
+        }
+        composable<AdminRoutes.Profile> {
+            val usernameArgs = it.arguments?.getString("username")
+            ProfileScreen(
+                usernameArgs = usernameArgs ?: "No username provided.",
                 navigateBack = {
                     navController.navigateUp()
                 }

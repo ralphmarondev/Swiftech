@@ -39,4 +39,7 @@ object AdminRoutes {
 
     @Serializable
     data class Report(val courseId: Int)
+
+    @Serializable
+    data class Profile(val username: String)
 }
