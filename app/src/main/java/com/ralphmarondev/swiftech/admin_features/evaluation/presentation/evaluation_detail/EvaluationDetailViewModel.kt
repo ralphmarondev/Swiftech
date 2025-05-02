@@ -7,6 +7,7 @@ import com.ralphmarondev.swiftech.core.domain.model.EvaluationForm
 import com.ralphmarondev.swiftech.core.domain.model.EvaluationQuestion
 import com.ralphmarondev.swiftech.core.domain.model.Result
 import com.ralphmarondev.swiftech.core.domain.usecases.evaluation.DeleteEvaluationFormByIdUseCase
+import com.ralphmarondev.swiftech.core.domain.usecases.evaluation.DeleteQuestionByIdUseCase
 import com.ralphmarondev.swiftech.core.domain.usecases.evaluation.GetEvaluationFormByIdUseCase
 import com.ralphmarondev.swiftech.core.domain.usecases.evaluation.GetQuestionsByEvaluationIdUseCase
 import com.ralphmarondev.swiftech.core.domain.usecases.evaluation.SaveQuestionToEvaluationFormUseCase
@@ -21,6 +22,7 @@ class EvaluationDetailViewModel(
     private val getQuestionsByEvaluationIdUseCase: GetQuestionsByEvaluationIdUseCase,
     private val deleteEvaluationFormByIdUseCase: DeleteEvaluationFormByIdUseCase,
     private val updateQuestionByIdUseCase: UpdateQuestionByIdUseCase,
+    private val deleteQuestionByIdUseCase: DeleteQuestionByIdUseCase,
     private val saveQuestionToEvaluationFormUseCase: SaveQuestionToEvaluationFormUseCase
 ) : ViewModel() {
 
@@ -47,6 +49,9 @@ class EvaluationDetailViewModel(
 
     private val _showUpdateQuestionDialog = MutableStateFlow(false)
     val showUpdateQuestionDialog = _showUpdateQuestionDialog.asStateFlow()
+
+    private val _showDeleteQuestionDialog = MutableStateFlow(false)
+    val showDeleteQuestionDialog = _showDeleteQuestionDialog.asStateFlow()
 
     private val _response = MutableStateFlow<Result?>(null)
     val response = _response.asStateFlow()
@@ -136,6 +141,10 @@ class EvaluationDetailViewModel(
         _showUpdateQuestionDialog.value = value
     }
 
+    fun setShowDeleteQuestionDIalog(value: Boolean) {
+        _showDeleteQuestionDialog.value = value
+    }
+
     fun setSelectedQuestion(value: EvaluationQuestion) {
         _selectedQuestion.value = value
     }
@@ -155,6 +164,19 @@ class EvaluationDetailViewModel(
                 Log.d("App", "Question $_selectedQuestion updated successfully.")
             } catch (e: Exception) {
                 Log.e("App", "Error updating question: ${e.message}")
+            }
+        }
+    }
+
+    fun deleteSelectedQuestion() {
+        viewModelScope.launch {
+            try {
+                Log.d("App", "Deleting selected question: ${_selectedQuestion.value}")
+                deleteQuestionByIdUseCase(_selectedQuestion.value?.id ?: 0)
+                _showDeleteQuestionDialog.value = false
+                _selectedQuestion.value = null
+            } catch (e: Exception) {
+                Log.e("App", "Error deleting question: ${e.message}")
             }
         }
     }

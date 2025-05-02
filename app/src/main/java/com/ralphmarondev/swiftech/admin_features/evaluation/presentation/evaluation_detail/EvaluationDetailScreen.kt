@@ -1,16 +1,21 @@
 package com.ralphmarondev.swiftech.admin_features.evaluation.presentation.evaluation_detail
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.ArrowBackIosNew
+import androidx.compose.material.icons.outlined.Clear
 import androidx.compose.material.icons.outlined.DeleteOutline
 import androidx.compose.material.icons.outlined.Update
 import androidx.compose.material3.ElevatedCard
@@ -30,6 +35,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.ralphmarondev.swiftech.admin_features.evaluation.presentation.components.DeleteEvaluationDialog
+import com.ralphmarondev.swiftech.admin_features.evaluation.presentation.components.DeleteQuestionDialog
 import com.ralphmarondev.swiftech.admin_features.evaluation.presentation.components.EvaluationResultDialog
 import com.ralphmarondev.swiftech.admin_features.evaluation.presentation.components.NewQuestionDialog
 import com.ralphmarondev.swiftech.admin_features.evaluation.presentation.components.UpdateQuestionDialog
@@ -55,6 +61,7 @@ fun EvaluationDetailScreen(
 
     val selectedQuestion = viewModel.selectedQuestion.collectAsState().value
     val showUpdateQuestionDialog = viewModel.showUpdateQuestionDialog.collectAsState().value
+    val showDeleteQuestionDialog = viewModel.showDeleteQuestionDialog.collectAsState().value
 
     LaunchedEffect(Unit) {
         viewModel.refreshData()
@@ -165,6 +172,13 @@ fun EvaluationDetailScreen(
                         .fillMaxWidth()
                         .padding(vertical = 16.dp)
                 )
+                Text(
+                    text = "Questions:",
+                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                    fontWeight = MaterialTheme.typography.titleMedium.fontWeight,
+                    color = MaterialTheme.colorScheme.secondary
+                )
+                Spacer(modifier = Modifier.height(4.dp))
             }
             item {
                 AnimatedVisibility(
@@ -188,15 +202,34 @@ fun EvaluationDetailScreen(
                         viewModel.setShowUpdateQuestionDialog(true)
                     }
                 ) {
-                    Column(
+                    Row(
                         modifier = Modifier
-                            .padding(16.dp)
+                            .padding(16.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Text(
-                            text = question.questionText
+                            text = question.questionText,
+                            modifier = Modifier
+                                .weight(0.9f)
                         )
+                        IconButton(
+                            onClick = {
+                                viewModel.setSelectedQuestion(question)
+                                viewModel.setShowDeleteQuestionDIalog(true)
+                            },
+                            modifier = Modifier
+                                .weight(0.2f)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Outlined.Clear,
+                                contentDescription = "Delete"
+                            )
+                        }
                     }
                 }
+            }
+            item {
+                Spacer(modifier = Modifier.height(100.dp))
             }
         }
     }
@@ -219,9 +252,20 @@ fun EvaluationDetailScreen(
             question = selectedQuestion?.questionText ?: ""
         )
     }
+    if (showDeleteQuestionDialog) {
+        DeleteQuestionDialog(
+            question = "Are you sure you want to remove question:\n'${selectedQuestion?.questionText}'",
+            onDismiss = {
+                viewModel.setShowDeleteQuestionDIalog(false)
+            },
+            onConfirm = {
+                viewModel.deleteSelectedQuestion()
+            }
+        )
+    }
     if (showDeleteEvaluationDialog) {
         DeleteEvaluationDialog(
-            text = "Are you sure you want to delete this evaluation form and all associated questions? This action cannot be undone.",
+            text = "Are you sure you want to delete this evaluation form and all associated questions, responses, and report data? This action cannot be undone.",
             onConfirm = {
                 viewModel.deleteEvaluation()
             },
