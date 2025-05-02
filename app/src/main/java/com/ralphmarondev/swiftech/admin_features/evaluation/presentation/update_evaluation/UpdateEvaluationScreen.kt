@@ -1,7 +1,5 @@
 package com.ralphmarondev.swiftech.admin_features.evaluation.presentation.update_evaluation
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,17 +7,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.ArrowBackIosNew
 import androidx.compose.material.icons.outlined.Description
 import androidx.compose.material.icons.outlined.SaveAlt
 import androidx.compose.material.icons.outlined.Timeline
 import androidx.compose.material.icons.outlined.Title
-import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -70,7 +64,7 @@ fun UpdateEvaluationScreen(
             TopAppBar(
                 title = {
                     Text(
-                        text = "Update Evaluation"
+                        text = "Update Details"
                     )
                 },
                 navigationIcon = {
@@ -102,16 +96,6 @@ fun UpdateEvaluationScreen(
                     navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
                 )
             )
-        },
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = viewModel::setShowNewQuestionDialog
-            ) {
-                Icon(
-                    imageVector = Icons.Outlined.Add,
-                    contentDescription = "New question"
-                )
-            }
         }
     ) { innerPadding ->
         LazyColumn(
@@ -152,57 +136,6 @@ fun UpdateEvaluationScreen(
                         .fillMaxWidth()
                         .padding(horizontal = 8.dp, vertical = 4.dp)
                 )
-
-                Text(
-                    text = "Questions:",
-                    modifier = Modifier.padding(start = 8.dp, top = 16.dp),
-                    fontWeight = MaterialTheme.typography.titleMedium.fontWeight,
-                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                    color = MaterialTheme.colorScheme.secondary
-                )
-                AnimatedVisibility(visible = questions.isEmpty()) {
-                    Text(
-                        text = "No questions yet.",
-                        modifier = Modifier.padding(16.dp),
-                        fontWeight = MaterialTheme.typography.titleMedium.fontWeight,
-                        fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                        color = MaterialTheme.colorScheme.secondary
-                    )
-                }
-            }
-            items(newlyAddedQuestions) { question ->
-                ElevatedCard(
-                    onClick = {},
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 8.dp, vertical = 4.dp)
-                ) {
-                    Column(
-                        modifier = Modifier
-                            .padding(16.dp)
-                    ) {
-                        Text(
-                            text = question
-                        )
-                    }
-                }
-            }
-            items(questions) { question ->
-                ElevatedCard(
-                    onClick = {},
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 8.dp, vertical = 4.dp)
-                ) {
-                    Column(
-                        modifier = Modifier
-                            .padding(16.dp)
-                    ) {
-                        Text(
-                            text = question.questionText
-                        )
-                    }
-                }
             }
             item { Spacer(modifier = Modifier.height(100.dp)) }
         }

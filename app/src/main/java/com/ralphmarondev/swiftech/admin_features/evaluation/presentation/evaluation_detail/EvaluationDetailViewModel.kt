@@ -9,6 +9,8 @@ import com.ralphmarondev.swiftech.core.domain.model.Result
 import com.ralphmarondev.swiftech.core.domain.usecases.evaluation.DeleteEvaluationFormByIdUseCase
 import com.ralphmarondev.swiftech.core.domain.usecases.evaluation.GetEvaluationFormByIdUseCase
 import com.ralphmarondev.swiftech.core.domain.usecases.evaluation.GetQuestionsByEvaluationIdUseCase
+import com.ralphmarondev.swiftech.core.domain.usecases.evaluation.SaveQuestionToEvaluationFormUseCase
+import com.ralphmarondev.swiftech.core.domain.usecases.evaluation.UpdateQuestionByIdUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -17,7 +19,9 @@ class EvaluationDetailViewModel(
     private val evaluationId: Int,
     private val getEvaluationFormByIdUseCase: GetEvaluationFormByIdUseCase,
     private val getQuestionsByEvaluationIdUseCase: GetQuestionsByEvaluationIdUseCase,
-    private val deleteEvaluationFormByIdUseCase: DeleteEvaluationFormByIdUseCase
+    private val deleteEvaluationFormByIdUseCase: DeleteEvaluationFormByIdUseCase,
+    private val updateQuestionByIdUseCase: UpdateQuestionByIdUseCase,
+    private val saveQuestionToEvaluationFormUseCase: SaveQuestionToEvaluationFormUseCase
 ) : ViewModel() {
 
     private val _evaluationForm = MutableStateFlow<EvaluationForm?>(null)
@@ -29,6 +33,9 @@ class EvaluationDetailViewModel(
     private val _newQuestion = MutableStateFlow("")
     val newQuestion = _newQuestion.asStateFlow()
 
+    private val _selectedQuestion = MutableStateFlow<EvaluationQuestion?>(null)
+    val selectedQuestion = _selectedQuestion.asStateFlow()
+
     private val _showNewQuestionDialog = MutableStateFlow(false)
     val showNewQuestionDialog = _showNewQuestionDialog.asStateFlow()
 
@@ -37,6 +44,9 @@ class EvaluationDetailViewModel(
 
     private val _showResultDialog = MutableStateFlow(false)
     val showResultDialog = _showResultDialog.asStateFlow()
+
+    private val _showUpdateQuestionDialog = MutableStateFlow(false)
+    val showUpdateQuestionDialog = _showUpdateQuestionDialog.asStateFlow()
 
     private val _response = MutableStateFlow<Result?>(null)
     val response = _response.asStateFlow()
@@ -60,7 +70,13 @@ class EvaluationDetailViewModel(
         }
     }
 
-    fun refreshData(){
+    private suspend fun refreshQuestions() {
+        getQuestionsByEvaluationIdUseCase(evaluationId).collect {
+            _questions.value = it
+        }
+    }
+
+    fun refreshData() {
         viewModelScope.launch {
             val evaluationForm = getEvaluationFormByIdUseCase(evaluationId)
             _evaluationForm.value = evaluationForm
@@ -86,11 +102,25 @@ class EvaluationDetailViewModel(
                 )
                 return@launch
             }
-            _response.value = Result(
-                success = true,
-                message = "Question added"
-            )
-            setShowNewQuestionDialog()
+            try {
+                saveQuestionToEvaluationFormUseCase(
+                    question = EvaluationQuestion(
+                        questionText = question,
+                        evaluationFormId = evaluationId
+                    )
+                )
+                _response.value = Result(
+                    success = true,
+                    message = "Question added"
+                )
+            } catch (e: Exception) {
+                _response.value = Result(
+                    success = false,
+                    message = "Error adding question"
+                )
+            } finally {
+                setShowNewQuestionDialog()
+            }
         }
     }
 
@@ -100,6 +130,33 @@ class EvaluationDetailViewModel(
 
     fun setShowResultDialog(value: Boolean) {
         _showResultDialog.value = value
+    }
+
+    fun setShowUpdateQuestionDialog(value: Boolean) {
+        _showUpdateQuestionDialog.value = value
+    }
+
+    fun setSelectedQuestion(value: EvaluationQuestion) {
+        _selectedQuestion.value = value
+    }
+
+    fun updateSelectedQuestion(questionText: String) {
+        val updateQuestion = EvaluationQuestion(
+            id = _selectedQuestion.value?.id ?: 0,
+            questionText = questionText,
+            evaluationFormId = evaluationId
+        )
+        viewModelScope.launch {
+            try {
+                updateQuestionByIdUseCase(updateQuestion)
+                _showUpdateQuestionDialog.value = false
+                _selectedQuestion.value = null
+                refreshQuestions()
+                Log.d("App", "Question $_selectedQuestion updated successfully.")
+            } catch (e: Exception) {
+                Log.e("App", "Error updating question: ${e.message}")
+            }
+        }
     }
 
     fun deleteEvaluation() {

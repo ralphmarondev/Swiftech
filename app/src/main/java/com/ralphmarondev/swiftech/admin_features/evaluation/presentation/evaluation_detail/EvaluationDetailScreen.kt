@@ -9,11 +9,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.ArrowBackIosNew
 import androidx.compose.material.icons.outlined.DeleteOutline
 import androidx.compose.material.icons.outlined.Update
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -30,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import com.ralphmarondev.swiftech.admin_features.evaluation.presentation.components.DeleteEvaluationDialog
 import com.ralphmarondev.swiftech.admin_features.evaluation.presentation.components.EvaluationResultDialog
 import com.ralphmarondev.swiftech.admin_features.evaluation.presentation.components.NewQuestionDialog
+import com.ralphmarondev.swiftech.admin_features.evaluation.presentation.components.UpdateQuestionDialog
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 
@@ -49,6 +52,9 @@ fun EvaluationDetailScreen(
     val showDeleteEvaluationDialog = viewModel.showDeleteEvaluationDialog.collectAsState().value
     val showResultDialog = viewModel.showResultDialog.collectAsState().value
     val deleteResponse = viewModel.deleteResponse.collectAsState().value
+
+    val selectedQuestion = viewModel.selectedQuestion.collectAsState().value
+    val showUpdateQuestionDialog = viewModel.showUpdateQuestionDialog.collectAsState().value
 
     LaunchedEffect(Unit) {
         viewModel.refreshData()
@@ -97,6 +103,16 @@ fun EvaluationDetailScreen(
                     actionIconContentColor = MaterialTheme.colorScheme.onPrimary
                 )
             )
+        },
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = viewModel::setShowNewQuestionDialog
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.Add,
+                    contentDescription = "New question"
+                )
+            }
         }
     ) { innerPadding ->
         LazyColumn(
@@ -166,7 +182,11 @@ fun EvaluationDetailScreen(
                 ElevatedCard(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 4.dp)
+                        .padding(vertical = 4.dp),
+                    onClick = {
+                        viewModel.setSelectedQuestion(question)
+                        viewModel.setShowUpdateQuestionDialog(true)
+                    }
                 ) {
                     Column(
                         modifier = Modifier
@@ -186,6 +206,17 @@ fun EvaluationDetailScreen(
             onConfirm = viewModel::onConfirm,
             value = viewModel.newQuestion.collectAsState().value,
             onValueChange = viewModel::onNewQuestionValueChange
+        )
+    }
+    if (showUpdateQuestionDialog) {
+        UpdateQuestionDialog(
+            onConfirm = { questionText ->
+                viewModel.updateSelectedQuestion(questionText)
+            },
+            onDismiss = {
+                viewModel.setShowUpdateQuestionDialog(false)
+            },
+            question = selectedQuestion?.questionText ?: ""
         )
     }
     if (showDeleteEvaluationDialog) {
