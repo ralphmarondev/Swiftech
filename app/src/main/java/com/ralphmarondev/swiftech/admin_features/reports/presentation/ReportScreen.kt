@@ -27,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.ralphmarondev.swiftech.admin_features.reports.presentation.components.QuestionReportBarChart
 import com.ralphmarondev.swiftech.admin_features.reports.presentation.components.ReportBarChart
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
@@ -213,11 +214,17 @@ private fun ReportByQuestions(
                     fontWeight = MaterialTheme.typography.titleMedium.fontWeight
                 )
                 HorizontalDivider(modifier = Modifier.padding(vertical = 4.dp))
-                Text(text = "Excellent: ${report.ratingCounts.excellent}")
-                Text(text = "Very Good: ${report.ratingCounts.veryGood}")
-                Text(text = "Good: ${report.ratingCounts.good}")
-                Text(text = "Fair: ${report.ratingCounts.fair}")
-                Text(text = "Poor: ${report.ratingCounts.poor}")
+//                Text(text = "Excellent: ${report.ratingCounts.excellent}")
+//                Text(text = "Very Good: ${report.ratingCounts.veryGood}")
+//                Text(text = "Good: ${report.ratingCounts.good}")
+//                Text(text = "Fair: ${report.ratingCounts.fair}")
+//                Text(text = "Poor: ${report.ratingCounts.poor}")
+                QuestionReportBarChart(
+                    ratingCounts = report.ratingCounts,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(200.dp)
+                )
             }
         }
     }
