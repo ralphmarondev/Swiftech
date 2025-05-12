@@ -1,6 +1,5 @@
 package com.ralphmarondev.swiftech.teacher_features.reports.presentation.components
 
-import android.graphics.Color
 import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.github.mikephil.charting.charts.BarChart
@@ -50,8 +50,8 @@ fun ReportBarChart(
     )
     val barDataSet = BarDataSet(barEntries, "Rating Count")
     barDataSet.apply {
-        color = Color.parseColor("#B388FF")
-        valueTextColor = Color.BLACK
+        color = MaterialTheme.colorScheme.primary.toArgb()
+        valueTextColor = MaterialTheme.colorScheme.primary.toArgb()
         valueTextSize = 12f
     }
 

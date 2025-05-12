@@ -52,7 +52,7 @@ fun ReportBarChart(
     val barDataSet = BarDataSet(barEntries, "Rating Count")
     barDataSet.apply {
         color = MaterialTheme.colorScheme.primary.toArgb()
-        valueTextColor = MaterialTheme.colorScheme.onPrimary.toArgb()
+        valueTextColor = MaterialTheme.colorScheme.primary.toArgb()
         valueTextSize = 12f
     }
 
