@@ -7,6 +7,7 @@ import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
 import com.ralphmarondev.swiftech.core.data.local.database.dto.QuestionWithAnswersDto
+import com.ralphmarondev.swiftech.core.data.local.database.dto.StudentRatingReportDto
 import com.ralphmarondev.swiftech.core.domain.model.EvaluationAnswer
 import com.ralphmarondev.swiftech.core.domain.model.EvaluationForm
 import com.ralphmarondev.swiftech.core.domain.model.EvaluationQuestion
@@ -122,5 +123,23 @@ interface EvaluationFormDao {
     """
     )
     fun getEvaluationAnswersGroupedByQuestion(courseId: Int): Flow<List<QuestionWithAnswersDto>>
+
+    // for report by student
+    @Query(
+        """
+    SELECT evaluation_response.studentId AS studentId, user.fullName AS studentName, evaluation_answer.answer AS answer
+    FROM evaluation_answer
+    INNER JOIN evaluation_response
+        ON evaluation_answer.evaluationResponseId = evaluation_response.id 
+    INNER JOIN evaluation_form
+        ON evaluation_response.evaluationFormId = evaluation_form.id
+    INNER JOIN user
+        ON evaluation_response.studentId = user.id
+    WHERE evaluation_response.courseId = :courseId
+      AND evaluation_form.isDeleted = 0
+    """
+    )
+    fun getEvaluationAnswersGroupedByStudent(courseId: Int): Flow<List<StudentRatingReportDto>>
+
 
 }

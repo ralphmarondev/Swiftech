@@ -180,7 +180,7 @@ fun ReportScreen(
 
                     when (selectedTab) {
                         0 -> ReportByQuestions(viewModel)
-                        1 -> ReportByStudents()
+                        1 -> ReportByStudents(viewModel)
                     }
                 }
             }
@@ -224,10 +224,34 @@ private fun ReportByQuestions(
 }
 
 @Composable
-private fun ReportByStudents() {
-    Text(
-        text = "Report by students",
-        fontSize = MaterialTheme.typography.titleMedium.fontSize,
-        fontWeight = MaterialTheme.typography.titleMedium.fontWeight
-    )
+private fun ReportByStudents(
+    viewModel: ReportViewModel
+) {
+    val studentReports = viewModel.studentReports.collectAsState().value
+
+    Spacer(modifier = Modifier.height(4.dp))
+    studentReports.forEachIndexed { _, report ->
+        OutlinedCard(
+            modifier = Modifier
+                .padding(vertical = 4.dp)
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+            ) {
+                Text(
+                    text = report.studentName,
+                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                    fontWeight = MaterialTheme.typography.titleMedium.fontWeight
+                )
+                HorizontalDivider(modifier = Modifier.padding(vertical = 4.dp))
+                Text(text = "Excellent: ${report.ratingCounts.excellent}")
+                Text(text = "Very Good: ${report.ratingCounts.veryGood}")
+                Text(text = "Good: ${report.ratingCounts.good}")
+                Text(text = "Fair: ${report.ratingCounts.fair}")
+                Text(text = "Poor: ${report.ratingCounts.poor}")
+            }
+        }
+    }
 }
