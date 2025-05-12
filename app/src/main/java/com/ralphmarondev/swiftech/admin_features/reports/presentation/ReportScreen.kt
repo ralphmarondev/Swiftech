@@ -196,14 +196,23 @@ private fun ReportByQuestions(
 ) {
     val questionReports = viewModel.questionReports.collectAsState().value
 
+    Spacer(modifier = Modifier.height(4.dp))
     questionReports.forEachIndexed { _, report ->
-        OutlinedCard {
+        OutlinedCard(
+            modifier = Modifier
+                .padding(vertical = 4.dp)
+        ) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp)
             ) {
-                Text(text = report.questionText)
+                Text(
+                    text = report.questionText,
+                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                    fontWeight = MaterialTheme.typography.titleMedium.fontWeight
+                )
+                HorizontalDivider(modifier = Modifier.padding(vertical = 4.dp))
                 Text(text = "Excellent: ${report.ratingCounts.excellent}")
                 Text(text = "Very Good: ${report.ratingCounts.veryGood}")
                 Text(text = "Good: ${report.ratingCounts.good}")
