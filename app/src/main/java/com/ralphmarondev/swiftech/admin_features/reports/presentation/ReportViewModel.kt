@@ -3,9 +3,11 @@ package com.ralphmarondev.swiftech.admin_features.reports.presentation
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ralphmarondev.swiftech.admin_features.reports.domain.model.QuestionRatingReport
 import com.ralphmarondev.swiftech.admin_features.reports.domain.model.RatingCounts
 import com.ralphmarondev.swiftech.admin_features.reports.domain.usecase.ComputeAverageRatingUseCase
 import com.ralphmarondev.swiftech.admin_features.reports.domain.usecase.ComputeRatingCountsUseCase
+import com.ralphmarondev.swiftech.admin_features.reports.domain.usecase.GetQuestionRatingReportsByCourseUseCase
 import com.ralphmarondev.swiftech.core.domain.usecases.course.GetCourseDetailByIdUseCase
 import com.ralphmarondev.swiftech.core.domain.usecases.user.GetUserByIdUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,7 +20,8 @@ class ReportViewModel(
     private val computeAverageRatingUseCase: ComputeAverageRatingUseCase,
     private val computeRatingCountsUseCase: ComputeRatingCountsUseCase,
     private val getCourseDetailByIdUseCase: GetCourseDetailByIdUseCase,
-    private val getUserDetailByIdUseCase: GetUserByIdUseCase
+    private val getUserDetailByIdUseCase: GetUserByIdUseCase,
+    private val getQuestionRatingReportsByCourseUseCase: GetQuestionRatingReportsByCourseUseCase
 ) : ViewModel() {
 
     private val _teacherName = MutableStateFlow("")
@@ -39,6 +42,9 @@ class ReportViewModel(
     // more information
     private val _selectedTab = MutableStateFlow(0)
     val selectedTab = _selectedTab.asStateFlow()
+
+    private val _questionReports = MutableStateFlow<List<QuestionRatingReport>>(emptyList())
+    val questionReports = _questionReports.asStateFlow()
 
     init {
         viewModelScope.launch {
@@ -62,9 +68,16 @@ class ReportViewModel(
                 Log.d("App", "Rating counts: $counts")
             }
 
-            // Wait for both to emit once
+            val reportsJob = launch {
+                val reports = getQuestionRatingReportsByCourseUseCase(courseId).first()
+                _questionReports.value = reports
+                Log.d("App", "Question reports: $reports")
+            }
+
+            // Wait for all three to emit once
             averageJob.join()
             countsJob.join()
+            reportsJob.join()
 
             _isLoading.value = false
         }

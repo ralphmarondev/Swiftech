@@ -14,6 +14,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
@@ -178,7 +179,7 @@ fun ReportScreen(
                     }
 
                     when (selectedTab) {
-                        0 -> ReportByQuestions()
+                        0 -> ReportByQuestions(viewModel)
                         1 -> ReportByStudents()
                     }
                 }
@@ -190,12 +191,27 @@ fun ReportScreen(
 }
 
 @Composable
-private fun ReportByQuestions() {
-    Text(
-        text = "Report by questions",
-        fontSize = MaterialTheme.typography.titleMedium.fontSize,
-        fontWeight = MaterialTheme.typography.titleMedium.fontWeight
-    )
+private fun ReportByQuestions(
+    viewModel: ReportViewModel
+) {
+    val questionReports = viewModel.questionReports.collectAsState().value
+
+    questionReports.forEachIndexed { _, report ->
+        OutlinedCard {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+            ) {
+                Text(text = report.questionText)
+                Text(text = "Excellent: ${report.ratingCounts.excellent}")
+                Text(text = "Very Good: ${report.ratingCounts.veryGood}")
+                Text(text = "Good: ${report.ratingCounts.good}")
+                Text(text = "Fair: ${report.ratingCounts.fair}")
+                Text(text = "Poor: ${report.ratingCounts.poor}")
+            }
+        }
+    }
 }
 
 @Composable

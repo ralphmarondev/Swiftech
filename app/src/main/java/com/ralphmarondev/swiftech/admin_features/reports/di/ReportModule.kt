@@ -4,6 +4,7 @@ import com.ralphmarondev.swiftech.admin_features.reports.data.repository.ReportR
 import com.ralphmarondev.swiftech.admin_features.reports.domain.repository.ReportRepository
 import com.ralphmarondev.swiftech.admin_features.reports.domain.usecase.ComputeAverageRatingUseCase
 import com.ralphmarondev.swiftech.admin_features.reports.domain.usecase.ComputeRatingCountsUseCase
+import com.ralphmarondev.swiftech.admin_features.reports.domain.usecase.GetQuestionRatingReportsByCourseUseCase
 import com.ralphmarondev.swiftech.admin_features.reports.presentation.ReportViewModel
 import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.core.module.dsl.factoryOf
@@ -14,6 +15,7 @@ val reportModule = module {
 
     factoryOf(::ComputeAverageRatingUseCase)
     factoryOf(::ComputeRatingCountsUseCase)
+    factoryOf(::GetQuestionRatingReportsByCourseUseCase)
 
     viewModelOf(::ReportViewModel)
 }
