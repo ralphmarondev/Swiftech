@@ -36,6 +36,10 @@ class ReportViewModel(
     private val _isLoading = MutableStateFlow(true)
     val isLoading = _isLoading.asStateFlow()
 
+    // more information
+    private val _selectedTab = MutableStateFlow(0)
+    val selectedTab = _selectedTab.asStateFlow()
+
     init {
         viewModelScope.launch {
             Log.d("App", "Loading report data for courseId: $courseId")
@@ -64,5 +68,9 @@ class ReportViewModel(
 
             _isLoading.value = false
         }
+    }
+
+    fun onSelectedTabValueChange(value: Int) {
+        _selectedTab.value = value
     }
 }
