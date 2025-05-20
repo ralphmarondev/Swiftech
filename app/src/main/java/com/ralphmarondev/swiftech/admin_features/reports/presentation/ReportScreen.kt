@@ -109,18 +109,6 @@ fun ReportScreen(
                         fontWeight = MaterialTheme.typography.titleMedium.fontWeight,
                         fontSize = MaterialTheme.typography.titleMedium.fontSize,
                     )
-
-                    Text(
-                        text = "Average rating:",
-                        fontWeight = MaterialTheme.typography.labelMedium.fontWeight,
-                        fontSize = MaterialTheme.typography.labelMedium.fontSize,
-                        color = MaterialTheme.colorScheme.secondary
-                    )
-                    Text(
-                        text = averageRating.toString(),
-                        fontWeight = MaterialTheme.typography.titleMedium.fontWeight,
-                        fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                    )
                 }
                 HorizontalDivider(
                     modifier = Modifier
@@ -136,6 +124,23 @@ fun ReportScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(16.dp)
+                    )
+                    Text(
+                        text = buildAnnotatedString {
+                            withStyle(
+                                style = SpanStyle(
+                                    color = MaterialTheme.colorScheme.secondary
+                                )
+                            ) {
+                                append("Overall Average: ")
+                            }
+                            append(String.format("%.2f", averageRating))
+                        },
+                        fontWeight = MaterialTheme.typography.titleSmall.fontWeight,
+                        fontSize = MaterialTheme.typography.titleSmall.fontSize,
+                        modifier = Modifier
+                            .padding(horizontal = 16.dp)
+                            .padding(bottom = 8.dp)
                     )
                 }
             }
