@@ -32,6 +32,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.ralphmarondev.swiftech.admin_features.reports.presentation.components.QuestionReportBarChart
 import com.ralphmarondev.swiftech.admin_features.reports.presentation.components.ReportBarChart
+import com.ralphmarondev.swiftech.admin_features.reports.presentation.components.StudentReportBarChart
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 
@@ -258,6 +259,8 @@ private fun ReportByStudents(
 
     Spacer(modifier = Modifier.height(4.dp))
     studentReports.forEachIndexed { _, report ->
+        val average = viewModel.computeAverageRating(report.ratingCounts)
+
         OutlinedCard(
             modifier = Modifier
                 .padding(vertical = 4.dp)
@@ -273,11 +276,27 @@ private fun ReportByStudents(
                     fontWeight = MaterialTheme.typography.titleMedium.fontWeight
                 )
                 HorizontalDivider(modifier = Modifier.padding(vertical = 4.dp))
-                Text(text = "Excellent: ${report.ratingCounts.excellent}")
-                Text(text = "Very Good: ${report.ratingCounts.veryGood}")
-                Text(text = "Good: ${report.ratingCounts.good}")
-                Text(text = "Fair: ${report.ratingCounts.fair}")
-                Text(text = "Poor: ${report.ratingCounts.poor}")
+                StudentReportBarChart(
+                    ratingCounts = report.ratingCounts,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(200.dp)
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = buildAnnotatedString {
+                        withStyle(
+                            style = SpanStyle(
+                                color = MaterialTheme.colorScheme.secondary
+                            )
+                        ) {
+                            append("Average: ")
+                        }
+                        append(String.format("%.2f", average))
+                    },
+                    fontWeight = MaterialTheme.typography.titleSmall.fontWeight,
+                    fontSize = MaterialTheme.typography.titleSmall.fontSize
+                )
             }
         }
     }
