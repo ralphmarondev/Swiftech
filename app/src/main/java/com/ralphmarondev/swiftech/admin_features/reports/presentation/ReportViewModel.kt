@@ -99,4 +99,18 @@ class ReportViewModel(
     fun onSelectedTabValueChange(value: Int) {
         _selectedTab.value = value
     }
+
+    fun computeAverageRating(counts: RatingCounts): Double {
+        val totalResponses = counts.excellent + counts.veryGood + counts.good + counts.fair + counts.poor
+        if (totalResponses == 0) return 0.0
+
+        val totalScore =
+            (counts.excellent * 5) +
+                    (counts.veryGood * 4) +
+                    (counts.good * 3) +
+                    (counts.fair * 2) +
+                    (counts.poor * 1)
+
+        return totalScore.toDouble() / totalResponses
+    }
 }

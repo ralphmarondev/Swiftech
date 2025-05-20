@@ -202,6 +202,8 @@ private fun ReportByQuestions(
 
     Spacer(modifier = Modifier.height(4.dp))
     questionReports.forEachIndexed { _, report ->
+        val average = viewModel.computeAverageRating(report.ratingCounts)
+
         OutlinedCard(
             modifier = Modifier
                 .padding(vertical = 4.dp)
@@ -233,7 +235,7 @@ private fun ReportByQuestions(
                         ) {
                             append("Average: ")
                         }
-                        append("4.3")
+                        append(String.format("%.2f", average))
                     },
                     fontWeight = MaterialTheme.typography.titleSmall.fontWeight,
                     fontSize = MaterialTheme.typography.titleSmall.fontSize
