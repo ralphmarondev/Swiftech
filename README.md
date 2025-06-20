@@ -1,107 +1,90 @@
-# Swiftech
+# 🎓 Swiftech
 
-## Overview
+**Swiftech** is a mobile-first **teacher evaluation system** built with **Jetpack Compose Material 3
+**, using **Room Database** and **MVVM architecture**. It enables students to evaluate their
+instructors per course with a clean, Google Form–like UI. The system is currently offline-first and
+admin-controlled—designed for a future cloud-enabled version.
 
-The **Swiftech** application is a mobile system developed using **Jetpack Compose Material 3**. It
-allows students to evaluate their courses and instructors digitally, removing the need for
-paper-based evaluation forms. The system is currently offline, designed as a prototype for a future
-online version that will sync data across devices using a cloud database.
+![License](https://img.shields.io/badge/license-MIT-purple)
+![Platform](https://img.shields.io/badge/platform-Android-pink)
+![Architecture](https://img.shields.io/badge/architecture-MVVM-orange)
+![UI](https://img.shields.io/badge/UI-Compose%20Material3-purple)
+![Kotlin](https://img.shields.io/badge/kotlin-2.0%2B-7f52ff?logo=kotlin-pink)
+![Gradle](https://img.shields.io/badge/gradle-8.0%2B-02303a?logo=gradle)
+![Database](https://img.shields.io/badge/local%20db-Room-green)
 
-## Features
+---
 
-### Authentication
+## 🔗 Repository
 
-- **Login/Register** (Only the admin can register users)
+GitHub: [https://github.com/ralphmarondev/Swiftech](https://github.com/ralphmarondev/Swiftech)
 
-### User Roles & Access
+---
 
-#### Admin
+## 📸 Screenshots
 
-- Can manage:
-    - **Students** (Create, Read, Update, Delete)
-    - **Teachers** (Create, Read, Update, Delete)
-    - **Courses** (Create, Read, Update, Delete)
-    - **Evaluation Forms** (Create, Read, Update, Delete)
+Here’s a sneak peek of **Swiftech** in action:
 
-#### Teacher
+<div align="center">
+  <img src="screenshots/login.png" alt="Login Screen" width="200" style="max-width: 100%; height: auto; margin: 8px;" />
+  <img src="screenshots/course_details.png" alt="Student Course List" width="200" style="max-width: 100%; height: auto; margin: 8px;" />
+  <img src="screenshots/evaluation_form.png" alt="Evaluation Form" width="200" style="max-width: 100%; height: auto; margin: 8px;" />
+</div>
 
-- Can view:
-    - **Their Courses**
-    - **Evaluation Forms** (Read-only, cannot modify responses)
+> 📌 *Simple, offline-ready evaluation platform with clean UI and role-based control.*
 
-#### Student
+---
 
-- Can view:
-    - **Their Courses** (With assigned teachers for evaluation)
-    - **Evaluation Forms** (Fill out for assigned teachers)
+## ✨ Features
 
-## Data Flow
+* 🔐 Admin-managed user system (no self-registration)
+* 🧑‍🏫 Role-based access for Admin, Teacher, and Student
+* 📋 Course-based teacher evaluation with 1–5 checkbox scale
+* 📈 Teachers can view evaluation results (read-only)
+* 🧰 Admin has full CRUD access to:
 
-1. **Admin registers users** (Students & Teachers)
-2. **Admin creates and assigns courses** to teachers
-3. **Users log in** to access their respective dashboards
-4. **Students evaluate their teachers** based on assigned courses
-5. **Teachers view evaluation results** (Read-only)
-6. **Admin oversees the entire system** and manages users, courses, & evaluations
+    * Students
+    * Teachers
+    * Courses
+    * Evaluation Forms
+* 💾 Offline-first with Room DB
+* ⚙️ Built using clean MVVM pattern with Koin DI
 
-## Entities & Relationships
+---
 
-### **User** (Abstract class/interface)
+## 🛠️ Getting Started
 
-- `id: String`
-- `name: String`
-- `email: String`
-- `password: String`
-- `role: Enum (Admin, Teacher, Student)`
+### 1. Clone the Repository
 
-### **Admin** (Extends User)
+```bash
+git clone https://github.com/ralphmarondev/Swiftech.git
+cd Swiftech
+```
 
-- Can create, update, and delete students, teachers, courses, and evaluation forms
+### 2. Open in Android Studio
 
-### **Teacher** (Extends User)
+* Open the root project folder
+* Let Gradle sync completely
+* Run the app on your Android emulator or a connected device
 
-- `courses: List<Course>`
-- Can view assigned courses and evaluations
+---
 
-### **Student** (Extends User)
+## 📄 License
 
-- `courses: List<Course>`
-- Can submit evaluation forms
+This project is licensed under the **MIT License**.
+See the [LICENSE](LICENSE.txt) file for full details.
 
-### **Course**
+---
 
-- `id: String`
-- `name: String`
-- `teacher: Teacher`
-- `students: List<Student>`
+## 👤 Author
 
-### **EvaluationForm**
+**Ralph Maron Eda**
+GitHub: [@ralphmarondev](https://github.com/ralphmarondev)
 
-- `id: String`
-- `course: Course`
-- `teacher: Teacher`
-- `student: Student`
-- `responses: Map<String, String>` (Question -> Answer pairs)
+---
 
-## Future Plans
+## 🤝 Contributing
 
-- Implement **online database** for real-time synchronization
-- Add **data analytics & reports** for evaluation results
-- Enable **multi-device access** via cloud sync
-
-## Installation & Setup
-
-1. Clone the repository:
-   ```sh
-   git clone https://github.com/ralphmarondev/Swiftech.git
-   ```
-2. Open the project in **Android Studio**
-3. Run the project on an **Android emulator or device**
-
-## Tech Stack
-
-- **Jetpack Compose Material 3** (UI)
-- **Room Database** (Local storage)
-- **Koin** (Dependency Injection)
-- **MVVM Architecture** (Separation of concerns)
-- **Kotlin Coroutines & Flow** (Asynchronous programming)
+Suggestions and contributions are welcome!
+Feel free to fork the project, submit issues, or open a pull request.
+Let’s modernize academic feedback together. 🎓✨
